@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getImageProps } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
 import { about } from "@/data/about";
@@ -29,7 +30,8 @@ import { TeamMember } from "@/components/ui/TeamMember";
 import { SceneLoader } from "@/components/three/SceneLoader";
 import { VortexPortal } from "@/components/three/VortexPortal";
 import pitchStage from "../../public/images/generated/pitch-stage.webp";
-import heroPoster from "../../public/images/generated/hero-poster.webp";
+import heroPoster from "../../public/images/generated/hero-scene.webp";
+import heroPosterPortrait from "../../public/images/generated/hero-scene-portrait.webp";
 
 export const revalidate = 3600; // "upcoming" is decided at render time; refresh hourly
 
@@ -37,6 +39,12 @@ export const metadata: Metadata = {
   title: { absolute: `${site.name} — Entrepreneurship Club, NIT Warangal` },
   alternates: { canonical: "/" },
 };
+
+// Art direction: the wide render for landscape, a portrait render (bars lifted above the title) for phones.
+const posterArgs = { alt: "", fill: true, priority: true, sizes: "100vw", placeholder: "blur" } as const;
+const posterWide = getImageProps({ ...posterArgs, src: heroPoster }).props.srcSet;
+const { srcSet: posterNarrowSet, ...posterNarrowRest } = getImageProps({ ...posterArgs, src: heroPosterPortrait }).props;
+const posterNarrow = { ...posterNarrowRest, srcSet: posterNarrowSet, fetchPriority: "high" as const };
 
 export default function Home() {
   const ordered = sortedEvents();
@@ -57,7 +65,10 @@ export default function Home() {
         {/* The poster is the LCP element: priority, fixed-height box, blur placeholder, decorative (alt empty).
             The box is 92svh, never 100%: Chrome ignores an image covering the whole viewport as an LCP candidate. */}
         <div aria-hidden className="absolute inset-x-0 top-0 -z-20 h-[92svh]">
-          <Image src={heroPoster} alt="" fill priority sizes="100vw" placeholder="blur" className="object-cover object-[68%_center]" />
+          <picture>
+            <source media="(min-width: 768px)" srcSet={posterWide} />
+            <img {...posterNarrow} alt="" className="absolute inset-0 size-full object-cover" />
+          </picture>
           <SceneLoader />
           <div className="hero-scrim absolute inset-0" />
         </div>

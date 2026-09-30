@@ -44,7 +44,7 @@ export function Manifesto({ text }: { text: string }) {
   }, []);
 
   return (
-    <div ref={section} className="flex min-h-[70svh] items-center lg:min-h-svh">
+    <div ref={section} className="flex min-h-[35svh] items-center lg:min-h-svh">
       <p ref={copy} className="max-w-[24ch] font-display text-[clamp(1.9rem,5vw,4.5rem)] font-semibold leading-[1.08] tracking-tight md:max-w-[30ch]">
         {text.split(" ").map((w, i) => (
           <span key={i} className="relative inline-block whitespace-pre text-muted">

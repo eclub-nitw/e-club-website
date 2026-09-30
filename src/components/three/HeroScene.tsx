@@ -42,7 +42,7 @@ function Coins({ accent }: { accent: string }) {
         <Float key={i} speed={1.1 + i * 0.12} rotationIntensity={0.5} floatIntensity={0.6} position={c.p}>
           <mesh rotation={[Math.PI / 2 - 0.55 - (i % 3) * 0.18, c.r, c.r * 0.35]} scale={c.s}>
             <cylinderGeometry args={[0.42, 0.42, 0.07, 48]} />
-            <meshStandardMaterial color={accent} metalness={1} roughness={0.3} envMapIntensity={1.7} />
+            <meshStandardMaterial color={accent} metalness={0.9} roughness={0.42} envMapIntensity={1.5} />
           </mesh>
         </Float>
       ))}
@@ -100,15 +100,15 @@ export default function HeroScene({ active, onReady }: { active: boolean; onRead
       <pointLight position={[-6, 3, 5]} intensity={60} color={c.cyan} />
       <Environment resolution={256} frames={1}>
         <Lightformer form="rect" intensity={9} color={c.accent} position={[8, 3, -1]} rotation-y={-Math.PI / 2.2} scale={[9, 6, 1]} />
-        <Lightformer form="rect" intensity={4} color={c.cyan} position={[-8, 2, 2]} rotation-y={Math.PI / 2.2} scale={[7, 5, 1]} />
+        <Lightformer form="rect" intensity={2} color={c.cyan} position={[-8, 2, 2]} rotation-y={Math.PI / 2.2} scale={[7, 5, 1]} />
         <Lightformer form="rect" intensity={3.2} color="white" position={[0, 9, 3]} rotation-x={Math.PI / 2} scale={[14, 6, 1]} />
-        <Lightformer form="rect" intensity={2.2} color={c.cyan} position={[2, 2.5, 12]} scale={[16, 3.5, 1]} />
-        <Lightformer form="ring" intensity={4} color="white" position={[-3, 4, 7]} scale={2.5} />
+        <Lightformer form="rect" intensity={2} color="white" position={[2, 2.5, 12]} scale={[16, 3.5, 1]} />
+        <Lightformer form="ring" intensity={4} color={c.accent} position={[-3, 4, 7]} scale={2.5} />
       </Environment>
       <Bars glass={c.surface} accent={c.accent} />
       <Coins accent={c.accent} />
-      <mesh rotation-x={-Math.PI / 2} position={[3, 0, 2]}>
-        <planeGeometry args={[60, 40]} />
+      <mesh rotation-x={-Math.PI / 2} position={[3, 0, 10]}>
+        <planeGeometry args={[90, 70]} />
         <MeshReflectorMaterial blur={[220, 70]} resolution={512} mixBlur={1} mixStrength={26} mirror={0.65} roughness={0.85} depthScale={0.8} minDepthThreshold={0.4} maxDepthThreshold={1.3} color={c.bg} metalness={0.6} />
       </mesh>
       <Rig active={active} />
