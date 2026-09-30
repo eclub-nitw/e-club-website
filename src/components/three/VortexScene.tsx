@@ -81,7 +81,10 @@ function Studio() {
 /** The brass ledger coin (modelled in Blender), turning slowly inside the ring. */
 function Coin({ falling }: { falling: boolean }) {
   const { scene } = useLoader(GLTFLoader, COIN); // plain GLTFLoader: no Draco/Meshopt decoder is attached, so no wasm
+  const { gl, scene: root, camera } = useThree();
   const ref = useRef<Group>(null);
+  // Parallel shader compile while the portal is still off screen: otherwise the brass material compiles inside its first visible frame (a ~150 ms task).
+  useEffect(() => { void gl.compileAsync(root, camera); }, [gl, root, camera]);
   useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * (falling ? 4 : 0.5); });
   return <group ref={ref} scale={1.15}><primitive object={scene} /></group>;
 }

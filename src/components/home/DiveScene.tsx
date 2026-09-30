@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef, type MutableRefObject } from "react";
+import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { AdditiveBlending, Color, MathUtils, SRGBColorSpace, TextureLoader } from "three";
 import { token } from "@/lib/webgl";
@@ -14,6 +14,7 @@ const hash = (n: number) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453
 function Tunnel({ frames, progress }: { frames: DiveFrame[]; progress: MutableRefObject<number> }) {
   const textures = useLoader(TextureLoader, frames.map((f) => f.src));
   const pointer = useThree((s) => s.pointer);
+  const gl = useThree((s) => s.gl);
   const depth = frames.length * SPACING;
   const smooth = useRef(0);
 
@@ -31,6 +32,19 @@ function Tunnel({ frames, progress }: { frames: DiveFrame[]; progress: MutableRe
     }
     return { accent, planes, streaks: pos };
   }, [textures, frames, depth]);
+
+  // Upload the 13 textures to the GPU one per idle slot instead of all inside the first frame (that was a 130 ms task at the Dive's entrance).
+  useEffect(() => {
+    let i = 0, h = 0, cancelled = false;
+    const idle = typeof window.requestIdleCallback === "function";
+    const next = () => {
+      if (cancelled || i >= textures.length) return;
+      gl.initTexture(textures[i++]);
+      h = idle ? window.requestIdleCallback(next, { timeout: 200 }) : window.setTimeout(next, 30);
+    };
+    h = idle ? window.requestIdleCallback(next, { timeout: 200 }) : window.setTimeout(next, 30);
+    return () => { cancelled = true; if (idle) window.cancelIdleCallback(h); else window.clearTimeout(h); };
+  }, [gl, textures]);
 
   useFrame(({ camera }, dt) => {
     smooth.current = MathUtils.damp(smooth.current, progress.current, 4, dt);
