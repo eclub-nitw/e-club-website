@@ -19,7 +19,7 @@ export function Section({
           <header className="mb-10 border-t border-line pt-4 md:mb-14">
             {number && <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">{number}{title ? ` — ${title}` : ""}</p>}
             {title && (
-              <h2 id={`${id}-h`} className="mt-4 max-w-[18ch] font-display text-4xl font-semibold leading-[1.02] tracking-tight md:text-6xl">
+              <h2 id={`${id}-h`} className={`mt-4 max-w-[18ch] font-display text-[clamp(2.5rem,6.5vw,6rem)] font-extrabold leading-[0.95] tracking-tight ${tone === "ink" ? "uppercase" : ""}`}>
                 <MaskedText text={title} />
               </h2>
             )}

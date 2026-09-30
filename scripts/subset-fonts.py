@@ -22,3 +22,8 @@ for name, out, wght in JOBS:
     s = subset.Subsetter(opts); s.populate(unicodes=UNICODES); s.subset(font)
     font.flavor = "woff2"; font.save(f"src/fonts/{out}")
     import os; print(out, os.path.getsize(f"src/fonts/{out}"), "bytes", len(font.getGlyphOrder()), "glyphs")
+
+# Bricolage Grotesque display cut (V3): the stock files above are pinned instances. The display face is now built from the full variable file
+# (github.com/google/fonts ofl/bricolagegrotesque, axes opsz 12-96, wght 200-800, wdth 75-100, all verified exposed 1 Oct 2026):
+#   instancer.instantiateVariableFont(font, {"opsz": 96, "wght": (600, 800), "wdth": 75})  -> 20 KB woff2, hinting off, layout features kern+ccmp
+# Only wdth 75 ships: the two-axis range costs 42 KB, about +0.1 s simulated LCP. Weight is variable 600-800 via font-weight.

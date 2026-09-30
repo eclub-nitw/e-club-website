@@ -88,3 +88,7 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 @keyframes drift { from { transform: translate(-50%, -50%); } to { transform: translate(calc(-50% + var(--dx, 4px)), calc(-50% + var(--dy, -4px))); } }
 .drift { transform: translate(-50%, -50%); animation: drift var(--dur, 9s) ease-in-out infinite alternate; }
 .drift:hover, .drift:focus-visible { animation-play-state: paused; }
+
+/* V3 (1 Oct 2026, reviewed in docs/handoff/BUILD-LOG-V3): lighter orange for large emphasis on ink where the brief demands >= 7:1.
+   club-gold on ink is 6.8:1; ember is 7.4:1. Used in the manifesto only. */
+@theme { --color-club-ember: #ff9147; }

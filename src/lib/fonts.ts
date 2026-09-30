@@ -5,6 +5,6 @@
 // Add a character outside that set (or a new weight) => rerun the script, do not fall back to the stock files.
 import localFont from "next/font/local";
 
-export const bricolage = localFont({ src: "../fonts/bricolage-grotesque.woff2", weight: "600", variable: "--font-bricolage", display: "swap", adjustFontFallback: "Arial" });
+export const bricolage = localFont({ src: "../fonts/bricolage-grotesque.woff2", weight: "600 800", variable: "--font-bricolage", display: "swap", adjustFontFallback: "Arial" });
 export const instrument = localFont({ src: "../fonts/instrument-sans.woff2", weight: "400", variable: "--font-instrument", display: "swap", adjustFontFallback: "Arial" });
 export const jetbrains = localFont({ src: "../fonts/jetbrains-mono.woff2", weight: "400", variable: "--font-jetbrains", display: "swap", adjustFontFallback: false, fallback: ["ui-monospace", "Cascadia Mono", "monospace"] });

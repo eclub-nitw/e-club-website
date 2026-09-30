@@ -69,7 +69,7 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
     linear-gradient(0deg, var(--bg) 0%, transparent 40%);
 }
 @media (max-width: 767px) {
-  .hero-scrim { background: linear-gradient(0deg, var(--bg) 0%, var(--bg) 52%, color-mix(in oklab, var(--bg) 40%, transparent) 64%, transparent 74%); }
+  .hero-scrim { background: linear-gradient(0deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 92%, transparent) 34%, color-mix(in oklab, var(--bg) 45%, transparent) 56%, transparent 78%); }
 }
 
 /* Growth line: draws with page scroll where CSS scroll-driven animations exist; otherwise fully drawn. */
@@ -87,3 +87,50 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 
 /* Manifesto: the lit layer of each word starts hidden; GSAP fades it in with scroll. Reduced motion shows it fully. */
 @media (prefers-reduced-motion: no-preference) { .manifesto-lit { opacity: 0; } }
+
+/* ---- V3 type system ---- */
+.label { font-family: var(--font-mono); font-size: 11px; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; }
+@media (min-width: 768px) { .label { font-size: 12px; } }
+.mega { font-family: var(--font-display); font-weight: 800; font-size: clamp(6rem, 44vw, 30rem); line-height: 0.82; letter-spacing: -0.01em; text-transform: uppercase; }
+.h1-xl { font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 9vw, 9rem); line-height: 0.9; letter-spacing: -0.025em; }
+.h1-xl.up { text-transform: uppercase; }
+
+/* Corner crop marks on photographs (print-proof look). Purely decorative. */
+.crop::before, .crop::after { content: ""; position: absolute; inset: 6px; z-index: 2; pointer-events: none;
+  --m: color-mix(in oklab, var(--color-club-paper) 80%, transparent);
+  background:
+    linear-gradient(var(--m), var(--m)) top left / 12px 1px no-repeat, linear-gradient(var(--m), var(--m)) top left / 1px 12px no-repeat,
+    linear-gradient(var(--m), var(--m)) top right / 12px 1px no-repeat, linear-gradient(var(--m), var(--m)) top right / 1px 12px no-repeat; }
+.crop::after { background:
+    linear-gradient(var(--m), var(--m)) bottom left / 12px 1px no-repeat, linear-gradient(var(--m), var(--m)) bottom left / 1px 12px no-repeat,
+    linear-gradient(var(--m), var(--m)) bottom right / 12px 1px no-repeat, linear-gradient(var(--m), var(--m)) bottom right / 1px 12px no-repeat; }
+
+/* Image clip-path reveal (inset 100% -> 0). Only hidden when scripting is on, so content never depends on JS. */
+.reveal-img { clip-path: inset(0); }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .reveal-img { clip-path: inset(0 0 100% 0); transition: clip-path 900ms var(--ease-out-expo); }
+  .reveal-img.is-in { clip-path: inset(0); }
+}
+
+/* Hero wordmark: paper letters first; once the colour photo has loaded they become windows onto it. */
+.mega-lit { color: var(--color-club-paper); }
+.mega-lit.is-lit { color: transparent; background-image: var(--lit); background-size: cover; background-position: 50% 40%; -webkit-background-clip: text; background-clip: text; -webkit-text-stroke: 2px color-mix(in oklab, var(--color-club-paper) 70%, transparent); }
+.spot { background: radial-gradient(closest-side, color-mix(in oklab, var(--color-club-gold) 55%, transparent), transparent); mix-blend-mode: screen; will-change: transform; }
+@keyframes sweep { from { transform: translate3d(-20vw, 0, 0); } to { transform: translate3d(70vw, 0, 0); } }
+.spot-sweep { animation: sweep 2400ms var(--ease-out-expo) 600ms 1 both; }
+@media (prefers-reduced-motion: reduce) { .spot-sweep { animation: none; transform: translate3d(30vw, 0, 0); } }
+
+/* Hover-swap pair: base fades to the alternate and lifts 4px. */
+.swap { transition: transform 250ms var(--ease-out-expo); }
+.swap > * { transition: opacity 400ms var(--ease-out-expo); }
+.swap > :last-child { opacity: 0; }
+.swap-host:hover .swap > :last-child, .swap-host:focus-visible .swap > :last-child { opacity: 1; }
+.swap-host:hover .swap, .swap-host:focus-visible .swap { transform: translateY(-4px); }
+@media (prefers-reduced-motion: reduce) { .swap, .swap > * { transition: none; } .swap-host:hover .swap { transform: none; } }
+
+/* The Dive: stack by default; the pinned WebGL shell only for fine pointers without reduced motion (and only if the capability test passes). */
+.dive .dive-live { display: none; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .dive:not([data-fallback]) .dive-live { display: block; }
+  .dive:not([data-fallback]) .dive-stack { display: none; }
+}

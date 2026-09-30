@@ -54,7 +54,9 @@ await mkdir("public/images/dive", { recursive: true });
 const INK = [11, 34, 38], LIGHT = [200, 226, 222];
 async function hero(base) {
   for (const [name, w, h] of [["hero-1600", 1600, 1000], ["hero-1024", 1024, 640], ["hero-portrait", 900, 1200]]) {
-    const { data, info } = await base.clone().resize(w, h, { fit: "cover", position: name === "hero-portrait" ? "centre" : "attention" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    // Portrait crop: lower-left 1700x2267 of the 4032x3024 frame, where the audience is (the top half is ceiling).
+    const src = name === "hero-portrait" ? base.clone().extract({ left: 300, top: 757, width: 1700, height: 2267 }) : base.clone();
+    const { data, info } = await src.resize(w, h, { fit: "cover", position: "attention" }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     for (let y = 0; y < info.height; y++) for (let x = 0; x < info.width; x++) {
       const i = (y * info.width + x) * 3;
       const lum = Math.min(1, Math.max(0, (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255));
