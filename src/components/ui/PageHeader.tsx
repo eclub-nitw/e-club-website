@@ -14,7 +14,7 @@ export function PageHeader({ number, label, title, lede, tone = "ink", photoId, 
   return (
     <div className={`${tone === "paper" ? "tone-paper" : "bg-bg text-fg"} relative isolate overflow-hidden pb-14 pt-32 md:pb-20 md:pt-44`}>
       {photo && tone === "ink" && (
-        <div className="absolute inset-0 -z-10">
+        <div className="parallax-photo absolute inset-0 -z-10">
           <picture>
             <source type="image/avif" srcSet={srcSet(photo, "avif")} sizes="100vw" />
             <source type="image/webp" srcSet={srcSet(photo, "webp")} sizes="100vw" />

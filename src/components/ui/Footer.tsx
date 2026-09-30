@@ -5,6 +5,7 @@ import { legalPages } from "@/lib/legal";
 import { sponsors } from "@/data/sponsors";
 import { Container } from "./Container";
 import { SponsorLogo } from "./SponsorLogo";
+import { ArrowButton } from "./ArrowButton";
 
 const cols = [
   { title: "Explore", links: [["/about", "About"], ["/events", "Events"], ["/gallery", "Gallery"], ["/team", "Team"]] },
@@ -40,7 +41,6 @@ export function Footer() {
         )}
         <div className="grid gap-x-8 gap-y-14 md:grid-cols-3 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div className="md:col-span-3 lg:col-span-1">
-            <p className="whitespace-nowrap font-display text-[clamp(3rem,9vw,7rem)] font-semibold leading-[0.9] tracking-tight">E-Club</p>
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-club-mist">Entrepreneurship Club · NIT Warangal</p>
             <a href={`mailto:${site.email}`} className="mt-4 inline-flex min-h-11 items-center break-all text-lg underline decoration-club-gold decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
           </div>
@@ -68,10 +68,7 @@ export function Footer() {
           </nav>
           <div className="flex flex-wrap items-center gap-x-6">
             <p>© {new Date().getFullYear()} {site.name}. Made by the E-Club tech team.</p>
-            <a href="#main" className="group inline-flex min-h-11 items-center gap-2 font-mono text-xs uppercase tracking-[0.08em] text-club-paper hover:underline">
-              Back to top
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-y-1 motion-reduce:transition-none"><path d="M6 11V1M2 5l4-4 4 4" stroke="currentColor" strokeWidth="1.5" /></svg>
-            </a>
+            <ArrowButton href="#main" label="Back to top" direction="up" />
           </div>
         </div>
       </Container>

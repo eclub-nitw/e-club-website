@@ -137,3 +137,12 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 
 /* Footer ghost wordmark: generated content, so it is decoration for every tool (no text node to contrast-check). */
 .mega-ghost::before { content: "E-Club"; color: color-mix(in oklab, var(--color-club-paper) 10%, transparent); }
+
+/* Photo parallax (<= 12% travel): the header photograph drifts as the page scrolls away. CSS scroll-driven, transform only, no JS;
+   browsers without animation-timeline and reduced-motion visitors get the still image. */
+@keyframes photo-drift { from { transform: translateY(0) scale(1.14); } to { transform: translateY(6%) scale(1.14); } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax-photo { animation: photo-drift linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+  }
+}
