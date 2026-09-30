@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import { legalPages } from "@/lib/legal";
+import { sponsors } from "@/data/sponsors";
 import { Container } from "./Container";
+import { SponsorLogo } from "./SponsorLogo";
 
 const cols = [
   { title: "Explore", links: [["/about", "About"], ["/events", "Events"], ["/gallery", "Gallery"], ["/team", "Team"]] },
@@ -14,15 +16,28 @@ const socials = [
   { label: "YouTube", href: site.youtube },
 ].filter((s) => s.href);
 
+const listed = sponsors.filter((s) => s.consent);
+
 const linkCls = "inline-flex min-h-11 items-center text-fg/90 underline-offset-4 hover:text-fg hover:underline";
 
 export function Footer() {
   return (
     <footer className="bg-club-ink text-club-paper">
       <Container className="py-16 md:py-24">
+        {listed.length > 0 && (
+          <div className="mb-16 border-y border-club-paper/15 py-8">
+            <p className="font-mono text-xs uppercase tracking-[0.08em] text-club-mist">Backed by</p>
+            <ul className="mt-4 flex flex-wrap items-center gap-x-10 gap-y-2">
+              {listed.map((s) => <li key={s.name}><SponsorLogo sponsor={s} /></li>)}
+            </ul>
+            <p className="mt-4 text-sm text-club-mist">
+              Names and logos belong to their owners; see the <Link href="/disclaimer" className="underline underline-offset-4 hover:text-club-paper">disclaimer</Link>.
+            </p>
+          </div>
+        )}
         <div className="grid gap-14 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div>
-            <p className="font-display text-4xl font-semibold leading-none tracking-tight md:text-5xl">E-Club</p>
+            <p className="font-display text-[clamp(3.5rem,10vw,7rem)] font-semibold leading-[0.9] tracking-tight">E-Club</p>
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-club-mist">Entrepreneurship Club · NIT Warangal</p>
             <a href={`mailto:${site.email}`} className="mt-8 inline-flex min-h-11 items-center break-all text-lg underline decoration-club-gold decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
           </div>
@@ -48,7 +63,13 @@ export function Footer() {
               {Object.entries(legalPages).map(([slug, p]) => <li key={slug}><Link href={`/${slug}`} className="inline-flex min-h-11 items-center underline-offset-4 hover:text-club-paper hover:underline">{p.title}</Link></li>)}
             </ul>
           </nav>
-          <p>© {new Date().getFullYear()} {site.name}. Made by the E-Club tech team.</p>
+          <div className="flex flex-wrap items-center gap-x-6">
+            <p>© {new Date().getFullYear()} {site.name}. Made by the E-Club tech team.</p>
+            <a href="#main" className="group inline-flex min-h-11 items-center gap-2 font-mono text-xs uppercase tracking-[0.08em] text-club-paper hover:underline">
+              Back to top
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:-translate-y-1 motion-reduce:transition-none"><path d="M6 11V1M2 5l4-4 4 4" stroke="currentColor" strokeWidth="1.5" /></svg>
+            </a>
+          </div>
         </div>
       </Container>
     </footer>
