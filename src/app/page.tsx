@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { sponsors } from "@/data/sponsors";
 import { team } from "@/data/team";
@@ -12,14 +13,14 @@ import { Countdown } from "@/components/ui/Countdown";
 import { Ticker } from "@/components/ui/Ticker";
 import { EventRow } from "@/components/ui/EventRow";
 import { GrowthLine } from "@/components/ui/GrowthLine";
-import { HeroBars } from "@/components/ui/HeroBars";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { LedgerRow } from "@/components/ui/LedgerRow";
 import { MaskedText } from "@/components/ui/MaskedText";
 import { Section } from "@/components/ui/Section";
 import { SponsorLogo } from "@/components/ui/SponsorLogo";
 import { TeamMember } from "@/components/ui/TeamMember";
-import { Tilt } from "@/components/ui/Tilt";
+
+import heroPoster from "../../public/images/generated/hero-poster.webp";
 
 export const revalidate = 3600; // "upcoming" is decided at render time; refresh hourly
 
@@ -42,25 +43,25 @@ export default function Home() {
     <>
       <JsonLd data={organizationLd()} />
 
-      <section className="relative overflow-hidden bg-bg pb-16 pt-32 text-fg md:pb-24 md:pt-40">
-        <Container className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr]">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Entrepreneurship Club · NIT Warangal</p>
-            <h1 className="mt-6 font-display text-[clamp(2rem,9vw,6.5rem)] md:text-[clamp(3rem,7.2vw,6.5rem)] font-semibold leading-[0.96] tracking-tight">
-              <MaskedText text="The Entrepreneurship Club of NIT Warangal." immediate />
-            </h1>
-            {site.tagline && <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-muted md:text-xl">{site.tagline}</p>}
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Button href="/events">See our events</Button>
-              <Button href="/join" variant="secondary">Join the club</Button>
-            </div>
+      <section className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-bg text-fg">
+        {/* The poster is the LCP element: priority, fixed-height box, blur placeholder, decorative (alt empty).
+            The box is 92svh, never 100%: Chrome ignores an image covering the whole viewport as an LCP candidate. */}
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-20 h-[92svh]">
+          <Image src={heroPoster} alt="" fill priority sizes="100vw" placeholder="blur" quality={60} className="object-cover object-[68%_center]" />
+        </div>
+        <div aria-hidden className="hero-scrim absolute inset-0 -z-10" />
+        <Container className="pb-10 pt-32 md:pb-14 md:pt-40">
+          <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Entrepreneurship Club · NIT Warangal</p>
+          <h1 className="mt-6 max-w-[14ch] font-display text-[clamp(2.75rem,9.5vw,8.75rem)] font-semibold leading-[0.92] tracking-tight lg:max-w-[12ch]">
+            <MaskedText text="The Entrepreneurship Club of NIT Warangal." immediate />
+          </h1>
+          {site.tagline && <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-muted md:text-xl">{site.tagline}</p>}
+          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Button href="/events">See our events</Button>
+            <Button href="/join" variant="secondary">Join the club</Button>
           </div>
-          <div className="flex justify-center lg:justify-end"><HeroBars /></div>
-        </Container>
-
-        {flagship && (
-          <Container className="mt-14 md:mt-20">
-            <div className="grid gap-6 border-t border-line pt-6 md:grid-cols-[1fr_auto] md:items-end">
+          {flagship && (
+            <div className="mt-14 grid gap-6 border-t border-line pt-6 md:mt-20 md:grid-cols-[1fr_auto] md:items-end">
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.08em] text-link">Now on · Flagship</p>
                 <p className="mt-3 font-display text-3xl font-medium md:text-4xl">
@@ -70,8 +71,8 @@ export default function Home() {
               </div>
               <Countdown start={flagship.dateStart} end={flagship.dateEnd} />
             </div>
-          </Container>
-        )}
+          )}
+        </Container>
       </section>
 
       <Ticker items={["Entrepreneurship Club", "NIT Warangal", ...(flagship ? [flagship.title] : [])]} />
@@ -99,7 +100,7 @@ export default function Home() {
           const s = next();
           return (
             <Section id="flagship" number={s.number} title="The flagship" tone={s.tone}>
-              <Tilt className="border border-line bg-surface p-6 md:p-10">
+              <div className="border border-line bg-surface p-6 md:p-10">
                 <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">{fmtRange(flagship.dateStart, flagship.dateEnd)}</p>
                 <h3 className="mt-4 font-display text-4xl font-semibold leading-none tracking-tight md:text-7xl">{flagship.title}</h3>
                 <p className="mt-6 max-w-[56ch] text-lg leading-relaxed text-muted">{flagship.summary}</p>
@@ -108,7 +109,7 @@ export default function Home() {
                   {flagship.registerUrl && <Button href={flagship.registerUrl}>Register on Unstop</Button>}
                   <Button href={`/events/${flagship.slug}`} variant="secondary">Event details</Button>
                 </div>
-              </Tilt>
+              </div>
             </Section>
           );
         })()}

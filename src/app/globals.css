@@ -36,6 +36,9 @@
 .ledger-row { transition: background-color 150ms ease; }
 .ledger-row:hover, .ledger-row:focus-within { background: color-mix(in oklab, var(--fg) 5%, transparent); }
 
+/* Fonts ship as single pinned weights (see src/lib/fonts.ts); never fake a bold. */
+html { font-synthesis: none; }
+
 /* Lenis */
 html.lenis, html.lenis body { height: auto; }
 .lenis:not(.lenis-autoslide) { scroll-behavior: auto !important; }
@@ -57,4 +60,22 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
   .ticker { overflow: visible; }
   .ticker-track { width: auto; flex-wrap: wrap; animation: none; row-gap: 0.5rem; }
   .ticker-dup, .ticker-toggle { display: none; }
+}
+
+/* Hero scrim: keeps the title readable over the poster. Left-weighted on desktop, bottom-weighted on phones. */
+.hero-scrim {
+  background:
+    linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 70%, transparent) 40%, transparent 75%),
+    linear-gradient(0deg, var(--bg) 0%, transparent 40%);
+}
+@media (max-width: 767px) {
+  .hero-scrim { background: linear-gradient(0deg, var(--bg) 8%, color-mix(in oklab, var(--bg) 78%, transparent) 55%, color-mix(in oklab, var(--bg) 45%, transparent) 100%); }
+}
+
+/* Growth line: draws with page scroll where CSS scroll-driven animations exist; otherwise fully drawn. */
+@keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .growth-line { animation: grow linear both; animation-timeline: view(); animation-range: entry 30% exit 70%; }
+  }
 }
