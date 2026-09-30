@@ -1,4 +1,4 @@
-// Usage: node scripts/qa.mjs [baseUrl] [section]   (section: reduced | reload | teardown | keyboard | touch | wrap | all)
+// Usage: node scripts/qa.mjs [baseUrl] [section]   (section: reduced | reload | teardown | keyboard | touch | wrap | v3 | all)
 // Runs against a production server (`next start`). Prints PASS/FAIL lines and a JSON summary; exits 1 on any FAIL.
 import { chromium } from "@playwright/test";
 
@@ -170,6 +170,80 @@ if (want("wrap")) {
     const scrolled = await measure();
     const all = [...top.wordmark, ...top.flagship, ...top.partner, ...scrolled.wordmark, ...scrolled.flagship];
     check(`no wrap of wordmark, flagship button, footer link at ${w}px`, all.every((h) => h <= 48), `heights ${JSON.stringify({ top, scrolled })}`);
+    await ctx.close();
+  }
+}
+
+// ---- V3: scenes, fallbacks, gallery, overflow at three widths ----
+if (want("v3")) {
+  // Desktop: the Dive goes live, never more than two WebGL canvases exist, hero image is the graded photo.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const p = await ctx.newPage(); const errs = []; watch(p, errs);
+    await p.goto(base + "/", { waitUntil: "load" }); await p.waitForTimeout(3000);
+    let maxCanvas = 0;
+    const H = await p.evaluate(() => document.documentElement.scrollHeight);
+    for (let i = 0; i <= 20; i++) {
+      await p.evaluate(([y]) => window.scrollTo(0, y), [((H - 900) * i) / 20]); await p.waitForTimeout(350);
+      maxCanvas = Math.max(maxCanvas, await p.evaluate(() => document.querySelectorAll("canvas").length));
+    }
+    await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(500);
+    const d = await p.evaluate(() => { const dive = document.querySelector("#dive"); return { fallback: dive?.hasAttribute("data-fallback"), stackShown: getComputedStyle(document.querySelector(".dive-stack")).display !== "none", liveShown: getComputedStyle(document.querySelector(".dive-live")).display !== "none", heroSrc: document.querySelector("section img[fetchpriority=high]")?.currentSrc ?? "" }; });
+    check("v3 desktop: Dive live shell shown, stack hidden", d.liveShown && !d.stackShown && !d.fallback, JSON.stringify(d));
+    check("v3 desktop: at most 2 WebGL canvases alive during a full scroll", maxCanvas <= 2, `max ${maxCanvas}`);
+    check("v3 desktop: hero image is the pre-graded photograph", /hero-(1600|1024)\.(avif|webp)/.test(d.heroSrc), d.heroSrc);
+    check("v3 desktop: no console errors", errs.length === 0, errs[0] ?? "");
+    await ctx.close();
+  }
+  // Touch: stack only, no canvas at all on the whole page until the portal is near, images lazy.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 800 }, hasTouch: true, isMobile: true });
+    const p = await ctx.newPage(); const errs = []; watch(p, errs);
+    await p.goto(base + "/", { waitUntil: "load" }); await p.waitForTimeout(2000);
+    const d = await p.evaluate(() => ({ stackShown: getComputedStyle(document.querySelector(".dive-stack")).display !== "none", liveShown: getComputedStyle(document.querySelector(".dive-live")).display !== "none", canvas: document.querySelectorAll("canvas").length, stackImgs: document.querySelectorAll(".dive-stack img").length }));
+    check("v3 touch: Dive renders the stack, no live shell, no canvas", d.stackShown && !d.liveShown && d.canvas === 0, JSON.stringify(d));
+    check("v3 touch: no console errors", errs.length === 0, errs[0] ?? "");
+    await ctx.close();
+  }
+  // Save-Data on a desktop: the capability test refuses WebGL and the stack takes over.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    await ctx.addInitScript(() => Object.defineProperty(navigator, "connection", { value: { saveData: true } }));
+    const p = await ctx.newPage();
+    await p.goto(base + "/", { waitUntil: "load" }); await p.waitForTimeout(2500);
+    const d = await p.evaluate(() => ({ fallback: document.querySelector("#dive")?.hasAttribute("data-fallback"), canvas: document.querySelectorAll("canvas").length, lit: !!document.querySelector(".mega-lit.is-lit") }));
+    check("v3 save-data: fallback stack, no canvas, no extra hero image in the letters", d.fallback === true && d.canvas === 0 && d.lit === false, JSON.stringify(d));
+    await ctx.close();
+  }
+  // Gallery lightbox: click opens, arrows step, Esc closes and focus returns to the trigger.
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const p = await ctx.newPage(); const errs = []; watch(p, errs);
+    await p.goto(base + "/gallery", { waitUntil: "load" }); await p.waitForTimeout(800);
+    const first = p.locator("#club-event-01 ul button").first();
+    await first.focus(); await p.keyboard.press("Enter"); await p.waitForTimeout(300);
+    const open = await p.evaluate(() => document.querySelector("dialog[open]") !== null);
+    const c0 = await p.locator("dialog[open] figcaption span").first().innerText();
+    await p.keyboard.press("ArrowRight"); await p.waitForTimeout(200);
+    const c1 = await p.locator("dialog[open] figcaption span").first().innerText();
+    await p.keyboard.press("Escape"); await p.waitForTimeout(300);
+    const closed = await p.evaluate(() => document.querySelector("dialog[open]") === null);
+    const back = await p.evaluate(() => document.activeElement?.closest("#club-event-01") !== null);
+    check("v3 gallery: lightbox opens with Enter, ArrowRight steps, Esc closes, focus returns", open && c0 !== c1 && closed && back, `open ${open} "${c0}" -> "${c1}" closed ${closed} focusBack ${back}`);
+    check("v3 gallery: no console errors", errs.length === 0, errs[0] ?? "");
+    await ctx.close();
+  }
+  // No horizontal overflow on any route at 360 / 768 / 1440.
+  for (const w of [360, 768, 1440]) {
+    const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, hasTouch: w < 500, isMobile: w < 500 });
+    const bad = [];
+    for (const r of routes) {
+      const p = await ctx.newPage(); await p.goto(base + r, { waitUntil: "load" }); await p.waitForTimeout(700);
+      const o = await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
+      if (o) bad.push(r);
+      await p.close();
+    }
+    check(`v3 no horizontal overflow at ${w}px on any route`, bad.length === 0, bad.join(" "));
     await ctx.close();
   }
 }

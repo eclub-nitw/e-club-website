@@ -43,7 +43,7 @@ export function EventsRail({ children }: { children: React.ReactNode }) {
 
   return (
     <div ref={frame}>
-      <ul ref={track} className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 lg:snap-none lg:overflow-visible lg:pb-0">
+      <ul ref={track} className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 lg:snap-none">
         {children}
       </ul>
     </div>
