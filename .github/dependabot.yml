@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # Keeps npm dependencies patched automatically — the biggest real "security loophole" for a
+  # site like this isn't custom code, it's an old copy of some package with a known CVE.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      # Batch routine minor/patch bumps into one PR instead of ten separate ones.
+      dev-dependencies:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
