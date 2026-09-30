@@ -12,7 +12,8 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
   const dlg = useRef<HTMLDialogElement>(null);
   const start = useRef<number | null>(null);
   const [i, setI] = useState(0);
-  const open = (n: number) => { setI(n); dlg.current?.showModal(); };
+  const [opened, setOpened] = useState(false); // the viewer image is rendered only after first open, so a closed dialog never fetches anything
+  const open = (n: number) => { setI(n); setOpened(true); dlg.current?.showModal(); };
   const step = (d: number) => setI((v) => (v + d + items.length) % items.length);
   const cur = items[i];
 
@@ -25,7 +26,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
               <picture>
                 <source type="image/avif" srcSet={srcSet(it, "avif")} sizes="(min-width: 768px) 33vw, 50vw" />
                 <source type="image/webp" srcSet={srcSet(it, "webp")} sizes="(min-width: 768px) 33vw, 50vw" />
-                <img src={fileOf(it, 640, "webp")} alt={it.alt} width={it.w} height={it.h} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transition-none" />
+                <img src={fileOf(it, 640, "webp")} alt={it.alt} width={it.w} height={it.h} loading="lazy" fetchPriority="low" decoding="async" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transition-none" />
               </picture>
               <span className="sr-only">View larger: {it.caption}</span>
             </button>
@@ -39,7 +40,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
         onKeyDown={(e) => { if (e.key === "ArrowRight") step(1); if (e.key === "ArrowLeft") step(-1); }}
         className="m-auto max-h-[94svh] w-[min(1100px,94vw)] bg-transparent p-0 text-club-paper backdrop:bg-club-ink/90"
       >
-        {cur && (
+        {opened && cur && (
           <figure>
             <div
               className="relative flex max-h-[76svh] justify-center touch-pan-y"
