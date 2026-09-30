@@ -96,7 +96,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="flex justify-center lg:justify-end">
-                <VortexPortal href={`/events/${flagship.slug}`} label={`Enter ${flagship.title}`} />
+                <VortexPortal href={`/events/${flagship.slug}`} label={`Enter the vortex: ${flagship.title}`} />
               </div>
             </div>
           </Section>

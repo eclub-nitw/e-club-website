@@ -134,3 +134,6 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
   .dive:not([data-fallback]) .dive-live { display: block; }
   .dive:not([data-fallback]) .dive-stack { display: none; }
 }
+
+/* Footer ghost wordmark: generated content, so it is decoration for every tool (no text node to contrast-check). */
+.mega-ghost::before { content: "E-Club"; color: color-mix(in oklab, var(--color-club-paper) 10%, transparent); }

@@ -163,7 +163,7 @@ if (want("wrap")) {
     await p.goto(base + "/", { waitUntil: "load" }); await p.waitForTimeout(1200);
     const measure = () => p.evaluate(() => {
       const oneLine = (sel) => [...document.querySelectorAll(sel)].filter((e) => e.getBoundingClientRect().width > 0).map((e) => Math.round(e.getBoundingClientRect().height));
-      return { wordmark: oneLine('a[aria-label="E-Club NITW, home"]'), flagship: oneLine('a[href="/events/venture-vortex-2026"].bg-accent'), partner: oneLine("footer a[href='/sponsors']"), footerBrand: oneLine("footer p.font-display") };
+      return { wordmark: oneLine('a[href="/"].shrink-0'), flagship: oneLine('a[href="/events/venture-vortex-2026"].bg-accent'), partner: oneLine("footer a[href='/sponsors']"), footerBrand: oneLine("footer a[href^='mailto']") };
     });
     const top = await measure();
     await p.evaluate(() => window.scrollTo(0, 1500)); await p.waitForTimeout(700);

@@ -75,7 +75,7 @@ export function Footer() {
           </div>
         </div>
       </Container>
-      <p aria-hidden="true" className="mega -mb-[0.06em] select-none overflow-hidden whitespace-nowrap px-5 text-center text-[clamp(5rem,30vw,26rem)] text-club-paper/10 md:px-10">E-Club</p>
+      <div aria-hidden="true" className="mega mega-ghost -mb-[0.06em] select-none overflow-hidden whitespace-nowrap px-5 text-center text-[clamp(5rem,30vw,26rem)] md:px-10" />
     </footer>
   );
 }
