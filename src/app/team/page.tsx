@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { team } from "@/data/team";
 import { teamYears } from "@/lib/team";
-import { Container, PageHeader, TeamGroups } from "@/components/ui";
+import { Container } from "@/components/ui/Container";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { TeamGroups } from "@/components/ui/TeamGroups";
 
 export const metadata: Metadata = {
   title: "Team",

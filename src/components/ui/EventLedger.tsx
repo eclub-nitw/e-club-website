@@ -1,7 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion } from "motion/react";
 import type { ClubEvent, EventType } from "@/data/events";
 import { EventRow, TYPE_LABEL } from "./EventRow";
 
@@ -13,8 +12,8 @@ import { EventRow, TYPE_LABEL } from "./EventRow";
 export function EventLedger({ events, nowIso }: { events: ClubEvent[]; nowIso: string }) {
   const [type, setType] = useState<EventType | "all">("all");
   const [active, setActive] = useState<ClubEvent | null>(null);
-  const reduce = useReducedMotion();
-  const x = useMotionValue(0), y = useMotionValue(0);
+  const preview = useRef<HTMLDivElement>(null);
+  const place = (x: number, y: number) => { if (preview.current) preview.current.style.transform = `translate3d(${x}px, ${y}px, 0)`; };
 
   const types = useMemo(() => [...new Set(events.map((e) => e.type))], [events]);
   const now = new Date(nowIso).getTime();
@@ -31,10 +30,10 @@ export function EventLedger({ events, nowIso }: { events: ClubEvent[]; nowIso: s
     if (!ev.coverImage) return;
     if ("clientX" in e) {
       if (e.pointerType !== "mouse") return;
-      x.set(e.clientX + 24); y.set(e.clientY - 80);
+      place(e.clientX + 24, e.clientY - 80);
     } else {
       const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-      x.set(Math.max(16, r.right - 300)); y.set(r.top - 190);
+      place(Math.max(16, r.right - 300), r.top - 190);
     }
     setActive(ev);
   };
@@ -63,17 +62,13 @@ export function EventLedger({ events, nowIso }: { events: ClubEvent[]; nowIso: s
       </ul>
       <p className="sr-only" aria-live="polite">{rows.length} events shown</p>
 
-      <AnimatePresence>
-        {active?.coverImage && !reduce && (
-          <motion.div
-            key={active.slug} aria-hidden style={{ x, y }}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
-            className="pointer-events-none fixed left-0 top-0 z-40 hidden aspect-[3/2] w-[280px] overflow-hidden rounded-[2px] border border-line md:block"
-          >
-            <Image src={active.coverImage} alt="" fill sizes="280px" className="object-cover" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* One preview node; the image swaps and the node fades. Hidden by CSS under reduced motion. */}
+      <div
+        ref={preview} aria-hidden
+        className={`pointer-events-none fixed left-0 top-0 z-40 hidden aspect-[3/2] w-[280px] overflow-hidden rounded-[2px] border border-line transition-opacity duration-200 motion-reduce:!hidden md:block ${active?.coverImage ? "opacity-100" : "opacity-0"}`}
+      >
+        {active?.coverImage && <Image src={active.coverImage} alt="" fill sizes="280px" className="object-cover" />}
+      </div>
     </div>
   );
 }

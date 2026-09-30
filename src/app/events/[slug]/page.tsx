@@ -6,7 +6,15 @@ import { events } from "@/data/events";
 import { fmtRange } from "@/lib/format";
 import { isUpcoming } from "@/lib/events";
 import { breadcrumbLd, eventLd } from "@/lib/jsonld";
-import { Breadcrumbs, Button, Container, Gallery, JsonLd, LedgerRow, PageHeader, StatNumber, VideoEmbed } from "@/components/ui";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { Gallery } from "@/components/ui/Gallery";
+import { JsonLd } from "@/components/ui/JsonLd";
+import { LedgerRow } from "@/components/ui/LedgerRow";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { StatNumber } from "@/components/ui/StatNumber";
+import { VideoEmbed } from "@/components/ui/VideoEmbed";
 import { TYPE_LABEL } from "@/components/ui/EventRow";
 
 export const dynamicParams = false;

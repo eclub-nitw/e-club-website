@@ -1,0 +1,232 @@
+{
+ "title": "Homepage | Ecell",
+ "height": 14515,
+ "stack": {
+  "next": true,
+  "angular": false,
+  "framer": false,
+  "gsap": false,
+  "scrollTrigger": false,
+  "lenis": false,
+  "locomotive": false,
+  "three": false,
+  "swiper": false,
+  "jquery": false,
+  "canvas": 0,
+  "video": 1,
+  "svg": 34,
+  "images": 24,
+  "customCursor": true
+ },
+ "fonts": [
+  "ui-sans-serif",
+  "ui-monospace",
+  "__Orbitron_c08c23",
+  "__Oswald_e31322",
+  "sans-serif"
+ ],
+ "runningAnimations": [
+  "CSSTransition",
+  "shine",
+  "Animation"
+ ],
+ "fixedOrSticky": [
+  "fixed:div.fixed top-0 left-0 w-full z-50 font-mono \"HOME Initiatives Blogs TEAM Co\"",
+  "sticky:div.hidden lg:block sticky top-[6.25rem] h-[ \"01 FIRST BASKET For individua\"",
+  "sticky:div.sticky-map-wrapper \"EDUCATION-21 Startup Meetups\"",
+  "fixed:div.phase-label-container-desktop __classNam \"EDUCATION-21 Startup Meetups\""
+ ],
+ "nav": [],
+ "footerText": "Fostering entrepreneurship at IIT Madras IIT Madras, Chennai, Tamil Nadu 600036 E-Summit Sponsors Merchandise Access Passes E-Cell Home Our Sponsors Our Team Blogs Legacy Page Our Initiatives E-Updates Plandemic TeamUp Symbiosis Ideathon Entrepreneurship Development Drive For Website Queries +91 984",
+ "blocks": [
+  {
+   "tag": "div",
+   "cls": "relative w-full h-screen flex justify-center items-center fl",
+   "top": 118,
+   "height": 900,
+   "heads": [
+    "E-CELL",
+    "IIT MADRAS",
+    "\"Empowering students to think, build, and lead.\""
+   ],
+   "text": "E-CELL IIT MADRAS \"Empowering students to think, build, and lead.\" Scroll Down",
+   "imgs": 0,
+   "links": 4,
+   "buttons": [],
+   "shot": "01.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "",
+   "top": 1018,
+   "height": 2434,
+   "heads": [
+    "WE BELIEVE IN NUMBERS"
+   ],
+   "text": "WE BELIEVE IN NUMBERS E-Cell IIT Madras drives measurable entrepreneurial impact through its reach, initiatives, and engagement Impact Highlights 01 . 01 01 . 0",
+   "imgs": 0,
+   "links": 0,
+   "buttons": [],
+   "shot": "02.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "relative flex flex-col bg-[#121212] text-white overflow-hidd",
+   "top": 3452,
+   "height": 724,
+   "heads": [
+    "ABOUT US",
+    "EMPOWERING ENTREPRENEURS"
+   ],
+   "text": "ABOUT US EMPOWERING ENTREPRENEURS Entrepreneurship Cell IIT Madras makes the entrepreneurial world accessible to all group of people part of the IIT Madras ecos",
+   "imgs": 0,
+   "links": 0,
+   "buttons": [],
+   "shot": "03.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": "relative bg-[#121212] text-white",
+   "top": 4176,
+   "height": 2920,
+   "heads": [
+    "FIRST BASKET",
+    "SECOND BASKET",
+    "THIRD BASKET",
+    "FOURTH BASKET",
+    "FIRST BASKET",
+    "SECOND BASKET",
+    "THIRD BASKET",
+    "FOURTH BASKET"
+   ],
+   "text": "OUR BASKETS E-CELL IIT Madras caters to 4 baskets. 01 FIRST BASKET For individuals new to entrepreneurship, seeking foundational awareness of startups, innovati",
+   "imgs": 0,
+   "links": 22,
+   "buttons": [],
+   "shot": "04.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": "",
+   "top": 7096,
+   "height": 3600,
+   "heads": [
+    "CITIES WE HAVE REACHED"
+   ],
+   "text": "CITIES WE HAVE REACHED E-Cell IIT Madras engages with cities across the country each year through its initiatives and programs. EDUCATION-21 Startup Meetups",
+   "imgs": 2,
+   "links": 0,
+   "buttons": [],
+   "shot": "05.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "min-h-screen bg-[#121212] text-white __className_e31322 pb-2",
+   "top": 10696,
+   "height": 1030,
+   "heads": [
+    "OUR EVENTS",
+    "Ideaprint",
+    "Entrepreneurship Development Drive",
+    "Startup Internfair",
+    "Pitch Arena",
+    "Bootcamp",
+    "Inspirit Series"
+   ],
+   "text": "OUR EVENTS E-Cell IIT Madras conducts various events all yearlong benefiting all students. Ideaprint Specializing in crafting visually stunning and highly funct",
+   "imgs": 0,
+   "links": 0,
+   "buttons": [],
+   "shot": "06.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": "jsx-85c5115fb0599a10 bg-[#121212] text-white relative overfl",
+   "top": 11726,
+   "height": 1034,
+   "heads": [
+    "OUR SPEAKERS",
+    "Rohit Suri",
+    "Anshuman Singh",
+    "Sandeep Jain",
+    "Baskar Subramanian",
+    "Rajesh Ramachandran",
+    "Ravi Pandit",
+    "Phani Kishan"
+   ],
+   "text": "OUR SPEAKERS IT Madras E-Cell has hosted a powerhouse lineup of visionary speakers who've inspired, challenged, and redefined the way we think about entrepreneu",
+   "imgs": 14,
+   "links": 0,
+   "buttons": [],
+   "shot": "07.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": "w-full max-w-[100vw] overflow-hidden min-h-screen flex flex-",
+   "top": 12760,
+   "height": 900,
+   "heads": [
+    "TESTIMONIALS",
+    "Ritesh Agarwal"
+   ],
+   "text": "TESTIMONIALS \"This year's E-Insider goes through the ebbs and lows of entrepreneurs who took the world by storm. From short-lived bubbles of social media.\" Rite",
+   "imgs": 6,
+   "links": 0,
+   "buttons": [],
+   "shot": "08.jpg"
+  },
+  {
+   "tag": "footer",
+   "cls": "bg-black text-white pt-16 __className_e31322",
+   "top": 13660,
+   "height": 855,
+   "heads": [
+    "E-Summit",
+    "E-Cell",
+    "Our Initiatives",
+    "For Website Queries",
+    "For Other Updates",
+    "For Sponsorship Queries"
+   ],
+   "text": "Fostering entrepreneurship at IIT Madras IIT Madras, Chennai, Tamil Nadu 600036 E-Summit Sponsors Merchandise Access Passes E-Cell Home Our Sponsors Our Team Bl",
+   "imgs": 1,
+   "links": 27,
+   "buttons": [],
+   "shot": "09.jpg"
+  }
+ ],
+ "hoverProbe": [
+  {
+   "text": "HOME",
+   "changes": true
+  },
+  {
+   "text": "Initiatives",
+   "changes": true
+  },
+  {
+   "text": "Internfair",
+   "changes": true
+  },
+  {
+   "text": "TeamUp",
+   "changes": true
+  },
+  {
+   "text": "Startup Service",
+   "changes": true
+  },
+  {
+   "text": "E-Updates",
+   "changes": true
+  },
+  {
+   "text": "Plandemic",
+   "changes": true
+  },
+  {
+   "text": "IDEATHON",
+   "changes": true
+  }
+ ]
+}

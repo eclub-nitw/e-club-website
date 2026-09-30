@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { events } from "@/data/events";
-import { Container, Gallery, PageHeader } from "@/components/ui";
+import { Container } from "@/components/ui/Container";
+import { Gallery } from "@/components/ui/Gallery";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export const metadata: Metadata = {
   title: "Gallery",

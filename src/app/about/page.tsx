@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { about } from "@/data/about";
 import { site } from "@/data/site";
-import { Button, Container, PageHeader, Section } from "@/components/ui";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Section } from "@/components/ui/Section";
 
 export const metadata: Metadata = {
   title: "About",

@@ -1,22 +1,39 @@
 import Link from "next/link";
+import { Magnetic } from "./Magnetic";
 
-const base = "inline-flex min-h-11 items-center justify-center gap-2 rounded-[2px] px-5 font-medium text-sm transition duration-200 ease-out hover:-translate-y-0.5 motion-reduce:hover:translate-y-0";
+const base = "group relative isolate inline-flex min-h-11 items-center justify-center gap-2 text-sm font-medium transition-[color,transform] duration-300 active:scale-[.98] motion-reduce:transition-none";
+const pill = "overflow-hidden rounded-[2px] border border-club-paper/25 bg-club-ink px-5 text-club-paper hover:text-club-ink focus-visible:text-club-ink";
+const rule = "px-0 after:absolute after:inset-x-0 after:bottom-2 after:h-px after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-500 after:ease-[var(--ease-out-expo)] before:absolute before:inset-x-0 before:bottom-2 before:h-px before:bg-line hover:after:scale-x-100 focus-visible:after:scale-x-100 motion-reduce:after:transition-none";
 const variants = {
-  primary: "bg-accent text-accent-fg hover:brightness-110",
-  secondary: "border border-line text-fg hover:border-fg",
-  link: "min-h-11 px-0 text-link underline decoration-1 underline-offset-4 hover:no-underline",
+  primary: pill,
+  secondary: `${rule} text-fg`,
+  link: `${rule} text-link`,
 } as const;
 
 type Props = { href: string; variant?: keyof typeof variants; className?: string; children: React.ReactNode };
 
+function Arrow() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none">
+      <path d="M1 7h11M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 /** Internal paths use next/link; absolute URLs open safely in a new tab; mailto stays in-tab. */
 export function Button({ href, variant = "primary", className = "", children }: Props) {
   const cls = `${base} ${variants[variant]} ${className}`;
-  if (href.startsWith("/")) return <Link href={href} className={cls}>{children}</Link>;
   const external = /^https?:/.test(href);
-  return (
-    <a href={href} className={cls} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>
-      {children}{external && <span className="sr-only"> (opens in a new tab)</span>}
-    </a>
+  const inner = (
+    <>
+      {variant === "primary" && <span aria-hidden="true" className="absolute inset-0 -z-10 -translate-x-full bg-accent transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-0 group-focus-visible:translate-x-0 motion-reduce:transition-none" />}
+      {children}
+      {external && <span className="sr-only"> (opens in a new tab)</span>}
+      {variant === "primary" && <Arrow />}
+    </>
   );
+  const link = href.startsWith("/")
+    ? <Link href={href} className={cls}>{inner}</Link>
+    : <a href={href} className={cls} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>{inner}</a>;
+  return variant === "primary" ? <Magnetic>{link}</Magnetic> : link;
 }

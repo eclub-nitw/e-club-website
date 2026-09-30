@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import { team } from "@/data/team";
 import { teamYears } from "@/lib/team";
 import { breadcrumbLd } from "@/lib/jsonld";
-import { Breadcrumbs, Container, JsonLd, PageHeader, TeamGroups } from "@/components/ui";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { Container } from "@/components/ui/Container";
+import { JsonLd } from "@/components/ui/JsonLd";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { TeamGroups } from "@/components/ui/TeamGroups";
 
 export const dynamicParams = false;
 export const generateStaticParams = () => teamYears().map((year) => ({ year }));

@@ -36,11 +36,54 @@
 .ledger-row { transition: background-color 150ms ease; }
 .ledger-row:hover, .ledger-row:focus-within { background: color-mix(in oklab, var(--fg) 5%, transparent); }
 
+/* Fonts ship as single pinned weights (see src/lib/fonts.ts); never fake a bold. */
+html { font-synthesis: none; }
+
 /* Lenis */
 html.lenis, html.lenis body { height: auto; }
 .lenis:not(.lenis-autoslide) { scroll-behavior: auto !important; }
 .lenis-stopped { overflow: hidden; }
 
+/* Mobile menu: links rise through their masks each time the dialog opens, 40ms stagger. */
+.menu:not([open]) .mask-word > span { transform: translateY(110%); animation: none; }
+.menu[open] .mask-word > span { transform: none; animation: mask-up 700ms var(--ease-out-expo) both; animation-delay: calc(var(--i) * 40ms + 80ms); }
+
 dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, transparent); backdrop-filter: blur(4px); }
 
 @keyframes bar-rise { from { transform: scaleY(0); } to { transform: none; } }
+
+/* Ticker: one row duplicated, translate by half its width for a seamless loop. */
+@keyframes ticker { to { transform: translateX(-50%); } }
+.ticker-track { animation: ticker 40s linear infinite; }
+.ticker:hover .ticker-track, .ticker[data-paused="true"] .ticker-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .ticker { overflow: visible; }
+  .ticker-track { width: auto; flex-wrap: wrap; animation: none; row-gap: 0.5rem; }
+  .ticker-dup, .ticker-toggle { display: none; }
+}
+
+/* Hero scrim: keeps the title readable over the poster. Left-weighted on desktop, bottom-weighted on phones. */
+.hero-scrim {
+  background:
+    linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 70%, transparent) 40%, transparent 75%),
+    linear-gradient(0deg, var(--bg) 0%, transparent 40%);
+}
+@media (max-width: 767px) {
+  .hero-scrim { background: linear-gradient(0deg, var(--bg) 0%, var(--bg) 52%, color-mix(in oklab, var(--bg) 40%, transparent) 64%, transparent 74%); }
+}
+
+/* Growth line: draws with page scroll where CSS scroll-driven animations exist; otherwise fully drawn. */
+@keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .growth-line { animation: grow linear both; animation-timeline: view(); animation-range: entry 30% exit 70%; }
+  }
+}
+
+/* Vortex artwork (shown until, or instead of, the live particles): a slow turn, still under reduced motion. */
+@keyframes vortex-turn { from { transform: scale(1.45) rotate(0deg); } to { transform: scale(1.45) rotate(360deg); } }
+.vortex-still { animation: vortex-turn 120s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .vortex-still { animation: none; transform: none; } }
+
+/* Manifesto: the lit layer of each word starts hidden; GSAP fades it in with scroll. Reduced motion shows it fully. */
+@media (prefers-reduced-motion: no-preference) { .manifesto-lit { opacity: 0; } }

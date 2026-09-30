@@ -1,0 +1,153 @@
+{
+ "title": "Ecell IITH",
+ "height": 5018,
+ "stack": {
+  "next": true,
+  "angular": false,
+  "framer": false,
+  "gsap": false,
+  "scrollTrigger": false,
+  "lenis": false,
+  "locomotive": false,
+  "three": false,
+  "swiper": true,
+  "jquery": false,
+  "canvas": 1,
+  "video": 0,
+  "svg": 5,
+  "images": 19,
+  "customCursor": true
+ },
+ "fonts": [
+  "DM Sans",
+  "ui-serif",
+  "Geist Mono"
+ ],
+ "runningAnimations": [
+  "marquee"
+ ],
+ "fixedOrSticky": [
+  "fixed:div.fixed top-10 left-0 right-0 z-50 flex ju \"HOME ABOUT EVENTS TEAM CONTACT\""
+ ],
+ "nav": [],
+ "footerText": "Ideas. Innovation. Impact. Entrepreneurship Cell, IIT Hyderabad — fostering innovation, building entrepreneurs, and creating opportunities for the next generation of founders. CONTACT General Queries ecell@campus.iith.ac.in Web Related Queries web.ecell@campus.iith.ac.in SPONSORSHIP Partner with us.",
+ "blocks": [
+  {
+   "tag": "section",
+   "cls": "relative flex h-screen w-full flex-col items-center justify-",
+   "top": 0,
+   "height": 900,
+   "heads": [
+    "Ideas That Ignite E-Cell IIT Hyderabad"
+   ],
+   "text": "Ideas That Ignite E-Cell IIT Hyderabad From dorm rooms to startups. We fuel the ideas that shape tomorrow.",
+   "imgs": 0,
+   "links": 0,
+   "buttons": [],
+   "shot": "01.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": "relative w-full py-16 md:py-20 bg-transparent overflow-hidde",
+   "top": 900,
+   "height": 689,
+   "heads": [
+    "Where founders begin"
+   ],
+   "text": "ABOUT US Where founders begin We at IIT Hyderabad's Entrepreneurship Cell believe in passion, hard effort, and an unquenchable drive for achievement. It is a pl",
+   "imgs": 0,
+   "links": 0,
+   "buttons": [],
+   "shot": "02.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": "relative w-full overflow-hidden bg-[#080808] py-24",
+   "top": 1589,
+   "height": 1174,
+   "heads": [
+    "Events & Programs",
+    "Boardroom",
+    "Startup Senate",
+    "Founders’ Hive",
+    "Emerge",
+    "E-Summit",
+    "Fetching Fortunes"
+   ],
+   "text": "IDEATE · PITCH · BUILD · LAUNCH · NETWORK · IDEATE · PITCH · BUILD · LAUNCH · NETWORK · IDEATE · PITCH · BUILD · LAUNCH · NETWORK · IDEATE · PITCH · BUILD · LAU",
+   "imgs": 6,
+   "links": 6,
+   "buttons": [],
+   "shot": "03.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": "relative w-full bg-[#080808] overflow-hidden py-32 border-t ",
+   "top": 2763,
+   "height": 851,
+   "heads": [
+    "INSIGHTS FROM",
+    "Previous Speakers",
+    "Shashank Randev",
+    "Upasana Kamineni",
+    "Anup Gupta",
+    "Ashish Arora",
+    "Akhil Gupta",
+    "Devvrat Arya"
+   ],
+   "text": "INSIGHTS FROM Previous Speakers Shashank Randev Founder VC, 100X.VC Upasana Kamineni VC of the Apollo Foundation, Founder and MD of URLife Anup Gupta Founder an",
+   "imgs": 7,
+   "links": 0,
+   "buttons": [],
+   "shot": "04.jpg"
+  },
+  {
+   "tag": "section",
+   "cls": " relative w-full overflow-hidden border-t border-white/5 bg-",
+   "top": 3614,
+   "height": 873,
+   "heads": [
+    "BACKED BY"
+   ],
+   "text": "BACKED BY",
+   "imgs": 6,
+   "links": 0,
+   "buttons": [],
+   "shot": "05.jpg"
+  }
+ ],
+ "hoverProbe": [
+  {
+   "text": "View Event Info",
+   "changes": true
+  },
+  {
+   "text": "View Event Info",
+   "changes": false
+  },
+  {
+   "text": "View Event Info",
+   "changes": false
+  },
+  {
+   "text": "View Event Info",
+   "changes": false
+  },
+  {
+   "text": "View Event Info",
+   "changes": false
+  },
+  {
+   "text": "View Event Info",
+   "changes": false
+  },
+  {
+   "text": "",
+   "changes": true
+  },
+  {
+   "text": "",
+   "changes": true
+  }
+ ]
+}

@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { sponsors } from "@/data/sponsors";
 import { site } from "@/data/site";
-import { Button, PageHeader, Section, SponsorLogo } from "@/components/ui";
+import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Section } from "@/components/ui/Section";
+import { SponsorLogo } from "@/components/ui/SponsorLogo";
 
 export const metadata: Metadata = {
   title: "Sponsors and partners",

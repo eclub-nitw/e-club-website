@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
-import { Container, LedgerRow, PageHeader } from "@/components/ui";
+import { Container } from "@/components/ui/Container";
+import { LedgerRow } from "@/components/ui/LedgerRow";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export const metadata: Metadata = {
   title: "Contact",

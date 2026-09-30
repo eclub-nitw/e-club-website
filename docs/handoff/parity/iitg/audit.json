@@ -1,0 +1,178 @@
+{
+ "title": "E-Cell IIT Guwahati",
+ "height": 7009,
+ "stack": {
+  "next": false,
+  "angular": false,
+  "framer": true,
+  "gsap": false,
+  "scrollTrigger": false,
+  "lenis": true,
+  "locomotive": false,
+  "three": false,
+  "swiper": false,
+  "jquery": false,
+  "canvas": 0,
+  "video": 0,
+  "svg": 16,
+  "images": 82,
+  "customCursor": false
+ },
+ "fonts": [
+  "sans-serif",
+  "Inter Display",
+  "Urbanist",
+  "Space Grotesk",
+  "Inter",
+  "Instrument Sans"
+ ],
+ "runningAnimations": [
+  "Animation"
+ ],
+ "fixedOrSticky": [
+  "fixed:div.framer-akwmn1 \"\"",
+  "fixed:div.framer-1mry44d-container \"SCAVENGER HUNT - RIDDLE\""
+ ],
+ "nav": [],
+ "footerText": null,
+ "blocks": [
+  {
+   "tag": "div",
+   "cls": "hero",
+   "top": 165,
+   "height": 936,
+   "heads": [
+    "Empowering",
+    "the next wave",
+    "of Entrepreneurs"
+   ],
+   "text": "E-Cell | IIT Guwahati Empowering the next wave of Entrepreneurs We empower startups while equipping students with the product and operational mastery to lead th",
+   "imgs": 25,
+   "links": 0,
+   "buttons": [],
+   "shot": "01.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "Intro",
+   "top": 1102,
+   "height": 1080,
+   "heads": [],
+   "text": "",
+   "imgs": 24,
+   "links": 0,
+   "buttons": [],
+   "shot": "02.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "intro",
+   "top": 2182,
+   "height": 1187,
+   "heads": [
+    "Hello!",
+    "What we do",
+    "Our Initiatives",
+    "All Initiatives will be UPDATED here Soon ..."
+   ],
+   "text": "Hello! We are a non-profit student run organisation creating valuable resources and initiatives focused on accelerating Stuednt-run Startups. Cascade UDGAM Star",
+   "imgs": 0,
+   "links": 0,
+   "buttons": [],
+   "shot": "03.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "framer-1gso7zw",
+   "top": 3368,
+   "height": 680,
+   "heads": [
+    "Campus Startup Initiative"
+   ],
+   "text": "Campus Startup Initiative A structured full-year sprint designed for student founders of IITG organized by E-Cell IIT Guwahati. 1Cr+ Funding Events 55+ Campus S",
+   "imgs": 3,
+   "links": 2,
+   "buttons": [],
+   "shot": "04.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "Influence",
+   "top": 4048,
+   "height": 853,
+   "heads": [
+    "Our Influence",
+    "Numbers that we hit"
+   ],
+   "text": "Our Influence Numbers that we hit 6000+ Partcipants Joined 100+ Members Together 100+ Startups Helped 10+ Alum Startups 203k+ YouTube Views 11k+ Instagram Follo",
+   "imgs": 9,
+   "links": 1,
+   "buttons": [],
+   "shot": "05.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "Guests",
+   "top": 4901,
+   "height": 710,
+   "heads": [
+    "Past Speakers",
+    "Guests we hosted"
+   ],
+   "text": "Past Speakers Guests we hosted ANKUR WARIKOO INFLUENCER NARAYANA MURTHY FOUNDER , INFOSYS KEVIN HARRINGTON ORIGINAL SHARK , SHARK TANK JEFF MAGGIONCALDA CEO , C",
+   "imgs": 8,
+   "links": 0,
+   "buttons": [],
+   "shot": "06.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "Organisations",
+   "top": 5611,
+   "height": 468,
+   "heads": [
+    "Past Partners",
+    "Organisations that back Us"
+   ],
+   "text": "Past Partners Organisations that back Us",
+   "imgs": 12,
+   "links": 0,
+   "buttons": [],
+   "shot": "07.jpg"
+  }
+ ],
+ "hoverProbe": [
+  {
+   "text": "REGISTER NOW FOR \n\nCAMPU",
+   "changes": false
+  },
+  {
+   "text": "E-CELL \n\nIIT GUWAHATI",
+   "changes": false
+  },
+  {
+   "text": "HOME",
+   "changes": false
+  },
+  {
+   "text": "INITIATIVES",
+   "changes": false
+  },
+  {
+   "text": "ACHIEVEMENTS",
+   "changes": false
+  },
+  {
+   "text": "RESOURCES",
+   "changes": false
+  },
+  {
+   "text": "ABOUT US",
+   "changes": false
+  },
+  {
+   "text": "Contact Us",
+   "changes": false
+  }
+ ]
+}

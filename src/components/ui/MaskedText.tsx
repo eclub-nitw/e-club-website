@@ -1,14 +1,25 @@
 "use client";
-import { useRef } from "react";
-import { useInView } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Masked word-by-word reveal. `immediate` plays on load (above the fold, pure CSS keyframes);
  * otherwise plays once when scrolled into view. Text is always in the DOM for SEO/screen readers.
+ * Uses IntersectionObserver rather than motion, which would add ~60 KB gz to every route.
  */
 export function MaskedText({ text, immediate = false }: { text: string; immediate?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const seen = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
+  const [seen, setSeen] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (immediate || !el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setSeen(true); io.disconnect(); }
+    }, { rootMargin: "0px 0px -10% 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [immediate]);
+
   return (
     <span ref={ref} className={immediate ? "mask-now" : seen ? "mask-in" : undefined}>
       {text.split(" ").map((w, i) => (

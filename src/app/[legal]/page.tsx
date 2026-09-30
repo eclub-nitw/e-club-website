@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLegalSlug, legalPages, readLegal } from "@/lib/legal";
-import { Container, LegalDoc, PageHeader } from "@/components/ui";
+import { Container } from "@/components/ui/Container";
+import { LegalDoc } from "@/components/ui/LegalDoc";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export const dynamicParams = false;
 export const generateStaticParams = () => Object.keys(legalPages).map((legal) => ({ legal }));

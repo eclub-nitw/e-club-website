@@ -21,7 +21,7 @@ Stack decisions for Claude Code to install and use. The rule from AGENTS.md stil
 - **lucide-react** for icons (nav, socials, buttons — not as icon-in-circle headings, which stays banned).
 - **Vaul** for the mobile nav/filter drawer if `Sheet` from shadcn doesn't cover a specific gesture need (swipe-to-dismiss). Try `Sheet` first.
 
-**Motion.** Already specified above — `motion` (the maintained Framer Motion successor) + Lenis, one easing curve, transform/opacity only. Do not add GSAP; `motion`'s `useScroll`/`useTransform` already covers every scroll-linked effect this site needs (growth line, fall-into-vortex reveal), and a second animation library is unjustified bundle weight.
+**Motion.** `motion` (the maintained Framer Motion successor) + Lenis remain the base, with one easing curve and transform/opacity only. **GSAP + ScrollTrigger and R3F frame loops are now approved** (owner-approved 30 Sep 2026, see `docs/claude-code/MASTERPROMPT-V2.md` section 1) for pinned scroll scenes and the 3D hero; they must load lazily, never block LCP, and keep the initial JS budget of 180 KB gz. Prefer CSS/IntersectionObserver over `motion` in components that ship on every page, because `motion/react` alone is about 60 KB gz.
 
 **Verification tooling (for Claude Code to use on itself, see the masterprompts in `docs/claude-code/`).**
 - **Playwright** (`npm i -D playwright && npx playwright install chromium`) — Claude Code should screenshot every page it builds at 360/768/1440px and actually look at the images before calling a page done, not just trust that the code compiles.
