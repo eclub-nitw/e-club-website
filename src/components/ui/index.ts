@@ -2,6 +2,7 @@
 export { Nav } from "./Nav";
 export { Footer } from "./Footer";
 export { Button } from "./Button";
+export { Ticker } from "./Ticker";
 export { Cursor } from "./Cursor";
 export { Section } from "./Section";
 export { Container } from "./Container";

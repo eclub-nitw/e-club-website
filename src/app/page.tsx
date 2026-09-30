@@ -7,7 +7,7 @@ import { fmtRange } from "@/lib/format";
 import { isUpcoming, sortedEvents } from "@/lib/events";
 import { organizationLd } from "@/lib/jsonld";
 import {
-  Button, Container, Countdown, EventRow, GrowthLine, HeroBars, JsonLd, LedgerRow, MaskedText, Section, SponsorLogo, TeamMember, Tilt,
+  Button, Container, Countdown, Ticker, EventRow, GrowthLine, HeroBars, JsonLd, LedgerRow, MaskedText, Section, SponsorLogo, TeamMember, Tilt,
 } from "@/components/ui";
 
 export const revalidate = 3600; // "upcoming" is decided at render time; refresh hourly
@@ -62,6 +62,8 @@ export default function Home() {
           </Container>
         )}
       </section>
+
+      <Ticker items={["Entrepreneurship Club", "NIT Warangal", ...(flagship ? [flagship.title] : [])]} />
 
       <GrowthLine>
         {(() => {
