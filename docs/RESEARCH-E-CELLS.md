@@ -20,8 +20,18 @@ Method: each site was loaded in headless Chrome (1440×900), scrolled top to bot
 5. **A torn paper edge** (from the poster) into a cream "boardroom" band for the partners.
 6. **Violet + chrome + mono** where the others are black, grey or gold. On the E-Club site: teal + gold + paper — "The Ledger" — for the same reason: unlike any of the four.
 
+## Additional IITs checked (29 Sep 2026) — honest results
+Tried to extend the sample beyond the original four. Results were mixed, and I'm reporting exactly what happened rather than filling gaps with guesses:
+- **IIT Kharagpur** (`ecell-iitkgp.org`) — domain did not resolve (DNS failure) when I tried to render it. Could not audit. Search results describe it as one of the oldest E-Cells (est. 2005/2006, sources disagree), tied to IIT KGP's STEP incubator, running an annual E-Summit.
+- **IIT Mandi** — no live rendered site found; only a GitHub organisation (`E-Cell-IITMandi`) with a repo literally named "The new E-Cell Website in Progress", i.e. their public site may not be live/stable right now. Not usable as a design reference.
+- **A pattern worth naming, seen across several smaller-college E-Cells/IICs in search results (not personally rendered, so treat as a pattern to consider rather than a verified design source):** pairing a named annual flagship (e.g. a "Conclave") with a specific seed-grant figure aimed at prototype-stage founders, run jointly with the institute's Innovation Council. If E-Club NITW ever runs something similar, the events data model (`ClubEvent` in `src/data/events.ts`) already supports it (`stats`, `registerUrl`) without changes — no action needed now, just noting the model holds up.
+- **Net effect on the plan:** the four fully-audited sites (Guwahati, Hyderabad, Bombay, Madras) remain the primary reference set. Nothing found in this pass changes the design direction in §"What none of the four does" above.
+
 ## Rules distilled
 - One signature animation per section, all sharing one easing curve and one stagger.
 - Real photography beats illustration; but do not depend on it.
 - Numbers need proof or they are cut.
 - Never gate content behind a loader. Never autoplay sound. One canvas maximum, only if it earns its bytes.
+
+## Component/tooling stack chosen off the back of this research
+See `docs/DESIGN.md` → "Component, motion and security stack" for the full list (shadcn/ui + its MCP server, Watermelon UI, Motion Primitives, Aceternity UI, Playwright for self-verification). None of the four audited sites publish their stack choices explicitly beyond what's detectable client-side (recorded in the table above); the component/tooling recommendations come from separate research into current (Sep 2026) component ecosystems, not from the E-Cell sites themselves.

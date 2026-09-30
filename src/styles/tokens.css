@@ -23,14 +23,16 @@
   --color-partner-s2s: #fed33f;
   --color-technozion-teal: #8bd6da;
 
-  /* E-Club NITW — sampled from the E-Club logo in the poster. CONFIRM against the official logo file. */
+  /* E-Club NITW — sampled directly from the OFFICIAL logo file (confirmed 29 Sep 2026). The poster-based guesses were close;
+     the one real correction is club-gold, which is true orange in the real logo, not yellow-gold. */
   --color-club-ink: #0b2226;
   --color-club-deep: #123a40;
-  --color-club-teal: #3b8c96;         /* graphics / large text only (4.2:1 on club-ink) */
-  --color-club-teal-deep: #1d5a63;    /* text on paper (6.9:1) */
-  --color-club-gold: #f1c55b;         /* accent, CTA fill (10.1:1 on club-ink) */
+  --color-club-teal: #2c8b93;         /* graphics / large text only (3.8:1 on club-ink — never small text) */
+  --color-club-teal-deep: #224f63;    /* the logo's ring colour. text/links on paper (7.9:1) */
+  --color-club-gold: #ed9038;         /* CORRECTED: real logo accent is orange (6.3:1 on club-ink; pair with ink text, not white — white on this is only 2.4:1) */
+  --color-club-cyan: #36afaa;         /* NEW: bright highlight sampled from the logo's arrow/bars (5.8:1 on club-ink). Optional secondary accent — sparing use, e.g. link hover, a single underline. */
   --color-club-paper: #f5f1e6;        /* light sections */
-  --color-club-mist: #9fb8ba;         /* muted text on dark (7.9:1) */
+  --color-club-mist: #9fb8ba;         /* muted text on dark (7.4:1) */
 
   /* type */
   --font-display: var(--font-bricolage), "Arial Narrow", system-ui, sans-serif;
@@ -58,7 +60,7 @@
 :root,
 [data-theme="club"] {
   --bg: #0b2226;  --surface: #123a40;  --fg: #f5f1e6;  --muted: #9fb8ba;
-  --line: rgb(245 241 230 / 0.14);  --accent: #f1c55b;  --accent-fg: #0b2226;  --highlight: #3b8c96;
+  --line: rgb(245 241 230 / 0.14);  --accent: #ed9038;  --accent-fg: #0b2226;  --highlight: #224f63;
 }
 [data-theme="vortex"] {
   --bg: #160c2b;  --surface: #231945;  --fg: #f7f7f7;  --muted: #b3aecb;

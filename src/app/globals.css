@@ -1,2 +1,46 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
+
+@theme inline {
+  --color-link: var(--link);
+}
+
+/* Link colour: orange on ink, deep teal on paper (orange text fails contrast on paper). */
+:root, [data-theme="club"] { --link: var(--color-club-gold); }
+
+/* Paper sections re-map the semantic tokens, so every component works on both tones unchanged. */
+.tone-paper {
+  --bg: var(--color-club-paper);
+  --surface: color-mix(in oklab, var(--color-club-paper) 92%, var(--color-club-ink));
+  --fg: var(--color-club-ink);
+  --muted: color-mix(in oklab, var(--color-club-ink) 68%, var(--color-club-paper));
+  --line: color-mix(in oklab, var(--color-club-ink) 16%, transparent);
+  --link: var(--color-club-teal-deep);
+  background: var(--bg);
+  color: var(--fg);
+  display: flow-root; /* contain child margins so no body colour shows through */
+}
+
+/* Masked text reveal: 700ms, expo-out, 40ms word stagger, transform only. */
+.mask-word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.mask-word > span { display: inline-block; transform: translateY(110%); transition: transform 700ms var(--ease-out-expo); transition-delay: calc(var(--i) * 40ms); }
+.mask-in .mask-word > span { transform: none; }
+@keyframes mask-up { from { transform: translateY(110%); } to { transform: none; } }
+.mask-now .mask-word > span { transform: none; animation: mask-up 700ms var(--ease-out-expo) both; animation-delay: calc(var(--i) * 40ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-word > span { transform: none !important; animation: none !important; }
+}
+
+/* Ledger row hover: highlight only, no layout change. */
+.ledger-row { transition: background-color 150ms ease; }
+.ledger-row:hover, .ledger-row:focus-within { background: color-mix(in oklab, var(--fg) 5%, transparent); }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoslide) { scroll-behavior: auto !important; }
+.lenis-stopped { overflow: hidden; }
+
+dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, transparent); backdrop-filter: blur(4px); }
+
+@keyframes bar-rise { from { transform: scaleY(0); } to { transform: none; } }
