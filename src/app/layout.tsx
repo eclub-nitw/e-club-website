@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { bricolage, instrument, jetbrains } from "@/lib/fonts";
 import { site } from "@/data/site";
 import { SmoothScroll } from "@/components/SmoothScroll";
-import { Cursor, Nav, Footer } from "@/components/ui";
+import { Cursor } from "@/components/ui/Cursor";
+import { Footer } from "@/components/ui/Footer";
+import { Nav } from "@/components/ui/Nav";
 import "./globals.css";
 
 export const metadata: Metadata = {

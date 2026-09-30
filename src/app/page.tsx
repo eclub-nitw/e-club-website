@@ -6,9 +6,20 @@ import { site } from "@/data/site";
 import { fmtRange } from "@/lib/format";
 import { isUpcoming, sortedEvents } from "@/lib/events";
 import { organizationLd } from "@/lib/jsonld";
-import {
-  Button, Container, Countdown, Ticker, EventRow, GrowthLine, HeroBars, JsonLd, LedgerRow, MaskedText, Section, SponsorLogo, TeamMember, Tilt,
-} from "@/components/ui";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { Countdown } from "@/components/ui/Countdown";
+import { Ticker } from "@/components/ui/Ticker";
+import { EventRow } from "@/components/ui/EventRow";
+import { GrowthLine } from "@/components/ui/GrowthLine";
+import { HeroBars } from "@/components/ui/HeroBars";
+import { JsonLd } from "@/components/ui/JsonLd";
+import { LedgerRow } from "@/components/ui/LedgerRow";
+import { MaskedText } from "@/components/ui/MaskedText";
+import { Section } from "@/components/ui/Section";
+import { SponsorLogo } from "@/components/ui/SponsorLogo";
+import { TeamMember } from "@/components/ui/TeamMember";
+import { Tilt } from "@/components/ui/Tilt";
 
 export const revalidate = 3600; // "upcoming" is decided at render time; refresh hourly
 

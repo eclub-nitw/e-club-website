@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
-import { Button, Container, PageHeader } from "@/components/ui";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export const metadata: Metadata = {
   title: "Join the club",

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { events } from "@/data/events";
-import { EventLedger, PageHeader, Container, JsonLd } from "@/components/ui";
+import { EventLedger } from "@/components/ui/EventLedger";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Container } from "@/components/ui/Container";
+import { JsonLd } from "@/components/ui/JsonLd";
 import { breadcrumbLd } from "@/lib/jsonld";
 
 export const revalidate = 3600;
