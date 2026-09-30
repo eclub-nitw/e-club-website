@@ -18,7 +18,7 @@ const FLAGSHIP = { href: "/events/venture-vortex-2026", label: "Venture Vortex 2
 
 function Wordmark({ small = false }: { small?: boolean }) {
   return (
-    <Link href="/" aria-label="E-Club NIT Warangal, home" className="inline-flex min-h-11 items-center gap-2 font-display font-semibold tracking-tight">
+    <Link href="/" aria-label="E-Club NITW, home" className="inline-flex min-h-11 items-center gap-2 font-display font-semibold tracking-tight">
       <span className={small ? "text-base" : "text-lg"}>E-Club</span>
       <span className="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted">NITW</span>
     </Link>
