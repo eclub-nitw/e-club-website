@@ -13,7 +13,7 @@ export function Section({
   className?: string;
 }) {
   return (
-    <section id={id} aria-labelledby={title ? `${id}-h` : undefined} className={`${tone === "paper" ? "tone-paper" : "bg-bg text-fg"} py-20 md:py-28 ${className}`}>
+    <section id={id} data-section={title ? `${number ? `${number} — ` : ""}${title}` : undefined} aria-labelledby={title ? `${id}-h` : undefined} className={`${tone === "paper" ? "tone-paper" : "bg-bg text-fg"} py-20 md:py-28 ${className}`}>
       <Container>
         {(number || title) && (
           <header className="mb-10 border-t border-line pt-4 md:mb-14">

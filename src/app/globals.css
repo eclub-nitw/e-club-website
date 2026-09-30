@@ -41,6 +41,10 @@ html.lenis, html.lenis body { height: auto; }
 .lenis:not(.lenis-autoslide) { scroll-behavior: auto !important; }
 .lenis-stopped { overflow: hidden; }
 
+/* Mobile menu: links rise through their masks each time the dialog opens, 40ms stagger. */
+.menu:not([open]) .mask-word > span { transform: translateY(110%); animation: none; }
+.menu[open] .mask-word > span { transform: none; animation: mask-up 700ms var(--ease-out-expo) both; animation-delay: calc(var(--i) * 40ms + 80ms); }
+
 dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, transparent); backdrop-filter: blur(4px); }
 
 @keyframes bar-rise { from { transform: scaleY(0); } to { transform: none; } }
