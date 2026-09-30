@@ -1,0 +1,185 @@
+{
+ "title": "E-Cell - Creating Job Creators",
+ "height": 4537,
+ "stack": {
+  "next": false,
+  "angular": true,
+  "framer": false,
+  "gsap": false,
+  "scrollTrigger": false,
+  "lenis": false,
+  "locomotive": false,
+  "three": false,
+  "swiper": false,
+  "jquery": true,
+  "canvas": 0,
+  "video": 0,
+  "svg": 11,
+  "images": 44,
+  "customCursor": false
+ },
+ "fonts": [
+  "Poppins",
+  "Bebas Neue"
+ ],
+ "runningAnimations": [
+  "shake-vertical"
+ ],
+ "fixedOrSticky": [
+  "fixed:div.social-sidenav \"\"",
+  "fixed:div.home-navbar \"HOME ABOUT US INITIATIVES GALL\""
+ ],
+ "nav": [
+  "HOME",
+  "ABOUT US",
+  "INITIATIVES",
+  "GALLERY",
+  "CONTACT",
+  "BLOGS",
+  "Register",
+  "Login"
+ ],
+ "footerText": null,
+ "blocks": [
+  {
+   "tag": "div",
+   "cls": "hero",
+   "top": 0,
+   "height": 900,
+   "heads": [
+    "E-Cell IIT Bombay"
+   ],
+   "text": "E-Cell IIT Bombay The Entrepreneurship Cell (E-Cell) of IIT Bombay has been inspiring Entrepreneurs since 1998 and is Asia’s largest student-run entrepreneurshi",
+   "imgs": 1,
+   "links": 1,
+   "buttons": [
+    "Know More"
+   ],
+   "shot": "01.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "about-ecell",
+   "top": 900,
+   "height": 615,
+   "heads": [
+    "1000+",
+    "60K+",
+    "500K+"
+   ],
+   "text": "What is E-Cell? \"E-Cell IIT Bombay helps the hustling startups and young professionals via dynamic workshops, thought-provoking speaker sessions, high-stakes bu",
+   "imgs": 3,
+   "links": 0,
+   "buttons": [],
+   "shot": "02.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "our-initiatives",
+   "top": 1515,
+   "height": 876,
+   "heads": [
+    "Our Initiatives"
+   ],
+   "text": "Our Initiatives We at E-Cell, IIT Bombay believe that entrepreneurship is the key to India’s development. To fulfill this vision, we have conceptualized & succe",
+   "imgs": 6,
+   "links": 6,
+   "buttons": [
+    "Know More",
+    "Know More",
+    "Know More",
+    "Know More",
+    "Know More"
+   ],
+   "shot": "03.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "international-reach",
+   "top": 2391,
+   "height": 590,
+   "heads": [
+    "Our international reach"
+   ],
+   "text": "Our international reach GCC E-Cell, IIT Bombay partnered with Gulf Islamic Investments to form Eureka! GCC. It is the 2nd regional edition of India’s longest ru",
+   "imgs": 0,
+   "links": 0,
+   "buttons": [],
+   "shot": "04.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "inspirational_speakers_container",
+   "top": 3001,
+   "height": 503,
+   "heads": [
+    "Inspirational Speakers"
+   ],
+   "text": "Inspirational Speakers Discover the influential speakers who have shared their wisdom and insights at E-Cell events, enriching the entrepreneurial spirit. Smrit",
+   "imgs": 27,
+   "links": 0,
+   "buttons": [],
+   "shot": "05.jpg"
+  },
+  {
+   "tag": "div",
+   "cls": "testimonial",
+   "top": 3503,
+   "height": 650,
+   "heads": [
+    "Testimonial"
+   ],
+   "text": "Testimonial Prof. Subhasis Chaudhuri Former Director, IIT Bombay “ The power to think differently and ahead of the times for the betterment of mankind is what s",
+   "imgs": 5,
+   "links": 0,
+   "buttons": [],
+   "shot": "06.jpg"
+  },
+  {
+   "tag": "app-footer",
+   "cls": "",
+   "top": 4153,
+   "height": 384,
+   "heads": [],
+   "text": "Subscribe to Our Blogs Get connected with us on social networks: OUR INITIATIVES E-Summit Eureka! Eureka! Junior Eureka! GCC illuminate Summit Chapters NEC NEC ",
+   "imgs": 1,
+   "links": 25,
+   "buttons": [],
+   "shot": "07.jpg"
+  }
+ ],
+ "hoverProbe": [
+  {
+   "text": "",
+   "changes": true
+  },
+  {
+   "text": "",
+   "changes": true
+  },
+  {
+   "text": "",
+   "changes": true
+  },
+  {
+   "text": "",
+   "changes": true
+  },
+  {
+   "text": "",
+   "changes": true
+  },
+  {
+   "text": "",
+   "changes": false
+  },
+  {
+   "text": "HOME",
+   "changes": false
+  },
+  {
+   "text": "ABOUT US",
+   "changes": false
+  }
+ ]
+}
