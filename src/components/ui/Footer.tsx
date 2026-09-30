@@ -18,7 +18,7 @@ const socials = [
 
 const listed = sponsors.filter((s) => s.consent);
 
-const linkCls = "inline-flex min-h-11 items-center text-fg/90 underline-offset-4 hover:text-fg hover:underline";
+const linkCls = "inline-flex min-h-11 items-center whitespace-nowrap text-fg/90 underline-offset-4 hover:text-fg hover:underline";
 
 export function Footer() {
   return (
@@ -35,8 +35,8 @@ export function Footer() {
             </p>
           </div>
         )}
-        <div className="grid gap-14 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
-          <div>
+        <div className="grid gap-x-8 gap-y-14 md:grid-cols-3 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+          <div className="md:col-span-3 lg:col-span-1">
             <p className="whitespace-nowrap font-display text-[clamp(3rem,9vw,7rem)] font-semibold leading-[0.9] tracking-tight">E-Club</p>
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-club-mist">Entrepreneurship Club · NIT Warangal</p>
             <a href={`mailto:${site.email}`} className="mt-8 inline-flex min-h-11 items-center break-all text-lg underline decoration-club-gold decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
