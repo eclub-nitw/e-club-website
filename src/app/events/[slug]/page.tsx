@@ -32,6 +32,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const e = find((await params).slug);
   if (!e) notFound();
   const upcoming = isUpcoming(e);
+  const hasMedia = !!(e.coverImage || e.videoId || e.stats?.length || e.gallery?.length);
   const related = events.filter((o) => o.slug !== e.slug && o.type === e.type).slice(0, 3);
 
   return (
@@ -43,8 +44,8 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
       </PageHeader>
 
       <div className="bg-bg pb-28 text-fg">
-        <Container className="grid gap-14 lg:grid-cols-[1.2fr_1fr]">
-          <div>
+        <Container className={hasMedia ? "grid gap-14 lg:grid-cols-[1.2fr_1fr]" : ""}>
+          {hasMedia && <div>
             {e.coverImage && (
               <div className="relative mb-10 aspect-[3/2] overflow-hidden rounded-[2px] bg-surface">
                 <Image src={e.coverImage} alt={`${e.title}, cover photo`} fill priority sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
@@ -55,9 +56,9 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <div className="mb-10 grid gap-8 sm:grid-cols-2">{e.stats.map((s) => <StatNumber key={s.label} {...s} />)}</div>
             )}
             {e.gallery && e.gallery.length > 0 && <Gallery items={e.gallery.map((g) => ({ ...g, caption: g.alt }))} />}
-          </div>
+          </div>}
 
-          <aside aria-label="Event facts" className="lg:pt-0">
+          <aside aria-label="Event facts" className="max-w-2xl">
             <dl>
               <LedgerRow label="Date">{fmtRange(e.dateStart, e.dateEnd)}</LedgerRow>
               <LedgerRow label="Venue">{e.venue}</LedgerRow>

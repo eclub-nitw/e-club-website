@@ -57,10 +57,10 @@ export function HeroBars() {
   }, [reduce, px, py]);
 
   return (
-    <div aria-hidden="true" className="pointer-events-none relative select-none [perspective:1600px]" style={{ fontSize: "clamp(9px, 1.5vw, 19px)", width: `${sceneW + 6}em`, height: "24em" }}>
+    <div aria-hidden="true" className="pointer-events-none relative select-none [perspective:1600px]" style={{ fontSize: "clamp(9px, 1.35vw, 18px)", width: `${sceneW + 6}em`, height: "24em" }}>
       <motion.div
-        className="absolute bottom-[3em] left-[3em] flex items-end [transform-style:preserve-3d]"
-        style={{ rotateX: reduce ? -22 : rotateX, rotateY: reduce ? -31 : rotateY, gap: `${GAP}em`, width: `${sceneW}em` }}
+        className="absolute bottom-[3em] left-1/2 flex items-end [transform-style:preserve-3d]"
+        style={{ x: "-9em", rotateX: reduce ? -22 : rotateX, rotateY: reduce ? -31 : rotateY, gap: `${GAP}em`, width: `${sceneW}em`, marginLeft: `${-sceneW / 2}em` }}
       >
         {/* ground plane with a hairline grid */}
         <span

@@ -19,8 +19,8 @@ export default async function LegalPage({ params }: { params: Promise<{ legal: s
   const source = await readLegal(legal);
   return (
     <>
-      <PageHeader number="Legal" label="Draft pending review" title={legalPages[legal].title} tone="paper" />
-      <div className="tone-paper pb-28"><Container><LegalDoc source={source} /></Container></div>
+      <PageHeader number="Legal" label="Draft pending review" title={legalPages[legal].title} />
+      <div className="tone-paper py-16 md:py-24"><Container><LegalDoc source={source} /></Container></div>
     </>
   );
 }

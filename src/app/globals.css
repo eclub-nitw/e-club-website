@@ -18,6 +18,7 @@
   --link: var(--color-club-teal-deep);
   background: var(--bg);
   color: var(--fg);
+  display: flow-root; /* contain child margins so no body colour shows through */
 }
 
 /* Masked text reveal: 700ms, expo-out, 40ms word stagger, transform only. */

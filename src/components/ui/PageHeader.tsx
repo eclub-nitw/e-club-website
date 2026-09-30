@@ -10,7 +10,7 @@ export function PageHeader({ number, label, title, lede, tone = "ink", children 
       <Container>
         {children}
         <p className="mt-6 border-t border-line pt-4 font-mono text-xs uppercase tracking-[0.08em] text-muted">{number} — {label}</p>
-        <h1 className="mt-6 max-w-[16ch] font-display text-[clamp(2.75rem,7vw,6rem)] font-semibold leading-[0.98] tracking-tight">
+        <h1 className="mt-6 max-w-[16ch] font-display text-[clamp(2.25rem,8vw,6rem)] font-semibold leading-[0.98] tracking-tight">
           <MaskedText text={title} immediate />
         </h1>
         {lede && <p className="mt-8 max-w-[58ch] text-lg leading-relaxed text-muted md:text-xl">{lede}</p>}

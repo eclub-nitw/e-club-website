@@ -35,7 +35,7 @@ export default function Home() {
         <Container className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr]">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Entrepreneurship Club · NIT Warangal</p>
-            <h1 className="mt-6 font-display text-[clamp(2.75rem,7.2vw,6.5rem)] font-semibold leading-[0.96] tracking-tight">
+            <h1 className="mt-6 font-display text-[clamp(2rem,9vw,6.5rem)] md:text-[clamp(3rem,7.2vw,6.5rem)] font-semibold leading-[0.96] tracking-tight">
               <MaskedText text="The Entrepreneurship Club of NIT Warangal." immediate />
             </h1>
             {site.tagline && <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-muted md:text-xl">{site.tagline}</p>}

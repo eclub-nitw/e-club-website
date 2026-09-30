@@ -12,8 +12,8 @@ export function MaskedText({ text, immediate = false }: { text: string; immediat
   return (
     <span ref={ref} className={immediate ? "mask-now" : seen ? "mask-in" : undefined}>
       {text.split(" ").map((w, i) => (
-        <span key={i} className="mask-word" style={{ "--i": i } as React.CSSProperties}>
-          <span>{w}</span>{" "}
+        <span key={i}>
+          <span className="mask-word" style={{ "--i": i } as React.CSSProperties}><span>{w}</span></span>{" "}
         </span>
       ))}
     </span>
