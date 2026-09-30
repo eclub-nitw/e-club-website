@@ -17,7 +17,7 @@ const FLAGSHIP = { href: "/events/venture-vortex-2026", label: "Venture Vortex 2
 
 function Wordmark({ small = false }: { small?: boolean }) {
   return (
-    <Link href="/" aria-label="E-Club NITW, home" className="inline-flex min-h-11 items-center gap-2 font-display font-semibold tracking-tight">
+    <Link href="/" aria-label="E-Club NITW, home" className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap font-display font-semibold tracking-tight">
       <span className={small ? "text-base" : "text-lg"}>E-Club</span>
       <span className="font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-muted">NITW</span>
     </Link>
@@ -58,7 +58,7 @@ export function Nav() {
   const current = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   const linkCls = (href: string) =>
     `inline-flex min-h-11 items-center px-3 text-sm transition-colors ${current(href) ? "text-fg underline decoration-accent decoration-2 underline-offset-[10px]" : "text-muted hover:text-fg"}`;
-  const flagCls = "inline-flex min-h-11 items-center rounded-[2px] bg-accent px-4 text-sm font-medium text-accent-fg transition duration-200 hover:-translate-y-0.5 hover:brightness-110 motion-reduce:hover:translate-y-0";
+  const flagCls = "inline-flex min-h-11 items-center whitespace-nowrap rounded-[2px] bg-accent px-4 text-sm font-medium text-accent-fg transition duration-200 hover:-translate-y-0.5 hover:brightness-110 motion-reduce:hover:translate-y-0";
   const menuBtn = (
     <button type="button" onClick={openMenu} aria-haspopup="dialog" className="inline-flex min-h-11 min-w-11 items-center justify-center text-fg md:hidden">
       <span className="sr-only">Open menu</span>
@@ -76,7 +76,7 @@ export function Nav() {
           <Wordmark />
           <nav aria-label="Primary" className="hidden items-center md:flex">
             <ul className="flex items-center">{NAV_LINKS.map((l) => <li key={l.href}><Link href={l.href} className={linkCls(l.href)} aria-current={current(l.href) ? "page" : undefined}>{l.label}</Link></li>)}</ul>
-            <Link href={FLAGSHIP.href} className={`${flagCls} ml-4`}>{FLAGSHIP.label}</Link>
+            <Link href={FLAGSHIP.href} className={`${flagCls} ml-4 max-lg:hidden`}>{FLAGSHIP.label}</Link>
           </nav>
           {menuBtn}
         </div>
@@ -88,7 +88,7 @@ export function Nav() {
           <Wordmark small />
           {section && <span aria-hidden="true" className="ml-1 hidden max-w-[22ch] truncate border-l border-line pl-3 font-mono text-[10px] uppercase tracking-[0.08em] text-muted xl:inline">{section}</span>}
           <ul className="ml-2 hidden items-center lg:flex">{NAV_LINKS.filter((l) => l.href !== "/").map((l) => <li key={l.href}><Link href={l.href} className={linkCls(l.href)} aria-current={current(l.href) ? "page" : undefined}>{l.label}</Link></li>)}</ul>
-          <Link href={FLAGSHIP.href} className={`${flagCls} ml-1 hidden rounded-full sm:inline-flex`}>{FLAGSHIP.label}</Link>
+          <Link href={FLAGSHIP.href} className={`${flagCls} ml-1 rounded-full max-sm:hidden`}>{FLAGSHIP.label}</Link>
           {menuBtn}
         </nav>
       </div>

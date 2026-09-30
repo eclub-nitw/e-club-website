@@ -37,7 +37,7 @@ export function Footer() {
         )}
         <div className="grid gap-14 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div>
-            <p className="font-display text-[clamp(3.5rem,10vw,7rem)] font-semibold leading-[0.9] tracking-tight">E-Club</p>
+            <p className="whitespace-nowrap font-display text-[clamp(3rem,9vw,7rem)] font-semibold leading-[0.9] tracking-tight">E-Club</p>
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-club-mist">Entrepreneurship Club · NIT Warangal</p>
             <a href={`mailto:${site.email}`} className="mt-8 inline-flex min-h-11 items-center break-all text-lg underline decoration-club-gold decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
           </div>
