@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { canRunWebGL } from "@/lib/webgl";
 import vortexArt from "../../../public/images/generated/vortex.webp";
+import coinPoster from "../../../public/images/generated/coin-poster.webp";
 
 const VortexScene = dynamic(() => import("./VortexScene"), { ssr: false });
 const FALL_MS = 550; // "fall into the vortex" must stay under 600 ms
@@ -62,6 +63,9 @@ export function VortexPortal({ href, label }: { href: string; label: string }) {
     >
       {/* Requested only once the portal is near the viewport, so it never competes with the hero for bandwidth. */}
       {near && <Image src={vortexArt} alt="" fill sizes="(min-width: 1024px) 34rem, 92vw" placeholder="blur" className={`vortex-still object-cover transition-opacity duration-500 ${drawn ? "opacity-0" : "opacity-100"}`} />}
+      <div aria-hidden="true" className={`pointer-events-none absolute inset-0 grid place-items-center transition-opacity duration-500 ${drawn ? "opacity-0" : "opacity-100"}`}>
+        {near && <Image src={coinPoster} alt="" sizes="14rem" placeholder="empty" className="h-auto w-[38%]" />}
+      </div>
       <div aria-hidden="true" data-portal={mount ? (drawn ? "live" : "loading") : "still"} className={`absolute inset-0 transition-opacity duration-500 ${drawn ? "opacity-100" : "opacity-0"}`}>
         {mount && <VortexScene active={onScreen && tabVisible} hover={hover} falling={falling} onReady={() => setDrawn(true)} />}
       </div>

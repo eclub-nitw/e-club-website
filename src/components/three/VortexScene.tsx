@@ -1,10 +1,13 @@
 "use client";
-import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { AdditiveBlending, CanvasTexture, Color, MathUtils, type Group } from "three";
+import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { AdditiveBlending, CanvasTexture, Color, MathUtils, PMREMGenerator, type Group } from "three";
 import { token } from "@/lib/webgl";
 
 const COUNT = 3600; // budget is 4000
+const COIN = "/models/ledger-coin.glb"; // 140 KB, 3.9k tris, KHR_mesh_quantization only: no Draco/Meshopt decoder (CSP forbids wasm-unsafe-eval)
 const ARMS = 3;
 
 /** Deterministic hash in [0,1): the same particles on every mount, no Math.random in render. */
@@ -62,6 +65,27 @@ function Spiral({ hover, falling }: { hover: boolean; falling: boolean }) {
   );
 }
 
+/** Procedural studio reflections for the brass (no HDRI fetched from anywhere). */
+function Studio() {
+  const { gl, scene } = useThree();
+  useEffect(() => {
+    const pmrem = new PMREMGenerator(gl);
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    // eslint-disable-next-line react-hooks/immutability -- three.js scenes are mutable by design; this is the documented way to set an environment map
+    scene.environment = env;
+    return () => { scene.environment = null; env.dispose(); pmrem.dispose(); };
+  }, [gl, scene]);
+  return null;
+}
+
+/** The brass ledger coin (modelled in Blender), turning slowly inside the ring. */
+function Coin({ falling }: { falling: boolean }) {
+  const { scene } = useGLTF(COIN, false, false);
+  const ref = useRef<Group>(null);
+  useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * (falling ? 4 : 0.5); });
+  return <group ref={ref} scale={1.15}><primitive object={scene} /></group>;
+}
+
 /** Particle spiral swirling into a ring. Speeds up on hover; the camera dives in when `falling`. */
 export default function VortexScene({ active, hover, falling, onReady }: { active: boolean; hover: boolean; falling: boolean; onReady: () => void }) {
   return (
@@ -74,6 +98,8 @@ export default function VortexScene({ active, hover, falling, onReady }: { activ
       className="!pointer-events-none"
     >
       <Spiral hover={hover} falling={falling} />
+      <Studio />
+      <Suspense fallback={null}><Coin falling={falling} /></Suspense>
     </Canvas>
   );
 }
