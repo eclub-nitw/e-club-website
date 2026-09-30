@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { bricolage, instrument, jetbrains } from "@/lib/fonts";
 import { site } from "@/data/site";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { Nav, Footer } from "@/components/ui";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,30 +10,20 @@ export const metadata: Metadata = {
   title: { default: `${site.name} — Entrepreneurship Club, NIT Warangal`, template: `%s | ${site.name}` },
   description: "The Entrepreneurship Club of NIT Warangal: events, competitions, speaker sessions and a community for student founders.",
   alternates: { canonical: "/" },
-  openGraph: { siteName: site.name, locale: "en_IN", type: "website", images: [{ url: "/og.png", width: 1200, height: 630 }] },
+  openGraph: { siteName: site.name, locale: "en_IN", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
-const orgJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: site.legalName,
-  alternateName: site.name,
-  url: site.url,
-  logo: `${site.url}/images/brand/eclub-logo.png`,
-  email: site.email,
-  sameAs: [site.instagram, site.linkedin, site.youtube].filter(Boolean),
-};
+export const viewport: Viewport = { themeColor: "#0b2226", colorScheme: "dark" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN" data-theme="club" className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable}`}>
-      <body className="grain">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
+      <body className="grain antialiased">
         <SmoothScroll />
-        {/* WAHID: <Nav /> here */}
-        {children}
-        {/* WAHID: <Footer /> here */}
+        <Nav />
+        <main id="main">{children}</main>
+        <Footer />
       </body>
     </html>
   );
