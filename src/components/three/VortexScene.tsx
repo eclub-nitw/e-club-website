@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { AdditiveBlending, CanvasTexture, Color, MathUtils, PMREMGenerator, type Group } from "three";
 import { token } from "@/lib/webgl";
@@ -80,7 +80,7 @@ function Studio() {
 
 /** The brass ledger coin (modelled in Blender), turning slowly inside the ring. */
 function Coin({ falling }: { falling: boolean }) {
-  const { scene } = useGLTF(COIN, false, false);
+  const { scene } = useLoader(GLTFLoader, COIN); // plain GLTFLoader: no Draco/Meshopt decoder is attached, so no wasm
   const ref = useRef<Group>(null);
   useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * (falling ? 4 : 0.5); });
   return <group ref={ref} scale={1.15}><primitive object={scene} /></group>;

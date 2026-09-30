@@ -1,8 +1,7 @@
 "use client";
 import { useMemo, useRef, type MutableRefObject } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useTexture } from "@react-three/drei";
-import { AdditiveBlending, Color, MathUtils, SRGBColorSpace } from "three";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { AdditiveBlending, Color, MathUtils, SRGBColorSpace, TextureLoader } from "three";
 import { token } from "@/lib/webgl";
 
 export type DiveFrame = { id: string; src: string };
@@ -13,7 +12,7 @@ const INK = "#0b2226"; // = --bg; WebGL needs a literal, and this scene is alway
 const hash = (n: number) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 
 function Tunnel({ frames, progress }: { frames: DiveFrame[]; progress: MutableRefObject<number> }) {
-  const textures = useTexture(frames.map((f) => f.src));
+  const textures = useLoader(TextureLoader, frames.map((f) => f.src));
   const pointer = useThree((s) => s.pointer);
   const depth = frames.length * SPACING;
   const smooth = useRef(0);

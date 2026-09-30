@@ -1,4 +1,4 @@
-// Usage: node scripts/scene-perf.mjs [url]   -> fps of the live hero scene + long tasks during a full scroll, in headed Chrome (real GPU).
+// Usage: node scripts/scene-perf.mjs [url]   -> fps of the live Dive scene (V3; hero is now a photograph) + long tasks during a full scroll, in headed Chrome (real GPU).
 // Writes a Chrome trace of the scroll to scene-scroll-trace.json (gitignored) and prints the RunTask summary.
 import { chromium } from "@playwright/test";
 import { readFileSync, statSync } from "node:fs";
@@ -19,11 +19,12 @@ async function scenario(label, cpuRate) {
   if (cpuRate > 1) await cdp.send("Emulation.setCPUThrottlingRate", { rate: cpuRate });
   await page.addInitScript(() => { window.__lt = []; new PerformanceObserver((l) => l.getEntries().forEach((e) => window.__lt.push(e.duration))).observe({ type: "longtask", buffered: true }); });
   await page.goto(url, { waitUntil: "load" });
-  await page.waitForFunction(() => document.querySelector("[data-scene]")?.getAttribute("data-scene") === "live", null, { timeout: 90000 }).catch(() => {});
-  const state = await page.evaluate(() => document.querySelector("[data-scene]")?.getAttribute("data-scene"));
+  await page.evaluate(() => document.querySelector("#dive")?.scrollIntoView());
+  await page.waitForFunction(() => document.querySelector("#dive [data-scene]")?.getAttribute("data-scene") === "live", null, { timeout: 90000 }).catch(() => {});
+  const state = await page.evaluate(() => document.querySelector("#dive [data-scene]")?.getAttribute("data-scene"));
   await page.waitForTimeout(2500); // let the rise-in animation finish
   // hero: pointer moving so parallax is working
-  const mover = (async () => { for (let i = 0; i < 40; i++) { await page.mouse.move(300 + (i * 23) % 900, 200 + (i * 17) % 500); await page.waitForTimeout(100); } })();
+  const mover = (async () => { for (let i = 0; i < 40; i++) { await page.mouse.move(300 + (i * 23) % 900, 200 + (i * 17) % 500); await page.mouse.wheel(0, 40); await page.waitForTimeout(100); } })();
   const heroFps = await fps(page, 4000); await mover;
   // full scroll with a trace
   const tracePath = cpuRate > 1 ? "scene-scroll-trace-throttled.json" : "scene-scroll-trace.json";
@@ -39,7 +40,7 @@ async function scenario(label, cpuRate) {
   const sf = await scrollFps;
   if (tracePath) await browser.stopTracing();
   const lt = await page.evaluate(() => window.__lt);
-  console.log(`${label.padEnd(26)} scene=${state} | hero fps ${heroFps.fps} (worst frame ${heroFps.worstFrameMs} ms) | scroll fps ${sf.fps} (worst frame ${sf.worstFrameMs} ms) | long tasks during scroll: ${lt.length}, max ${Math.round(Math.max(0, ...lt))} ms, >50ms: ${lt.filter((d) => d > 50).length}`);
+  console.log(`${label.padEnd(26)} scene=${state} | dive fps ${heroFps.fps} (worst frame ${heroFps.worstFrameMs} ms) | scroll fps ${sf.fps} (worst frame ${sf.worstFrameMs} ms) | long tasks during scroll: ${lt.length}, max ${Math.round(Math.max(0, ...lt))} ms, >50ms: ${lt.filter((d) => d > 50).length}`);
   await ctx.close();
   return tracePath;
 }
