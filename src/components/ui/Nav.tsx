@@ -29,7 +29,9 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const drawer = useRef<HTMLDialogElement>(null);
   const [seen, setSeen] = useState({ path: "", label: "" });
-  const section = seen.path === pathname ? seen.label : "";
+  const pageName = pathname === "/" ? "Home" : NAV_LINKS.find((l) => l.href !== "/" && pathname.startsWith(l.href))?.label
+    ?? (pathname.split("/")[1] ?? "").replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
+  const section = (seen.path === pathname && seen.label) || pageName; // pages without numbered sections show their own name
 
   useEffect(() => {
     let raf = 0;
