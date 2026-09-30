@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { armWhenReady } from "@/lib/arm";
 
 /**
  * Events rail. Children are server-rendered <li> cards. On desktop the rail pins and slides sideways as you scroll
@@ -32,10 +33,10 @@ export function EventsRail({ children }: { children: React.ReactNode }) {
       void document.fonts.ready.then(() => ScrollTrigger.refresh());
       teardown = () => mm.revert();
     };
-    const idle = typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(arm) : window.setTimeout(arm, 200);
+    const stop = armWhenReady(f, () => { void arm(); });
     return () => {
       cancelled = true;
-      if (typeof window.requestIdleCallback === "function") window.cancelIdleCallback(idle); else window.clearTimeout(idle);
+      stop();
       teardown();
     };
   }, []);

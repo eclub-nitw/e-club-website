@@ -17,13 +17,12 @@ export function SceneLoader() {
   const [drawn, setDrawn] = useState(false);
   const [onScreen, setOnScreen] = useState(true);
   const [tabVisible, setTabVisible] = useState(true);
-  const [coarse, setCoarse] = useState(false);
 
   useEffect(() => {
     if (!canRunWebGL()) return;
     let cancelled = false;
     const go = () => {
-      const start = () => { if (!cancelled) { setCoarse(window.matchMedia("(pointer: coarse)").matches); setMount(true); } };
+      const start = () => { if (!cancelled) setMount(true); };
       if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(start, { timeout: 3000 });
       else window.setTimeout(start, 500);
     };
@@ -46,7 +45,7 @@ export function SceneLoader() {
       ref={box} aria-hidden="true" data-scene={mount ? (drawn ? "live" : "loading") : "poster"}
       className={`absolute inset-0 transition-opacity duration-700 ease-[var(--ease-out-expo)] ${drawn ? "opacity-100" : "opacity-0"}`}
     >
-      {mount && <HeroScene active={onScreen && tabVisible} coarse={coarse} onReady={() => setDrawn(true)} />}
+      {mount && <HeroScene active={onScreen && tabVisible} onReady={() => setDrawn(true)} />}
     </div>
   );
 }

@@ -2,10 +2,10 @@ type NetworkInfo = Navigator & { connection?: { saveData?: boolean } };
 
 /**
  * Whether to mount a live WebGL scene at all. Anything that fails gets the static poster instead:
- * reduced motion, 4 or fewer logical cores, Save-Data, or no WebGL context.
+ * reduced motion, touch devices (V2: mobile gets the poster), 4 or fewer logical cores, Save-Data, or no WebGL context.
  */
 export function canRunWebGL(): boolean {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  if (window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return false;
   if ((navigator.hardwareConcurrency ?? 8) <= 4) return false;
   if ((navigator as NetworkInfo).connection?.saveData) return false;
   try {

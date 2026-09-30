@@ -82,14 +82,14 @@ function Rig({ active }: { active: boolean }) {
 }
 
 /** "Rising Ledger": glass bar columns on a reflective floor with brass coins in the air. Colours come from CSS tokens. */
-export default function HeroScene({ active, onReady, coarse }: { active: boolean; onReady: () => void; coarse: boolean }) {
+export default function HeroScene({ active, onReady }: { active: boolean; onReady: () => void }) {
   const c = useMemo(() => ({ bg: token("--bg"), surface: token("--surface"), accent: token("--accent"), cyan: token("--color-club-cyan") }), []);
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
-      dpr={[1, coarse ? 1.5 : 2]}
+      dpr={[1, 2]}
       camera={{ position: [2.4, 1.3, 12.5], fov: 32, near: 0.5, far: 90 }}
-      gl={{ antialias: !coarse, powerPreference: "high-performance", alpha: false }}
+      gl={{ antialias: true, powerPreference: "high-performance", alpha: false }}
       onCreated={() => requestAnimationFrame(onReady)}
       className="!pointer-events-none"
     >
@@ -109,7 +109,7 @@ export default function HeroScene({ active, onReady, coarse }: { active: boolean
       <Coins accent={c.accent} />
       <mesh rotation-x={-Math.PI / 2} position={[3, 0, 2]}>
         <planeGeometry args={[60, 40]} />
-        <MeshReflectorMaterial blur={[220, 70]} resolution={coarse ? 256 : 512} mixBlur={1} mixStrength={26} mirror={0.65} roughness={0.85} depthScale={0.8} minDepthThreshold={0.4} maxDepthThreshold={1.3} color={c.bg} metalness={0.6} />
+        <MeshReflectorMaterial blur={[220, 70]} resolution={512} mixBlur={1} mixStrength={26} mirror={0.65} roughness={0.85} depthScale={0.8} minDepthThreshold={0.4} maxDepthThreshold={1.3} color={c.bg} metalness={0.6} />
       </mesh>
       <Rig active={active} />
     </Canvas>

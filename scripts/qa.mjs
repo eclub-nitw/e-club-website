@@ -74,7 +74,9 @@ if (want("teardown")) {
     const dom = await p.evaluate(() => ({ pin: document.querySelectorAll(".pin-spacer").length, canvas: document.querySelectorAll("canvas").length, nodes: document.getElementsByTagName("*").length, lenis: document.documentElement.classList.contains("lenis") }));
     return { heapMB: +(heap / 1048576).toFixed(2), wheel: count("wheel"), scroll: count("scroll"), resize: count("resize"), ...dom };
   };
-  const seq = ["/about", "/events", "/", "/team", "/gallery", "/", "/sponsors", "/events", "/contact", "/"];
+  const cycle = ["/about", "/events", "/", "/team", "/gallery", "/", "/sponsors", "/events", "/contact", "/"];
+  const NAVS = Number(process.env.TEARDOWN_NAVS ?? 10);
+  const seq = Array.from({ length: NAVS }, (_, i) => cycle[i % cycle.length]);
   const first = await snap();
   const rows = [first];
   for (let i = 0; i < seq.length; i++) {
@@ -90,12 +92,17 @@ if (want("teardown")) {
   rows.forEach((r, i) => console.log(`  #${i} ${r.heapMB} ${r.wheel} ${r.scroll} ${r.resize} ${r.pin} ${r.canvas} ${r.nodes} ${r.lenis}`));
   // compare like with like: first vs last visit of the same route (Home legitimately has more listeners than /about)
   const byRoute = {}; seq.forEach((r, i) => (byRoute[r] ??= []).push(rows[i + 1]));
-  const drift = Object.entries(byRoute).filter(([, v]) => v.length > 1).map(([r, v]) => ({ r, a: v[0], b: v[v.length - 1] }));
+  // baseline = second visit: the first visit to Home loads ScrollTrigger, which registers its global listeners once
+  const drift = Object.entries(byRoute).filter(([, v]) => v.length > 2).map(([r, v]) => ({ r, a: v[1], b: v[v.length - 1] }));
   check("teardown: listener counts on a route are unchanged on later visits", drift.every(({ a, b }) => b.wheel <= a.wheel && b.scroll <= a.scroll && b.resize <= a.resize),
     drift.map(({ r, a, b }) => `${r} wheel ${a.wheel}->${b.wheel} scroll ${a.scroll}->${b.scroll} resize ${a.resize}->${b.resize}`).join("; "));
   const early = rows[1];
-  check("teardown: no leftover pin spacers or canvases on a plain page", last.pin === 0 || seq[seq.length - 1] === "/", `pin ${last.pin} canvas ${last.canvas}`);
-  check("teardown: heap growth after 10 navigations under 25%", last.heapMB <= early.heapMB * 1.25, `heap ${early.heapMB} -> ${last.heapMB} MB`);
+  const leftovers = seq.map((r, i) => ({ r, s: rows[i + 1] })).filter(({ r, s }) => r !== "/" && (s.pin > 0 || s.canvas > 0));
+  check("teardown: no pin spacer or canvas survives on any non-Home page (scenes disposed on route change)", leftovers.length === 0, leftovers.length ? leftovers.map((l) => `${l.r}: pin ${l.s.pin} canvas ${l.s.canvas}`).join("; ") : `${seq.filter((r) => r !== "/").length} non-Home visits checked`);
+  // heap: compare the middle and last thirds of the run (warm-up excluded); a plateau means no leak per navigation
+  const third = Math.floor(rows.length / 3), avg = (xs) => xs.reduce((a, r) => a + r.heapMB, 0) / xs.length;
+  const mid = avg(rows.slice(third, 2 * third)), end = avg(rows.slice(2 * third));
+  check(`teardown: heap plateaus over ${seq.length} navigations (last third within 15% of middle third)`, end <= mid * 1.15, `first ${early.heapMB} MB, middle third avg ${mid.toFixed(2)}, last third avg ${end.toFixed(2)}, last ${last.heapMB} MB`);
   check("teardown: no console errors", errs.length === 0, errs[0]?.slice(0, 100));
   await ctx.close();
 }

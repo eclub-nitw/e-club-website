@@ -39,30 +39,30 @@ Status: `[x]` built and verified, `[~]` exists, V2 rebuild pending, `[>]` built 
 
 | # | Component (seen where) | Ours | Notes |
 |---|---|---|---|
-| 1 | Loader-free hero (all four; IITM has an intro before its content) | [~] | CSS-3D now; Phase 2 = R3F Rising Ledger, poster image as LCP |
+| 1 | Loader-free hero (all four; IITM has an intro before its content) | [>] | Phase 2: poster image is the LCP element; R3F "Rising Ledger" mounts after load + idle on desktop only; poster stays for reduced motion, touch, weak devices, no WebGL |
 | 2 | Ticker/marquee (IITH, IITM) | [>] | `Ticker.tsx`, CSS-only, pause on hover, static under reduced motion. Currently on Home |
 | 3 | Floating pill nav (IITH, IITG pill CTA) | [>] | Glass pill after scroll, section label, no motion lib |
 | 4 | Mobile menu | [>] | Full-screen native dialog, staggered masked links, Esc, focus trap |
 | 5 | Fixed conversion pill (IITG) | [ ] | Floating register pill with VV countdown, Phase 2 |
-| 6 | Manifesto with scroll-lit text (IITG, apparent) | [ ] | ScrollTrigger scene, Phase 2 |
+| 6 | Manifesto with scroll-lit text (IITG, apparent) | [>] | Phase 2: pinned on desktop, scrubbed on touch, contrast-safe two-layer words. Copy is built only from CONTEXT.md facts and flagged for club approval |
 | 7 | Numbers block (all four) | [-] | Hidden until the club supplies verified numbers with a source |
 | 8 | Initiatives/verticals (all four) | [-] | No club data; will be ledger rows |
-| 9 | Events strips/tiles (IITH, IITM) | [~] | Ledger + cursor preview + pinned rail planned, Phases 2-3 |
+| 9 | Events strips/tiles (IITH, IITM) | [>] | Phase 2: pinned horizontal rail (3+ events, desktop), native swipe on touch, ledger rows below 3 events, empty state with generated art. Rail verified only with a temporary 5-event fixture; the real data has 1 event. Archive filters and cursor preview still Phase 3 |
 | 10 | Speakers (all four) | [-] | Data-gated; consent needed for portraits |
 | 11 | Sponsors/partners (all four) | [~] | Footer block exists (data-gated, disclaimer link); page rebuild Phase 4 |
 | 12 | Testimonials (IITB, IITM) | [-] | Data-gated, hidden when empty |
 | 13 | Photo wall / gallery (IITG bento) | [~] | Empty state only; photos held back by owner |
-| 14 | Sticky-scroll scenes (IITM baskets/map) | [ ] | Pinned events rail is our version, Phase 2 |
-| 15 | Hero canvas (IITH wave lines) | [ ] | Ours is R3F, budgeted |
+| 14 | Sticky-scroll scenes (IITM baskets/map) | [>] | Pinned manifesto and pinned events rail (ScrollTrigger, lazy, armed only when reached) |
+| 15 | Hero canvas (IITH wave lines) | [>] | R3F scene, lazy, desktop only, poster fallback |
 | 16 | Custom cursor (IITH, IITM) | [>] | `Cursor.tsx`, additive ring, fine pointer only |
 | 17 | Button hover motion | [>] | Fill sweep, arrow slide, magnetic offset, drawn underline |
 | 18 | Contact / partner CTA in footer (IITH, IITM) | [~] | Footer done; contact page exists; sponsor brochure slot pending |
 | 19 | Join/newsletter form, FAQ | [ ] | Phase 4 (zod, honeypot, rate limit) |
 | 20 | 404, sitemap, robots, OG image, manifest, JSON-LD | [x] | Favicon is generic until the logo file arrives |
-| 21 | Flagship countdown | [~] | `Countdown.tsx` exists; none of the four has one |
+| 21 | Flagship countdown + portal | [>] | Countdown in the hero strip; flagship section has the vortex portal (particles, hover speed-up, 550 ms dive on click). None of the four has either |
 | 22 | Cookieless analytics slot | [ ] | Phase 5 |
 
-Tick count: 1 built and verified, 5 built in Phase 1, 6 exist and need V2 rebuild, 6 not built, 4 data-gated (of 22).
+Tick count after Phase 2: 1 built and verified (row 20), 11 built in Phases 1-2 (`[>]`: rows 1, 2, 3, 4, 6, 9, 14, 15, 16, 17, 21), 3 exist and need rebuild (rows 11, 13, 18), 3 not built (rows 5, 19, 22), 4 data-gated (rows 7, 8, 10, 12) = 22. Row 7 (numbers) is implemented (CountUp, verified stats only) but hidden because no verified stats exist yet.
 
 ## Gaps and where we stand
 - **We lack (must build):** floating register pill, scroll-lit manifesto, pinned events rail, hero 3D scene, forms, FAQ, analytics slot.

@@ -17,6 +17,16 @@ Global suffix on every prompt: "no text, no logos, no people, no watermark, cine
 
 Not yet supplied: startup-ecosystem abstract (prompt 6). The owner will regenerate it later; nothing depends on it.
 
+## Where the generated images are used (Phase 2)
+- `hero-poster`: Home hero, the LCP image (decorative, `alt=""`), also the fallback for reduced motion, touch devices, weak devices and no-WebGL.
+- `vortex`: still artwork inside the flagship vortex portal (decorative), shown until, or instead of, the live particles.
+- `pitch-stage`: empty state of the Home events section.
+- Not used yet: `manifesto`, `paper-tile`, `sponsors-band`, `workshop`.
+- Live 3D scenes use no image or HDRI: lighting comes from procedural Lightformers, so nothing is fetched from a third party.
+
+## Fonts (self-hosted subsets)
+`src/fonts/*.woff2` are subsets of Bricolage Grotesque (weight 600), Instrument Sans (400) and JetBrains Mono (400), all SIL OFL 1.1. Built by `scripts/subset-fonts.py` from the Google-served Latin files: Basic Latin, Latin-1 and the punctuation the site uses, weights pinned, ligature features removed. 39 KB in total instead of 111 KB. Needs regenerating if the site starts using a character outside that set or another weight.
+
 ## Event photos and videos
 79 files from the owner's Drive folders sit in `raw-media/` (never committed). Held back by owner decision (30 Sep 2026); the gallery stays empty until the owner chooses which to publish. Consent must be recorded in `src/data/media.ts` before any photo is shown.
 

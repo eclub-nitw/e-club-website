@@ -63,11 +63,11 @@ function Spiral({ hover, falling }: { hover: boolean; falling: boolean }) {
 }
 
 /** Particle spiral swirling into a ring. Speeds up on hover; the camera dives in when `falling`. */
-export default function VortexScene({ active, hover, falling, onReady, coarse }: { active: boolean; hover: boolean; falling: boolean; onReady: () => void; coarse: boolean }) {
+export default function VortexScene({ active, hover, falling, onReady }: { active: boolean; hover: boolean; falling: boolean; onReady: () => void }) {
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
-      dpr={[1, coarse ? 1.5 : 2]}
+      dpr={[1, 2]}
       camera={{ position: [0, 0, 7.5], fov: 50, near: 0.1, far: 40 }}
       gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       onCreated={() => requestAnimationFrame(onReady)}

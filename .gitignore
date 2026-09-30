@@ -43,3 +43,5 @@ next-env.d.ts
 # raw media (never committed)
 /raw-media/
 /.playwright-mcp/
+/scene-scroll-trace.json
+/scene-scroll-trace-throttled.json

@@ -12,7 +12,7 @@ let attempts = 0, rejected = 0;
 while (rows.length < Number(runs) && attempts < Number(runs) * 4) {
   attempts++; const i = rows.length;
   const out = join(dir, `${i}.json`);
-  execFileSync("npx", ["lighthouse", url, "--only-categories=performance,accessibility,seo,best-practices", "--quiet", "--chrome-flags=--headless=new", "--output=json", `--output-path=${out}`], { stdio: "ignore", shell: true });
+  try { execFileSync("npx", ["lighthouse", url, "--only-categories=performance,accessibility,seo,best-practices", "--quiet", "--chrome-flags=--headless=new", "--output=json", `--output-path=${out}`], { stdio: "ignore", shell: true }); } catch { console.log("  lighthouse crashed, retrying"); continue; }
   const r = JSON.parse(readFileSync(out, "utf8")); const a = r.audits, c = r.categories;
   const bench = r.environment.benchmarkIndex;
   if (bench < MIN_BENCH) { rejected++; console.log(`  rejected (machine too slow: benchmark ${Math.round(bench)} < ${MIN_BENCH})`); continue; }

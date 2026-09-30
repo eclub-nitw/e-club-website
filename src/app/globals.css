@@ -84,3 +84,6 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 @keyframes vortex-turn { from { transform: scale(1.45) rotate(0deg); } to { transform: scale(1.45) rotate(360deg); } }
 .vortex-still { animation: vortex-turn 120s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .vortex-still { animation: none; transform: none; } }
+
+/* Manifesto: the lit layer of each word starts hidden; GSAP fades it in with scroll. Reduced motion shows it fully. */
+@media (prefers-reduced-motion: no-preference) { .manifesto-lit { opacity: 0; } }

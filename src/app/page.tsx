@@ -57,7 +57,7 @@ export default function Home() {
         {/* The poster is the LCP element: priority, fixed-height box, blur placeholder, decorative (alt empty).
             The box is 92svh, never 100%: Chrome ignores an image covering the whole viewport as an LCP candidate. */}
         <div aria-hidden className="absolute inset-x-0 top-0 -z-20 h-[92svh]">
-          <Image src={heroPoster} alt="" fill priority sizes="100vw" placeholder="blur" quality={60} className="object-cover object-[68%_center]" />
+          <Image src={heroPoster} alt="" fill priority sizes="100vw" placeholder="blur" className="object-cover object-[68%_center]" />
           <SceneLoader />
           <div className="hero-scrim absolute inset-0" />
         </div>
