@@ -1,0 +1,20 @@
+# RESEARCH V3 — reference audit (1 Oct 2026)
+
+Method: `scripts/research-audit.mjs` drives installed Chrome (Playwright, 1440x900), waits 6 s, reads computed styles / `document.fonts` / globals, sums response bytes from `content-length` (so totals are a **lower bound**; chunked responses count 0), scrolls to 5 points and screenshots (`docs/handoff/v3/research/<site>-N.png`, raw data in `<site>.json`). Only pages that actually opened are listed. Nothing was copied; principles only.
+
+Not done: playing the Lando Norris "vertical drive" intro (I read its text in the DOM and saw the 21 canvases, but did not drive it), cursor-behaviour recording, network capture beyond byte totals. Palette "sampled" = computed body colours plus what the screenshots show; the automatic swatch list in the JSON is noisy and is not used.
+
+| Site (opened) | Stack detected | Fonts (loaded) | Palette (computed / seen) | Weight | Techniques observed | Adopt / reject |
+|---|---|---|---|---|---|---|
+| https://landonorris.com | Webflow, 21 `<canvas>`, 133 images, 6 scripts, 4 sticky elements | Mona Sans Variable (200-900), Brier 700 | body `rgb(40,44,32)` dark olive, text `rgb(244,244,237)`; light cream sections; one acid-lime (#d?f?00 seen on STORE pill) accent | ~7.0 MB (webp 4.6, glTF 0.5, woff2 0.19, JS 0.17) | Giant uppercase 700 wordmark; h1 38px uppercase; scattered photo layout on a faint topographic line texture; each photo captioned "place, year" in tiny caps; first-person pull-quote plus signature SVG; "NEXT RACE" corner widget; intro text "This is a vertical drive" | ADOPT: captions as design element, pull-quotes between photos, one loud accent, corner widget idea (our Venture Vortex countdown). REJECT: Webflow canvases x21, 7 MB payload. Key honest note: it works because the photography is professional; ours are classroom candids, so we grade them (ink-teal) instead of showing them raw |
+| https://www.ferrari.com/en-EN/formula1 | Next.js, 32 scripts, 0 canvas | Title-Font 400, Body-Font 400 (custom) | near-black `#181818`, Ferrari red; red duotone on photos | ~3.6 MB lower bound (JS 1.55, AVIF 1.51) | Split-screen equal-weight full-viewport portraits, uppercase 36px titles, duotone colour grade that unifies mixed photography, red mono-ish labels with hairline rules ("4 DAYS ——— AZERBAIJAN GP"), cookie wall | ADOPT: a single-hue duotone grade to make uneven photos cohere (our hero), label + hairline rule pattern. REJECT: cookie banner, 1.5 MB JS |
+| https://www.floema.com/en | canvas (3), no framework global | Zimula 400 | paper `rgb(242,239,234)`, ink `rgb(36,31,33)` | ~19.5 MB (14.7 MB `mpeg` video) | 57px display at -0.04em tracking, sentence case, warm paper palette, video-led sections | ADOPT: tight negative tracking on big display type. REJECT: 14 MB of video (fails our 1.5 MB loop cap and Save-Data rule) |
+| https://oryzo.ai (3D product) | 6 canvas, 2 video, 2 scripts; 56,691 px tall page | halyard-display-variable (100-900), Literata, DM Mono | warm cream text `rgb(255,237,215)` on heat-map violet/orange | ~22.5 MB lower bound (video 6.5, webp 6.6, other 7.4) | Scroll-driven product scenes with a left copy column and right full-bleed render, a live-looking data legend, 123px headings at 500 weight, mono micro-labels | ADOPT: copy column beside a full-bleed scene, small mono data legends. REJECT: 22 MB weight; poster-quality pre-renders are the lever we use instead |
+
+Previously audited (docs/PARITY.md, 28-30 Sep 2026): IIT Guwahati, Hyderabad, Bombay, Madras E-Cells. Re-read tonight; no new claims made about them.
+
+## What this changes in our build
+1. Duotone grade baked into the hero AVIF/WebP (Ferrari lesson), because our photos are uneven classroom candids.
+2. Mono caption + hairline rule system on every photo ("CLUB EVENT / 2026" style), Lando-style.
+3. Big display type with tight negative tracking in Bricolage (width/weight axes only if the font exposes them; see BUILD-LOG-V3).
+4. Payload discipline: every reference above is 3-22 MB. Ours stays under ~1 MB for first view; heavy scenes load on idle/intent.

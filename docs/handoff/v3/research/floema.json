@@ -1,0 +1,127 @@
+{
+ "label": "floema",
+ "url": "https://www.floema.com/en",
+ "ok": true,
+ "title": "Floema® — Spaces for people, made for life.",
+ "info": {
+  "stack": [
+   "canvas"
+  ],
+  "fonts": [
+   "Zimula normal"
+  ],
+  "bodyFont": "sans-serif",
+  "bodyBg": "rgb(242, 239, 234)",
+  "bodyColor": "rgb(36, 31, 33)",
+  "h1": {
+   "fs": "57.2px",
+   "fw": "400",
+   "ff": "Zimula",
+   "tt": "none"
+  },
+  "big": [
+   {
+    "t": "Spaces for people, made for life.",
+    "fs": "57.2px",
+    "fw": "400",
+    "ff": "Zimula",
+    "tt": "none",
+    "ls": "-2.288px"
+   },
+   {
+    "t": "Signage, furniture, and equipment for we",
+    "fs": "16px",
+    "fw": "400",
+    "ff": "sans-serif",
+    "tt": "none",
+    "ls": "normal"
+   },
+   {
+    "t": "Signage, furniture, and equipment for we",
+    "fs": "43.75px",
+    "fw": "400",
+    "ff": "Zimula",
+    "tt": "none",
+    "ls": "-1.75px"
+   },
+   {
+    "t": "Urban Catalogue",
+    "fs": "16px",
+    "fw": "400",
+    "ff": "sans-serif",
+    "tt": "none",
+    "ls": "normal"
+   },
+   {
+    "t": "Urban Catalogue",
+    "fs": "19.15px",
+    "fw": "400",
+    "ff": "Zimula",
+    "tt": "none",
+    "ls": "-0.383px"
+   },
+   {
+    "t": "Signage and equipment for all facets of ",
+    "fs": "16px",
+    "fw": "400",
+    "ff": "sans-serif",
+    "tt": "none",
+    "ls": "normal"
+   },
+   {
+    "t": "Signage and equipment for all facets of ",
+    "fs": "43.75px",
+    "fw": "400",
+    "ff": "Zimula",
+    "tt": "none",
+    "ls": "-1.75px"
+   },
+   {
+    "t": "Custom projects and furniture crafted ou",
+    "fs": "16px",
+    "fw": "400",
+    "ff": "sans-serif",
+    "tt": "none",
+    "ls": "normal"
+   }
+  ],
+  "canvases": 3,
+  "videos": 0,
+  "imgs": 57,
+  "scripts": 9,
+  "cursorCustom": "auto",
+  "docHeight": 14381,
+  "sticky": 2
+ },
+ "dominantRGB": [
+  248,
+  248,
+  248
+ ],
+ "palette": [
+  "#c3c7ca",
+  "#c5bacd",
+  "#c9c31e",
+  "#6edbce",
+  "#d7e1c1",
+  "#85038d",
+  "#fffafd",
+  "#ffd685",
+  "#196ec2",
+  "#b2b9c9",
+  "#954f78",
+  "#737472"
+ ],
+ "network": {
+  "totalMB": 19.52,
+  "byType": {
+   "mpeg": 14.66,
+   "png": 2.51,
+   "avif": 1.5,
+   "x-javascript": 0.42,
+   "javascript": 0.37,
+   "octet-stream": 0.06
+  },
+  "hosts": 13
+ }
+}
