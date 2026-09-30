@@ -14,7 +14,7 @@ export function MomentsRail() {
   shots.forEach((p, i) => {
     const portrait = p.h > p.w;
     items.push(
-      <li key={p.id} className={`shrink-0 snap-start ${portrait ? "w-[62vw] sm:w-[20rem]" : "w-[82vw] sm:w-[30rem]"} ${i % 2 ? "lg:mt-16" : ""}`}>
+      <li key={p.id} className={`shrink-0 snap-start self-start ${portrait ? "w-[62vw] sm:w-[20rem]" : "w-[82vw] sm:w-[30rem]"} ${i % 2 ? "lg:mt-16" : ""}`}>
         <Reveal><Photo photo={p} aspect={portrait ? "4/5" : "3/2"} sizes="(min-width: 640px) 30rem, 82vw" /></Reveal>
       </li>,
     );

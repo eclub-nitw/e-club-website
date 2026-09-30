@@ -23,6 +23,7 @@ import { TeamMember } from "@/components/ui/TeamMember";
 import { Hero } from "@/components/home/Hero";
 import { Dive } from "@/components/home/Dive";
 import { MomentsRail } from "@/components/home/MomentsRail";
+import { PartnerMarquee } from "@/components/home/PartnerMarquee";
 import { ArchiveLedger } from "@/components/home/ArchiveLedger";
 import { VortexPortal } from "@/components/three/VortexPortal";
 
@@ -103,7 +104,7 @@ export default function Home() {
 
         {listed.length > 0 && (() => { const s = next(); return (
           <Section id="partners" number={s.number} title="Partners" tone={s.tone}>
-            <ul className="flex flex-wrap items-center gap-x-10 gap-y-6">{listed.map((p) => <li key={p.name}><SponsorLogo sponsor={p} /></li>)}</ul>
+            <PartnerMarquee>{listed.map((p) => <li key={p.name}><SponsorLogo sponsor={p} /></li>)}</PartnerMarquee>
             <p className="mt-8 max-w-[60ch] text-sm text-muted">Names and logos belong to their owners; see our <Link href="/disclaimer" className="text-link underline underline-offset-4">disclaimer</Link>.</p>
           </Section>
         ); })()}
