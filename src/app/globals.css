@@ -69,7 +69,7 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
     linear-gradient(0deg, var(--bg) 0%, transparent 40%);
 }
 @media (max-width: 767px) {
-  .hero-scrim { background: linear-gradient(0deg, var(--bg) 8%, color-mix(in oklab, var(--bg) 78%, transparent) 55%, color-mix(in oklab, var(--bg) 45%, transparent) 100%); }
+  .hero-scrim { background: linear-gradient(0deg, var(--bg) 0%, var(--bg) 52%, color-mix(in oklab, var(--bg) 40%, transparent) 64%, transparent 74%); }
 }
 
 /* Growth line: draws with page scroll where CSS scroll-driven animations exist; otherwise fully drawn. */
@@ -79,3 +79,8 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
     .growth-line { animation: grow linear both; animation-timeline: view(); animation-range: entry 30% exit 70%; }
   }
 }
+
+/* Vortex artwork (shown until, or instead of, the live particles): a slow turn, still under reduced motion. */
+@keyframes vortex-turn { from { transform: scale(1.45) rotate(0deg); } to { transform: scale(1.45) rotate(360deg); } }
+.vortex-still { animation: vortex-turn 120s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .vortex-still { animation: none; transform: none; } }
