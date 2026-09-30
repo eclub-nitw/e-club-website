@@ -17,7 +17,7 @@ export default function TeamPage() {
   const members = team.filter((m) => m.year === years[0]);
   return (
     <>
-      <PageHeader number="01" label="Team" title="The people behind the club" lede={years[0] ? `Team of ${years[0]}.` : "The current roster will be published here."} />
+      <PageHeader number="01" label="Team" title="The people behind the club" photoId="01-14" lede={years[0] ? `Team of ${years[0]}.` : "The current roster will be published here."} />
       <div className="bg-bg pb-28 text-fg">
         <Container>
           {members.length ? <TeamGroups members={members} /> : <p className="text-lg text-muted">No roster has been published yet.</p>}

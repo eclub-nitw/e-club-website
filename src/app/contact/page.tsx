@@ -16,7 +16,7 @@ const newTab = <span className="sr-only"> (opens in a new tab)</span>;
 export default function ContactPage() {
   return (
     <>
-      <PageHeader number="01" label="Contact" title="Get in touch" lede="Email is the quickest way to reach us." />
+      <PageHeader number="01" label="Contact" title="Get in touch" photoId="01-01" lede="Email is the quickest way to reach us." />
       <div className="bg-bg pb-28 text-fg">
         <Container>
           <dl className="max-w-3xl border-b border-line">

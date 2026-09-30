@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/data/site";
+import { copy } from "@/data/copy";
 import { legalPages } from "@/lib/legal";
 import { sponsors } from "@/data/sponsors";
 import { Container } from "./Container";
@@ -23,7 +24,9 @@ const linkCls = "inline-flex min-h-11 items-center whitespace-nowrap text-fg/90 
 export function Footer() {
   return (
     <footer className="bg-club-ink text-club-paper">
-      <Container className="py-16 md:py-24">
+      <Container className="pb-10 pt-16 md:pt-28">
+        <p className="h1-xl up max-w-[16ch] text-[clamp(2.75rem,8.5vw,8.5rem)]">{copy.closing[0]}</p>
+        <div className="mt-16 md:mt-24" />
         {listed.length > 0 && (
           <div className="mb-16 border-y border-club-paper/15 py-8">
             <p className="font-mono text-xs uppercase tracking-[0.08em] text-club-mist">Backed by</p>
@@ -39,7 +42,7 @@ export function Footer() {
           <div className="md:col-span-3 lg:col-span-1">
             <p className="whitespace-nowrap font-display text-[clamp(3rem,9vw,7rem)] font-semibold leading-[0.9] tracking-tight">E-Club</p>
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-club-mist">Entrepreneurship Club · NIT Warangal</p>
-            <a href={`mailto:${site.email}`} className="mt-8 inline-flex min-h-11 items-center break-all text-lg underline decoration-club-gold decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
+            <a href={`mailto:${site.email}`} className="mt-4 inline-flex min-h-11 items-center break-all text-lg underline decoration-club-gold decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
           </div>
           {cols.map((c) => (
             <nav key={c.title} aria-label={c.title}>
@@ -72,6 +75,7 @@ export function Footer() {
           </div>
         </div>
       </Container>
+      <p aria-hidden="true" className="mega -mb-[0.06em] select-none overflow-hidden whitespace-nowrap px-5 text-center text-[clamp(5rem,30vw,26rem)] text-club-paper/10 md:px-10">E-Club</p>
     </footer>
   );
 }

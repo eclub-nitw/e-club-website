@@ -18,7 +18,7 @@ export default function AboutPage() {
   return (
     <>
       <PageHeader
-        number="01" label="About" title="Who we are"
+        number="01" label="About" title="Who we are" photoId="02-23"
         lede={about.mission ?? "The Entrepreneurship Club (E-Club) is the student entrepreneurship community of NIT Warangal. We run events, competitions and speaker sessions for student founders."}
       />
       {site.foundedYear && <div className="bg-bg pb-10 text-fg"><Container><p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">Founded {site.foundedYear}</p></Container></div>}

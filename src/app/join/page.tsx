@@ -15,7 +15,7 @@ export default function JoinPage() {
   return (
     <>
       <PageHeader
-        number="01" label="Join" title={open ? "Recruitment is open" : "Recruitment is closed for now"}
+        number="01" label="Join" photoId="01-12" title={open ? "Recruitment is open" : "Recruitment is closed for now"}
         lede={open ? "Apply through the form below." : "We are not taking applications right now. Follow us or write to us to hear first when the next round opens."}
       />
       <div className="bg-bg pb-28 text-fg">

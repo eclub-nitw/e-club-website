@@ -17,7 +17,7 @@ export default function SponsorsPage() {
   const listed = sponsors.filter((s) => s.consent);
   return (
     <>
-      <PageHeader number="01" label="Sponsors and partners" title="Partners who back the club" lede="Sponsors and collaborators make our events possible. Here is who they are and how to join them." />
+      <PageHeader number="01" label="Sponsors and partners" title="Partners who back the club" photoId="03-39" lede="Sponsors and collaborators make our events possible. Here is who they are and how to join them." />
       {listed.length > 0 && (
         <Section id="wall" number="02" title="Past partners" tone="paper">
           <ul className="flex flex-wrap items-center gap-x-12 gap-y-8">{listed.map((s) => <li key={s.name}><SponsorLogo sponsor={s} /></li>)}</ul>

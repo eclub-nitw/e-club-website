@@ -33,7 +33,7 @@ export function ArchiveLedger({ flagship }: { flagship?: ClubEvent }) {
           <Link href={r.href} data-cursor="VIEW" className="ledger-row swap-host group grid min-h-32 grid-cols-[2rem_1fr_6.5rem] items-center gap-x-4 gap-y-1 border-t border-line py-5 sm:grid-cols-[3rem_1fr_11rem] md:grid-cols-[4rem_1fr_9rem_15rem] md:gap-x-6">
             <span className="label text-muted">{String(n + 1).padStart(2, "0")}</span>
             <span>
-              <span className="block font-display text-[clamp(1.6rem,4.6vw,4rem)] font-extrabold uppercase leading-[0.95] tracking-tight">{r.title}</span>
+              <span className="block font-display text-[clamp(1.6rem,4.6vw,4rem)] font-extrabold uppercase leading-[0.95] tracking-[0.01em]">{r.title}</span>
               <span className="label mt-2 block text-muted md:hidden">{r.kind} · {r.meta}</span>
             </span>
             <span className="label hidden text-muted md:block">{r.kind}<br />{r.meta}</span>

@@ -84,7 +84,7 @@ export default function Home() {
               <div>
                 <p className="label text-muted">{fmtRange(flagship.dateStart, flagship.dateEnd)}</p>
                 <h3 className="h1-xl up mt-4 text-[clamp(3rem,8vw,8rem)]">{flagship.title}</h3>
-                <p className="tabular mt-8 font-display text-[clamp(3.5rem,9vw,9rem)] font-extrabold leading-none tracking-tight text-accent">₹50,000</p>
+                <p className="tabular mt-8 font-display text-[clamp(3.5rem,9vw,9rem)] font-extrabold leading-none tracking-[0.01em] text-accent">₹50,000</p>
                 <p className="label mt-2 text-muted">Prize pool</p>
                 <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-muted">{flagship.summary}</p>
                 <div className="mt-8"><Countdown start={flagship.dateStart} end={flagship.dateEnd} /></div>
@@ -125,7 +125,7 @@ export default function Home() {
               ].map((r) => (
                 <li key={r.href}>
                   <Link href={r.href} data-cursor="OPEN" className="ledger-row group grid min-h-28 items-baseline gap-2 border-t border-line py-6 md:grid-cols-[1.4fr_1fr_2rem] md:gap-8">
-                    <span className="font-display text-[clamp(2.25rem,7vw,7rem)] font-extrabold uppercase leading-[0.95] tracking-tight">{r.title}</span>
+                    <span className="font-display text-[clamp(2.25rem,7vw,7rem)] font-extrabold uppercase leading-[0.95] tracking-[0.01em]">{r.title}</span>
                     <span className="text-muted">{r.text}</span>
                     <span aria-hidden className="hidden transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>
                   </Link>

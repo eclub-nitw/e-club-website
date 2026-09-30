@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { photos } from "@/data/media";
+import { caption } from "@/lib/photos";
 import { notFound } from "next/navigation";
 import { events } from "@/data/events";
 import { fmtRange } from "@/lib/format";
@@ -63,7 +65,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             {e.stats && e.stats.length > 0 && (
               <div className="mb-10 grid gap-8 sm:grid-cols-2">{e.stats.map((s) => <StatNumber key={s.label} {...s} />)}</div>
             )}
-            {e.gallery && e.gallery.length > 0 && <Gallery items={e.gallery.map((g) => ({ ...g, caption: g.alt }))} />}
+            {e.gallery && e.gallery.length > 0 && <Gallery items={photos.filter((p) => e.gallery!.includes(p.id)).map((p) => ({ id: p.id, event: p.event, w: p.w, h: p.h, alt: p.alt, caption: caption(p), blur: p.blur }))} />}
           </div>}
 
           <aside aria-label="Event facts" className="max-w-2xl">

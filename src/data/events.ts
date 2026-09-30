@@ -4,7 +4,7 @@ export type ClubEvent = {
   dateStart: string; dateEnd?: string;            // ISO 8601 with offset, e.g. "2026-10-30T08:00:00+05:30"
   venue: string; summary: string;
   stats?: { label: string; value: string; source: string }[];  // only verified numbers, each with its source
-  coverImage?: string; gallery?: { src: string; alt: string }[];  // paths under /public/images/events/<slug>/
+  coverImage?: string; gallery?: string[];         // coverImage: path under /public; gallery: photo ids from data/media.ts
   videoId?: string;                                // YouTube video ID
   registerUrl?: string;
 };

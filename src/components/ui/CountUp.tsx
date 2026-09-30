@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-const PARTS = /^(\D*)(\d[\d,]*)(.*)$/;
+const PARTS = /^(\D*)(\d[\d,]*)(\D*)$/; // digits only in the middle: ranges and years stay as written
 
 /** Counts a verified number up once when it scrolls into view. Server HTML and reduced motion show the final value. */
 export function CountUp({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const m = PARTS.exec(value);
+  const m = /^\d{4}$/.test(value) ? null : PARTS.exec(value);
   const target = m ? Number(m[2].replace(/,/g, "")) : NaN;
   const [shown, setShown] = useState<number | null>(null);
 

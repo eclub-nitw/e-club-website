@@ -19,7 +19,7 @@ export default function EventsPage() {
   return (
     <>
       <JsonLd data={breadcrumbLd([{ name: "Home", path: "/" }, { name: "Events", path: "/events" }])} />
-      <PageHeader number="01" label="Events" title="Events and archive" lede="Upcoming events come first, then everything we have run, newest to oldest." />
+      <PageHeader number="01" label="Events" title="Events and archive" photoId="03-33" lede="Upcoming events come first, then everything we have run, newest to oldest." />
       <div className="bg-bg pb-28 text-fg">
         <Container>
           {events.length ? <EventLedger events={events} nowIso={new Date().toISOString()} /> : <p className="text-lg text-muted">No events are published yet.</p>}
