@@ -1,0 +1,77 @@
+{
+ "label": "lando",
+ "url": "https://landonorris.com",
+ "ok": true,
+ "title": "McLaren Formula 1 Driver — Lando Norris",
+ "docHeight": 11333,
+ "type": [
+  {
+   "k": "98|700|Brier|uppercase|-2.91667px|78.975px|100%",
+   "n": 2,
+   "sample": "ON"
+  },
+  {
+   "k": "93|700|Mona Sans Variable|uppercase|-3.33333px|79.3333px|100%",
+   "n": 2,
+   "sample": "TRACK"
+  },
+  {
+   "k": "20|400|Brier|none|0.666667px|18.8px|100%",
+   "n": 12,
+   "sample": "It doesn’t matter"
+  },
+  {
+   "k": "17|700|Mona Sans Variable|none|normal|20.8333px|100%",
+   "n": 2,
+   "sample": "results"
+  },
+  {
+   "k": "17|400|Mona Sans Variable|none|-0.166667px|20.8333px|100%",
+   "n": 5,
+   "sample": "Most recent"
+  },
+  {
+   "k": "17|700|Mona Sans Variable|none|-0.166667px|20.8333px|100%",
+   "n": 2,
+   "sample": "results"
+  },
+  {
+   "k": "14|400|Mona Sans Variable|none|normal|20px|100%",
+   "n": 2,
+   "sample": "where"
+  },
+  {
+   "k": "12|600|Mona Sans Variable|none|normal|15px|100%",
+   "n": 10,
+   "sample": "Discoball"
+  },
+  {
+   "k": "12|700|Mona Sans Variable|none|normal|15px|100%",
+   "n": 10,
+   "sample": "2025"
+  },
+  {
+   "k": "8|400|Mona Sans Variable|uppercase|normal|8.33333px|100%",
+   "n": 16,
+   "sample": "Next Race"
+  }
+ ],
+ "families": [
+  "Brier",
+  "Mona Sans Variable"
+ ],
+ "misc": {
+  "canvases": 21,
+  "videos": 0,
+  "imgs": 133,
+  "sticky": 4,
+  "bodyCursor": "auto",
+  "lenis": true,
+  "bodyBg": "rgb(244, 244, 237)",
+  "bodyColor": "rgb(244, 244, 237)",
+  "gsap": false,
+  "three": false,
+  "next": false
+ },
+ "cursorFollowers": 0
+}

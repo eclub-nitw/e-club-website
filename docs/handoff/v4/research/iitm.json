@@ -1,0 +1,69 @@
+{
+ "label": "iitm",
+ "url": "https://ecell.iitm.ac.in/home",
+ "ok": true,
+ "title": "Homepage | Ecell",
+ "docHeight": 900,
+ "type": [
+  {
+   "k": "96|800|__Orbitron_c08c23|none|24px|96px|100%",
+   "n": 3,
+   "sample": "E-CELL"
+  },
+  {
+   "k": "58|800|__Oswald_e31322|none|10px|87px|100%",
+   "n": 3,
+   "sample": "EDUCATION-21"
+  },
+  {
+   "k": "58|800|__Oswald_e31322|none|6px|66.7px|100%",
+   "n": 6,
+   "sample": "Startup"
+  },
+  {
+   "k": "48|800|__Orbitron_c08c23|none|normal|48px|100%",
+   "n": 3,
+   "sample": "IIT MADRAS"
+  },
+  {
+   "k": "30|800|__Oswald_e31322|none|normal|36px|100%",
+   "n": 3,
+   "sample": "\"Empowering students to thin"
+  },
+  {
+   "k": "16|400|ui-monospace|none|normal|24px|100%",
+   "n": 21,
+   "sample": "HOME"
+  },
+  {
+   "k": "14|600|ui-sans-serif|none|normal|20px|100%",
+   "n": 24,
+   "sample": "Hyundai CoE Mobility Innovat"
+  },
+  {
+   "k": "14|700|ui-sans-serif|none|normal|20px|100%",
+   "n": 24,
+   "sample": "Click Here"
+  }
+ ],
+ "families": [
+  "__Orbitron_c08c23",
+  "__Oswald_e31322",
+  "ui-monospace",
+  "ui-sans-serif"
+ ],
+ "misc": {
+  "canvases": 0,
+  "videos": 1,
+  "imgs": 24,
+  "sticky": 2,
+  "bodyCursor": "auto",
+  "lenis": false,
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "bodyColor": "rgb(0, 0, 0)",
+  "gsap": false,
+  "three": false,
+  "next": false
+ },
+ "cursorFollowers": 0
+}

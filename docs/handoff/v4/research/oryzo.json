@@ -1,0 +1,72 @@
+{
+ "label": "oryzo",
+ "url": "https://oryzo.ai",
+ "ok": true,
+ "title": "ORYZO AI",
+ "docHeight": 56691,
+ "type": [
+  {
+   "k": "24|500|halyard-display-variable|uppercase|normal|26.16px|100%",
+   "n": 4,
+   "sample": "Designed"
+  },
+  {
+   "k": "18|500|halyard-display-variable|uppercase|normal|18px|100%",
+   "n": 6,
+   "sample": "Made"
+  },
+  {
+   "k": "18|400|halyard-display-variable|none|normal|23.994px|100%",
+   "n": 3,
+   "sample": "The world's most"
+  },
+  {
+   "k": "16|500|halyard-display-variable|uppercase|normal|18.8509px|100%",
+   "n": 3,
+   "sample": "Hey"
+  },
+  {
+   "k": "15|500|halyard-display-variable|uppercase|normal|60px|100%",
+   "n": 4,
+   "sample": "Oryzo-1 Model"
+  },
+  {
+   "k": "12|500|Arial|uppercase|normal|13.2px|100%",
+   "n": 1,
+   "sample": "Send"
+  },
+  {
+   "k": "12|500|halyard-display-variable|uppercase|normal|13.08px|100%",
+   "n": 13,
+   "sample": "Creative"
+  },
+  {
+   "k": "12|500|halyard-display-variable|uppercase|normal|36px|100%",
+   "n": 4,
+   "sample": "Rating & Reviews"
+  },
+  {
+   "k": "10|500|halyard-display-variable|uppercase|normal|11.52px|100%",
+   "n": 1,
+   "sample": "PLAY"
+  }
+ ],
+ "families": [
+  "halyard-display-variable",
+  "Arial"
+ ],
+ "misc": {
+  "canvases": 6,
+  "videos": 2,
+  "imgs": 39,
+  "sticky": 2,
+  "bodyCursor": "auto",
+  "lenis": false,
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "bodyColor": "rgb(255, 237, 215)",
+  "gsap": false,
+  "three": false,
+  "next": false
+ },
+ "cursorFollowers": 0
+}

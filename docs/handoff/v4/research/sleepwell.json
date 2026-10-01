@@ -1,0 +1,83 @@
+{
+ "label": "sleepwell",
+ "url": "https://sleep-well-creatives.com",
+ "ok": true,
+ "title": "Sleep Well Creatives",
+ "docHeight": 41338,
+ "type": [
+  {
+   "k": "65|100|Editorial|none|-1.5px|85.02px|100%",
+   "n": 1,
+   "sample": "How to redesign"
+  },
+  {
+   "k": "65|100|NM_Regular|none|normal|85.02px|100%",
+   "n": 1,
+   "sample": "for a better sleep."
+  },
+  {
+   "k": "38|400|Editorial|none|22.5px|49.725px|100%",
+   "n": 3,
+   "sample": "SLEEP"
+  },
+  {
+   "k": "30|100|Editorial|none|-0.75px|39px|100%",
+   "n": 6,
+   "sample": "🌗  Set a bedtime ritual."
+  },
+  {
+   "k": "25|100|Editorial|none|-0.75px|32.5px|100%",
+   "n": 4,
+   "sample": "Enter Site"
+  },
+  {
+   "k": "19|100|Editorial|none|-0.75px|24.375px|100%",
+   "n": 2,
+   "sample": "03"
+  },
+  {
+   "k": "18|100|NM_Regular|none|normal|25.2px|100%",
+   "n": 12,
+   "sample": "Your body listens to light. "
+  },
+  {
+   "k": "18|100|NM_Regular|none|normal|18px|100%",
+   "n": 2,
+   "sample": "Rest is near."
+  },
+  {
+   "k": "14|100|NM_Medium|none|normal|14.25px|100%",
+   "n": 4,
+   "sample": "THE NOTE"
+  },
+  {
+   "k": "14|100|NM_Regular|none|normal|14.25px|100%",
+   "n": 5,
+   "sample": "Find the sleeping Insights"
+  },
+  {
+   "k": "12|100|NM_Regular|none|normal|12px|100%",
+   "n": 1,
+   "sample": "Scroll to Explore"
+  }
+ ],
+ "families": [
+  "Editorial",
+  "NM_Regular",
+  "NM_Medium"
+ ],
+ "misc": {
+  "canvases": 1,
+  "videos": 14,
+  "imgs": 12,
+  "sticky": 4,
+  "bodyCursor": "auto",
+  "lenis": true,
+  "bodyBg": "rgb(254, 241, 208)",
+  "bodyColor": "rgb(51, 51, 51)",
+  "gsap": false,
+  "three": false,
+  "next": false
+ },
+ "cursorFollowers": 1
+}
