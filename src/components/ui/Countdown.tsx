@@ -14,8 +14,8 @@ export function Countdown({ start, end }: { start: string; end?: string }) {
   const s = new Date(start).getTime();
   const e = end ? new Date(end).getTime() : s;
 
-  if (t !== null && t >= e) return <p className="font-mono text-sm uppercase tracking-[0.08em] text-muted">Concluded</p>;
-  if (t !== null && t >= s) return <p className="font-mono text-sm uppercase tracking-[0.08em] text-link">Live now</p>;
+  if (t !== null && t >= e) return <p className="t-label text-muted">Concluded</p>;
+  if (t !== null && t >= s) return <p className="t-label text-link">Live now</p>;
 
   const diff = t === null ? null : s - t;
   const parts = diff === null ? null : [
@@ -25,11 +25,11 @@ export function Countdown({ start, end }: { start: string; end?: string }) {
   ] as const;
 
   return (
-    <div role="timer" aria-label="Time until the event starts" className="flex gap-6 font-mono">
+    <div role="timer" aria-label="Time until the event starts" className="flex gap-6">
       {(parts ?? [["–", "days"], ["–", "hrs"], ["–", "min"]] as const).map(([n, label]) => (
         <div key={label} className="min-w-14">
-          <p className="tabular text-3xl font-medium leading-none md:text-4xl">{typeof n === "number" ? String(n).padStart(2, "0") : n}</p>
-          <p className="mt-2 text-[11px] uppercase tracking-[0.1em] text-muted">{label}</p>
+          <p className="t-h3 tabular">{typeof n === "number" ? String(n).padStart(2, "0") : n}</p>
+          <p className="t-label mt-2 text-muted">{label}</p>
         </div>
       ))}
     </div>

@@ -1,26 +1,29 @@
 import Image from "next/image";
 import type { Member } from "@/data/team";
+import { H3, Label } from "./Type";
 
-/** Index-card style member: greyscale 4:5 portrait (colour on hover), role in mono. Photo shows only with recorded consent. */
+/**
+ * Roster row, typographic first: name in the headline voice, role in mono, a handle link revealed on hover and focus.
+ * A greyscale portrait appears only when consent is recorded in the data file AND a photo exists.
+ */
 export function TeamMember({ member }: { member: Member }) {
   const showPhoto = member.photoConsent && !!member.photo;
   return (
-    <li className="group">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-surface">
-        {showPhoto ? (
-          <Image src={member.photo!} alt={`Portrait of ${member.name}`} fill sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
-            className="object-cover grayscale transition duration-500 ease-out group-hover:scale-[1.03] group-hover:grayscale-0 motion-reduce:transition-none" />
-        ) : (
-          <span aria-hidden className="absolute inset-0 flex items-center justify-center font-display text-7xl font-semibold text-muted/50">{member.name.charAt(0)}</span>
+    <li className="ledger-row group rule-draw grid min-h-24 grid-cols-[1fr_auto] items-center gap-x-6 gap-y-1 py-5 md:grid-cols-[1.4fr_1fr_auto]">
+      <H3>{member.name}</H3>
+      <Label className="md:order-none">{member.role}</Label>
+      <span className="flex items-center gap-4 md:justify-end">
+        {member.linkedin && (
+          <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="t-label inline-flex min-h-11 items-center text-link underline underline-offset-4 transition-opacity duration-200 hover:no-underline md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100">
+            LinkedIn<span className="sr-only"> profile of {member.name} (opens in a new tab)</span>
+          </a>
         )}
-      </div>
-      <p className="mt-4 font-display text-xl font-medium leading-snug">{member.name}</p>
-      <p className="mt-1 font-mono text-xs uppercase tracking-[0.08em] text-muted">{member.role}</p>
-      {member.linkedin && (
-        <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex min-h-11 items-center text-sm text-link underline underline-offset-4 hover:no-underline">
-          {member.name} on LinkedIn<span className="sr-only"> (opens in a new tab)</span>
-        </a>
-      )}
+        {showPhoto && (
+          <span className="relative block size-16 shrink-0 overflow-hidden rounded-[2px]">
+            <Image src={member.photo!} alt={`Portrait of ${member.name}`} fill sizes="64px" className="object-cover grayscale transition duration-500 group-hover:grayscale-0 motion-reduce:transition-none" />
+          </span>
+        )}
+      </span>
     </li>
   );
 }

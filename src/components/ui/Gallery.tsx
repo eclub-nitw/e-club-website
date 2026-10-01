@@ -30,7 +30,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
               </picture>
               <span className="sr-only">View larger: {it.caption}</span>
             </button>
-            <p className="label mt-2 text-muted" aria-hidden="true">{it.caption}</p>
+            <p className="t-label mt-2 text-muted" aria-hidden="true">{it.caption}</p>
           </li>
         ))}
       </ul>
@@ -53,7 +53,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
                 <img src={fileOf(cur, 1600, "webp")} alt={cur.alt} width={cur.w} height={cur.h} className="max-h-[76svh] w-auto max-w-full object-contain" style={{ backgroundImage: `url(${cur.blur})`, backgroundSize: "cover" }} />
               </picture>
             </div>
-            <figcaption className="label mt-3 flex flex-wrap items-center justify-between gap-4">
+            <figcaption className="t-label mt-3 flex flex-wrap items-center justify-between gap-4">
               <span>{cur.caption} · {i + 1}/{items.length}</span>
               <span className="flex gap-2">
                 <button type="button" onClick={() => step(-1)} className="min-h-11 min-w-11 border border-club-paper/30 px-3">Prev</button>

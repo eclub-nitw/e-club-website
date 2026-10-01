@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Breadcrumbs({ trail }: { trail: { name: string; path?: string }[] }) {
   return (
-    <nav aria-label="Breadcrumb" className="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+    <nav aria-label="Breadcrumb" className="t-label text-muted">
       <ol className="flex flex-wrap items-center gap-x-2">
         {trail.map((t, i) => (
           <li key={t.name} className="flex items-center gap-2">

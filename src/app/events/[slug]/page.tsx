@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { photos } from "@/data/media";
-import { caption } from "@/lib/photos";
 import { notFound } from "next/navigation";
+import { photos } from "@/data/media";
 import { events } from "@/data/events";
+import { caption } from "@/lib/photos";
 import { fmtRange } from "@/lib/format";
 import { isUpcoming } from "@/lib/events";
 import { breadcrumbLd, eventLd } from "@/lib/jsonld";
@@ -13,9 +13,8 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Gallery } from "@/components/ui/Gallery";
 import { JsonLd } from "@/components/ui/JsonLd";
-import { LedgerRow } from "@/components/ui/LedgerRow";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { StatNumber } from "@/components/ui/StatNumber";
+import { Body, H3, Label } from "@/components/ui/Type";
 import { VideoEmbed } from "@/components/ui/VideoEmbed";
 import { TYPE_LABEL } from "@/components/ui/EventRow";
 
@@ -38,51 +37,63 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+/** Event detail: header, a four-column facts strip, the summary, then media (cover, video facade, gallery) and related events. */
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const e = find((await params).slug);
   if (!e) notFound();
   const upcoming = isUpcoming(e);
-  const hasMedia = !!(e.coverImage || e.videoId || e.stats?.length || e.gallery?.length);
   const related = events.filter((o) => o.slug !== e.slug && o.type === e.type).slice(0, 3);
+  const facts: [string, string][] = [["Date", fmtRange(e.dateStart, e.dateEnd)], ["Venue", e.venue], ["Type", TYPE_LABEL[e.type]], ["Status", upcoming ? "Upcoming" : "Concluded"]];
 
   return (
     <>
       <JsonLd data={eventLd(e)} />
       <JsonLd data={breadcrumbLd([{ name: "Home", path: "/" }, { name: "Events", path: "/events" }, { name: e.title, path: `/events/${e.slug}` }])} />
-      <PageHeader number={TYPE_LABEL[e.type]} label={fmtRange(e.dateStart, e.dateEnd)} title={e.title} lede={e.summary}>
+      <PageHeader number={TYPE_LABEL[e.type]} label={fmtRange(e.dateStart, e.dateEnd)} title={e.title} lede={e.summary} art={e.type === "flagship" ? "vortex" : "pitch-stage"}>
         <Breadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Events", path: "/events" }, { name: e.title }]} />
       </PageHeader>
 
       <div className="bg-bg pb-28 text-fg">
-        <Container className={hasMedia ? "grid gap-14 lg:grid-cols-[1.2fr_1fr]" : ""}>
-          {hasMedia && <div>
-            {e.coverImage && (
-              <div className="relative mb-10 aspect-[3/2] overflow-hidden rounded-[2px] bg-surface">
-                <Image src={e.coverImage} alt={`${e.title}, cover photo`} fill priority sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
+        <Container>
+          <dl className="grid border-y border-line sm:grid-cols-2 lg:grid-cols-4">
+            {facts.map(([k, v]) => (
+              <div key={k} className="border-b border-line py-5 pr-6 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0 lg:border-b-0">
+                <dt><Label>{k}</Label></dt>
+                <dd className="t-body mt-2">{v}</dd>
               </div>
-            )}
-            {e.videoId && <div className="mb-10"><VideoEmbed videoId={e.videoId} title={`${e.title}, video`} /></div>}
-            {e.stats && e.stats.length > 0 && (
-              <div className="mb-10 grid gap-8 sm:grid-cols-2">{e.stats.map((s) => <StatNumber key={s.label} {...s} />)}</div>
-            )}
-            {e.gallery && e.gallery.length > 0 && <Gallery items={photos.filter((p) => e.gallery!.includes(p.id)).map((p) => ({ id: p.id, event: p.event, w: p.w, h: p.h, alt: p.alt, caption: caption(p), blur: p.blur }))} />}
-          </div>}
+            ))}
+          </dl>
+          {upcoming && e.registerUrl && <div className="mt-8"><Button href={e.registerUrl}>Register on Unstop</Button></div>}
 
-          <aside aria-label="Event facts" className="max-w-2xl">
-            <dl>
-              <LedgerRow label="Date">{fmtRange(e.dateStart, e.dateEnd)}</LedgerRow>
-              <LedgerRow label="Venue">{e.venue}</LedgerRow>
-              <LedgerRow label="Type">{TYPE_LABEL[e.type]}</LedgerRow>
-              <LedgerRow label="Status">{upcoming ? "Upcoming" : "Concluded"}</LedgerRow>
+          {e.stats && e.stats.length > 0 && (
+            <dl className="mt-16 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+              {e.stats.map((s) => (
+                <div key={s.label} className="rule-draw pt-5">
+                  <dt className="t-h2 tabular">{s.value}</dt>
+                  <dd className="m-0"><p className="t-body mt-2">{s.label}</p><Label className="mt-2">Source: {s.source}</Label></dd>
+                </div>
+              ))}
             </dl>
-            {upcoming && e.registerUrl && <div className="mt-8"><Button href={e.registerUrl}>Register on Unstop</Button></div>}
-          </aside>
+          )}
+          {e.coverImage && (
+            <div className="relative mt-16 aspect-[3/2] max-w-4xl overflow-hidden rounded-[2px] bg-surface">
+              <Image src={e.coverImage} alt={`${e.title}, cover photo`} fill sizes="(min-width: 1024px) 56rem, 100vw" className="object-cover" />
+            </div>
+          )}
+          {e.videoId && <div className="mt-16 max-w-4xl"><VideoEmbed videoId={e.videoId} title={`${e.title}, video`} /></div>}
+          {e.gallery && e.gallery.length > 0 && (
+            <div className="mt-16">
+              <Label className="mb-6 border-t border-line pt-4">Photographs</Label>
+              <Gallery items={photos.filter((p) => e.gallery!.includes(p.id)).map((p) => ({ id: p.id, event: p.event, w: p.w, h: p.h, alt: p.alt, caption: caption(p), blur: p.blur }))} />
+            </div>
+          )}
+          {!e.coverImage && !e.videoId && !e.gallery?.length && !upcoming && <Body className="mt-16">Photographs and video from this event will be added here.</Body>}
         </Container>
 
         {related.length > 0 && (
           <Container className="mt-24">
-            <h2 className="border-t border-line pt-4 font-mono text-xs uppercase tracking-[0.08em] text-muted">Related events</h2>
-            <ul className="mt-4">{related.map((r) => <li key={r.slug} className="border-t border-line"><Link href={`/events/${r.slug}`} className="ledger-row flex min-h-14 items-center py-3 font-display text-2xl">{r.title}</Link></li>)}</ul>
+            <Label as="h2" className="border-t border-line pt-4">Related events</Label>
+            <ul className="mt-4">{related.map((r) => <li key={r.slug} className="border-t border-line"><Link href={`/events/${r.slug}`} className="ledger-row flex min-h-14 items-center py-3"><H3 as="span">{r.title}</H3></Link></li>)}</ul>
           </Container>
         )}
       </div>

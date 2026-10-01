@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { bricolage, instrument, jetbrains } from "@/lib/fonts";
+import { bricolage, instrument, instrumentSerif, jetbrains } from "@/lib/fonts";
 import { site } from "@/data/site";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Cursor } from "@/components/ui/Cursor";
@@ -20,7 +20,7 @@ export const viewport: Viewport = { themeColor: "#0b2226", colorScheme: "dark" }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" data-theme="club" className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable}`}>
+    <html lang="en-IN" data-theme="club" className={`${bricolage.variable} ${instrument.variable} ${instrumentSerif.variable} ${jetbrains.variable}`}>
       <body className="grain antialiased">
         <SmoothScroll />
         <Cursor />

@@ -1,32 +1,40 @@
 import { Container } from "./Container";
 import { MaskedText } from "./MaskedText";
+import { H2, Label } from "./Type";
 
-/** Numbered ledger section on ink or paper. Paper re-maps the semantic tokens via `.tone-paper`. */
+/**
+ * One chapter of the page (the site scrolls like a pitch deck). Header = mono numeral + title on a hairline, then one sentence-case
+ * headline. Paper re-maps the semantic tokens via `.tone-paper`. `data-section` feeds the nav's "04 / 09" counter.
+ * `bare` skips the container and header for chapters that lay themselves out (cover, flagship stage).
+ */
 export function Section({
-  id, number, title, tone = "ink", children, className = "",
+  id, number, title, heading, tone = "ink", children, className = "", bare = false,
 }: {
   id: string;
-  number?: string;
-  title?: string;
+  number: string;
+  title: string;
+  heading?: string;
   tone?: "ink" | "paper";
   children: React.ReactNode;
   className?: string;
+  bare?: boolean;
 }) {
   return (
-    <section id={id} data-section={title ? `${number ? `${number} — ` : ""}${title}` : undefined} aria-labelledby={title ? `${id}-h` : undefined} className={`${tone === "paper" ? "tone-paper" : "bg-bg text-fg"} py-20 md:py-28 ${className}`}>
-      <Container>
-        {(number || title) && (
-          <header className="mb-10 border-t border-line pt-4 md:mb-14">
-            {number && <p className="font-mono text-xs uppercase tracking-[0.08em] text-muted">{number}{title ? ` — ${title}` : ""}</p>}
-            {title && (
-              <h2 id={`${id}-h`} className={`mt-4 max-w-[18ch] font-display text-[clamp(2.5rem,6.5vw,6rem)] font-extrabold leading-[0.95] tracking-[0.01em] ${tone === "ink" ? "uppercase" : ""}`}>
-                <MaskedText text={title} />
-              </h2>
+    <section id={id} data-section={`${number} — ${title}`} aria-labelledby={heading ? `${id}-h` : undefined} aria-label={heading ? undefined : title}
+      className={`${tone === "paper" ? "tone-paper" : "bg-bg text-fg"} relative ${bare ? "" : "py-20 md:py-32"} ${className}`}>
+      {bare ? children : (
+        <Container>
+          <header className="mb-12 md:mb-16">
+            <Label className="border-t border-line pt-4">{number} — {title}</Label>
+            {heading && (
+              <H2 id={`${id}-h`} className="mt-6 max-w-[20ch]">
+                <MaskedText text={heading} />
+              </H2>
             )}
           </header>
-        )}
-        {children}
-      </Container>
+          {children}
+        </Container>
+      )}
     </section>
   );
 }

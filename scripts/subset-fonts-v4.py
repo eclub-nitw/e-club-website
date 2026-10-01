@@ -22,3 +22,4 @@ def build(name, out, limits=None):
 
 build("bric.ttf", "bricolage-grotesque.woff2", {"opsz": 96, "wght": (200, 800), "wdth": (75, 100)})
 build("iserif.ttf", "instrument-serif.woff2")
+build("jb.ttf", "jetbrains-mono.woff2", {"wght": 500})  # labels are weight 500 only

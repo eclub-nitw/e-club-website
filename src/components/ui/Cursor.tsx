@@ -52,7 +52,7 @@ export function Cursor() {
 
   return (
     <div ref={ring} aria-hidden="true" className="cursor-label pointer-events-none fixed left-0 top-0 z-[70] flex size-7 items-center justify-center rounded-full border border-accent opacity-0 transition-opacity duration-200">
-      <span ref={text} className="label text-[10px] font-medium text-accent-fg opacity-0 transition-opacity duration-150" />
+      <span ref={text} className="t-label text-accent-fg opacity-0 transition-opacity duration-150" />
     </div>
   );
 }

@@ -36,10 +36,10 @@ export function LegalDoc({ source }: { source: string }) {
     }
     flush();
     if (!line.trim() || /^# /.test(line)) continue; // the page's h1 comes from PageHeader
-    if (line.startsWith("## ")) out.push(<h2 key={out.length} className="mt-12 border-t border-line pt-4 font-display text-2xl font-semibold md:text-3xl">{line.slice(3)}</h2>);
-    else if (line.startsWith("> ")) out.push(<p key={out.length} className="my-6 border-l-2 border-accent pl-4 font-mono text-sm text-muted">{inline(line.slice(2))}</p>);
+    if (line.startsWith("## ")) out.push(<h2 key={out.length} className="t-h3 mt-12 border-t border-line pt-4">{line.slice(3)}</h2>);
+    else if (line.startsWith("> ")) out.push(<p key={out.length} className="t-label my-6 border-l-2 border-accent pl-4 normal-case tracking-normal text-muted">{inline(line.slice(2))}</p>);
     else out.push(<p key={out.length} className="my-4">{inline(line)}</p>);
   }
   flush();
-  return <div className="max-w-[68ch] text-base leading-[1.7]">{out}</div>;
+  return <div className="t-body max-w-[68ch] !text-base leading-[1.7]">{out}</div>;
 }

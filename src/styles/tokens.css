@@ -32,12 +32,14 @@
   --color-club-gold: #ed9038;         /* CORRECTED: real logo accent is orange (6.3:1 on club-ink; pair with ink text, not white — white on this is only 2.4:1) */
   --color-club-cyan: #36afaa;         /* NEW: bright highlight sampled from the logo's arrow/bars (5.8:1 on club-ink). Optional secondary accent — sparing use, e.g. link hover, a single underline. */
   --color-club-paper: #f5f1e6;        /* light sections */
-  --color-club-mist: #9fb8ba;         /* muted text on dark (7.4:1) */
+  --color-club-mist: #9fb8ba;         /* muted text on dark (7.9:1) */
+  --color-club-orange-ink: #a14e00;   /* V4: orange for SMALL accent text on paper (5.2:1 on paper). club-gold fails there (2.4:1) */
 
   /* type */
   --font-display: var(--font-bricolage), "Arial Narrow", system-ui, sans-serif;
   --font-sans: var(--font-instrument), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "Cascadia Mono", monospace;
+  --font-serif: var(--font-instrument-serif), "Times New Roman", Georgia, serif;
 
   /* motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -75,7 +77,7 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
 
 /* paper grain: one SVG noise at 4% opacity, applied once via class "grain" on <body> — reads as printed, not rendered */
 .grain::after {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .04; mix-blend-mode: overlay;
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .035; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 .tabular { font-variant-numeric: tabular-nums; }

@@ -1,14 +1,17 @@
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Body, Display, Label } from "@/components/ui/Type";
 
+/** The 404 is a slide too: "Slide not found". */
 export default function NotFound() {
   return (
-    <div className="bg-bg pb-32 pt-44 text-fg">
+    <div data-section="404 — Slide not found" className="bg-bg pb-32 pt-44 text-fg">
       <Container>
-        <p className="border-t border-line pt-4 font-mono text-xs uppercase tracking-[0.08em] text-muted">404</p>
-        <h1 className="mt-6 font-display text-6xl font-semibold tracking-tight md:text-8xl">Page not found</h1>
-        <p className="mt-6 max-w-[48ch] text-lg text-muted">That address is not in our ledger. It may have moved, or never existed.</p>
-        <div className="mt-8"><Button href="/">Back to home</Button></div>
+        <Label className="border-t border-line pt-4">404 — Slide not found</Label>
+        <h1 className="sr-only">Slide not found</h1>
+        <Display className="mt-6" aria-hidden="true">404</Display>
+        <Body className="mt-8">That address is not in this deck. It may have moved, or never existed.</Body>
+        <div className="mt-8"><Button href="/">Back to the cover</Button></div>
       </Container>
     </div>
   );

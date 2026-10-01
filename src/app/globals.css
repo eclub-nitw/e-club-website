@@ -62,16 +62,6 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
   .ticker-dup, .ticker-toggle { display: none; }
 }
 
-/* Hero scrim: keeps the title readable over the poster. Left-weighted on desktop, bottom-weighted on phones. */
-.hero-scrim {
-  background:
-    linear-gradient(90deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 70%, transparent) 40%, transparent 75%),
-    linear-gradient(0deg, var(--bg) 0%, transparent 40%);
-}
-@media (max-width: 767px) {
-  .hero-scrim { background: linear-gradient(0deg, var(--bg) 0%, color-mix(in oklab, var(--bg) 92%, transparent) 34%, color-mix(in oklab, var(--bg) 45%, transparent) 56%, transparent 78%); }
-}
-
 /* Growth line: draws with page scroll where CSS scroll-driven animations exist; otherwise fully drawn. */
 @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @supports (animation-timeline: view()) {
@@ -85,15 +75,33 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 .vortex-still { animation: vortex-turn 120s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .vortex-still { animation: none; transform: none; } }
 
-/* Manifesto: the lit layer of each word starts hidden; GSAP fades it in with scroll. Reduced motion shows it fully. */
-@media (prefers-reduced-motion: no-preference) { .manifesto-lit { opacity: 0; } }
+/* ---- V4 type system: four voices + label. Pages use <Display/> <H1-H3/> <Lede/> <Body/> <Label/> (components/ui/Type.tsx); scripts/type-audit.mjs fails on drift. ---- */
+@theme inline { --color-body: var(--body); --color-accent-text: var(--accent-text); }
+:root, [data-theme="club"] { --body: color-mix(in oklab, var(--color-club-paper) 78%, var(--color-club-ink)); --accent-text: var(--color-club-gold); }
+.tone-paper { --body: color-mix(in oklab, var(--color-club-ink) 78%, var(--color-club-paper)); --accent-text: var(--color-club-orange-ink); }
 
-/* ---- V3 type system ---- */
-.label { font-family: var(--font-mono); font-size: 11px; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; }
-@media (min-width: 768px) { .label { font-size: 12px; } }
-.mega { font-family: var(--font-display); font-weight: 800; font-size: clamp(5rem, 40vw, 30rem); line-height: 0.82; white-space: nowrap; letter-spacing: -0.01em; text-transform: uppercase; }
-.h1-xl { font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 9vw, 9rem); line-height: 0.9; letter-spacing: -0.005em; }
-.h1-xl.up { text-transform: uppercase; }
+/* Impact: wordmark, giant numerals, one hero stat. Max one per viewport. */
+.t-impact { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 75; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.86; font-size: clamp(5rem, 18vw, 20rem); }
+/* Impact S: the one hero stat when it shares a column with copy (the wordmark keeps the full size). */
+.t-impact-s { font-size: clamp(4rem, 11vw, 11rem); }
+/* Headline: sentence case, three sizes. */
+.t-h1, .t-h2, .t-h3 { font-family: var(--font-display); font-weight: 600; font-variation-settings: "wdth" 100; letter-spacing: -0.025em; line-height: 1.02; text-wrap: balance; }
+.t-h1 { font-size: clamp(2.75rem, 6.5vw, 6rem); }
+.t-h2 { font-size: clamp(2rem, 4.2vw, 3.75rem); }
+.t-h3 { font-size: clamp(1.5rem, 2.4vw, 2.25rem); }
+/* Lede / quote: serif roman. */
+.t-lede { font-family: var(--font-serif); font-weight: 400; font-style: normal; line-height: 1.15; font-size: clamp(1.5rem, 2.6vw, 2.5rem); text-wrap: pretty; }
+/* Body */
+.t-body { font-family: var(--font-sans); font-weight: 400; line-height: 1.6; font-size: clamp(1.0625rem, 1.03rem + 0.12vw, 1.1875rem); max-width: 62ch; color: var(--body); }
+/* Label */
+.t-ui { font-family: var(--font-sans); font-weight: 400; font-size: 0.9375rem; line-height: 1.2; }
+.t-wordmark { font-family: var(--font-display); font-weight: 600; font-variation-settings: "wdth" 100; font-size: 1.125rem; letter-spacing: -0.025em; line-height: 1; }
+.t-label { font-family: var(--font-mono); font-weight: 500; font-size: 11px; line-height: 1.4; letter-spacing: 0.14em; text-transform: uppercase; }
+@media (min-width: 768px) { .t-label { font-size: 12px; } }
+/* Weight rhythm inside one headline: a light run followed by a heavy key phrase. */
+.w-light { font-weight: 300; }
+.w-heavy { font-weight: 700; }
+.mega-ghost-fit { font-size: clamp(5rem, 30vw, 26rem); }
 
 /* Corner crop marks on photographs (print-proof look). Purely decorative. */
 .crop::before, .crop::after { content: ""; position: absolute; inset: 6px; z-index: 2; pointer-events: none;
@@ -112,14 +120,6 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
   .reveal-img.is-in { clip-path: inset(0); }
 }
 
-/* Hero wordmark: paper letters first; once the colour photo has loaded they become windows onto it. */
-.mega-lit { color: var(--color-club-paper); }
-.mega-lit.is-lit { color: transparent; background-image: var(--lit); background-size: cover; background-position: 50% 40%; -webkit-background-clip: text; background-clip: text; -webkit-text-stroke: 2px color-mix(in oklab, var(--color-club-paper) 70%, transparent); }
-.spot { background: radial-gradient(closest-side, color-mix(in oklab, var(--color-club-gold) 55%, transparent), transparent); mix-blend-mode: screen; will-change: transform; }
-@keyframes sweep { from { transform: translate3d(-20vw, 0, 0); } to { transform: translate3d(70vw, 0, 0); } }
-.spot-sweep { animation: sweep 2400ms var(--ease-out-expo) 600ms 1 both; }
-@media (prefers-reduced-motion: reduce) { .spot-sweep { animation: none; transform: translate3d(30vw, 0, 0); } }
-
 /* Hover-swap pair: base fades to the alternate and lifts 4px. */
 .swap { transition: transform 250ms var(--ease-out-expo); }
 .swap > * { transition: opacity 400ms var(--ease-out-expo); }
@@ -128,15 +128,8 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 .swap-host:hover .swap, .swap-host:focus-visible .swap { transform: translateY(-4px); }
 @media (prefers-reduced-motion: reduce) { .swap, .swap > * { transition: none; } .swap-host:hover .swap { transform: none; } }
 
-/* The Dive: stack by default; the pinned WebGL shell only for fine pointers without reduced motion (and only if the capability test passes). */
-.dive .dive-live { display: none; }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .dive:not([data-fallback]) .dive-live { display: block; }
-  .dive:not([data-fallback]) .dive-stack { display: none; }
-}
-
 /* Footer ghost wordmark: generated content, so it is decoration for every tool (no text node to contrast-check). */
-.mega-ghost::before { content: "E-Club"; color: color-mix(in oklab, var(--color-club-paper) 10%, transparent); }
+.ghost-word::before { content: attr(data-word); }
 
 /* Photo parallax (<= 12% travel): the header photograph drifts as the page scrolls away. CSS scroll-driven, transform only, no JS;
    browsers without animation-timeline and reduced-motion visitors get the still image. */
@@ -146,3 +139,45 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
     .parallax-photo { animation: photo-drift linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
   }
 }
+
+/* ---- V4 shell ---- */
+html { scroll-padding-top: 6.5rem; }
+.t-lede-xl { font-family: var(--font-serif); font-weight: 400; font-style: normal; line-height: 1.02; letter-spacing: -0.01em; font-size: clamp(2.5rem, 7.2vw, 7rem); text-wrap: balance; }
+
+/* Nav: solid enough that nothing underneath is legible (ink at 90%), hairline border, hides on scroll down and returns on scroll up. */
+.nav-surface { background: color-mix(in oklab, var(--color-club-ink) 90%, transparent); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2); border: 1px solid color-mix(in oklab, var(--color-club-paper) 16%, transparent); }
+.nav-wrap { transition: transform 250ms var(--ease-out-expo), visibility 0s linear 0s; }
+.nav-wrap[data-hidden="true"]:not(:focus-within) { transform: translateY(-140%); visibility: hidden; transition: transform 250ms var(--ease-out-expo), visibility 0s linear 250ms; }
+@media (prefers-reduced-motion: reduce) { .nav-wrap { transition: none; } }
+
+/* Progress rail: a 2px orange line across the top, scroll-linked (CSS only). Without animation-timeline support it is simply absent. */
+@keyframes rail { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.rail { display: none; }
+@supports (animation-timeline: scroll()) { .rail { display: block; animation: rail linear both; animation-timeline: scroll(root); } }
+
+/* Art backdrop: generated art under an ink veil so text on it keeps >= 7:1. */
+.art-veil { background: color-mix(in oklab, var(--color-club-ink) var(--veil, 78%), transparent); }
+
+/* Bars illustration (chapter 04, Home): decorative, no axis, no values. They rise once when scrolled into view. */
+.ledger-bar { transform-origin: bottom; transform: scaleY(1); }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .bars .ledger-bar { transform: scaleY(0); transition: transform 700ms var(--ease-out-expo); transition-delay: calc(var(--i) * 40ms); }
+  .bars.is-in .ledger-bar { transform: scaleY(1); }
+}
+
+/* Photo grade for the Moments chapter is baked into the files; this is the 3.5% grain on top. */
+
+/* Hairline that draws itself left to right as its row enters the viewport (CSS scroll-driven). Fully drawn where unsupported or under reduced motion. */
+.rule-draw { position: relative; }
+.rule-draw::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; background: color-mix(in oklab, var(--fg) 28%, transparent); transform-origin: left; }
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) { .rule-draw::before { animation: draw linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; } }
+}
+
+/* Cover: the poster gives way to the live scene once it has loaded. */
+.cover-poster { transition: opacity 500ms var(--ease-out-expo); }
+[data-live] .cover-poster { opacity: 0; }
+
+@keyframes toast-in { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+.toast-in { animation: toast-in 250ms var(--ease-out-expo) both; }
