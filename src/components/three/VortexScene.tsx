@@ -6,7 +6,7 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { AdditiveBlending, CanvasTexture, Color, MathUtils, PMREMGenerator, type Group } from "three";
 import { token } from "@/lib/webgl";
 
-const COUNT = 3600; // budget is 4000
+const COUNT = 1700; // V4: the particles are a supporting layer under the coin, not the show
 const COIN = "/models/ledger-coin.glb"; // 140 KB, 3.9k tris, KHR_mesh_quantization only: no Draco/Meshopt decoder (CSP forbids wasm-unsafe-eval)
 const ARMS = 3;
 
@@ -55,7 +55,7 @@ function Spiral({ hover, falling }: { hover: boolean; falling: boolean }) {
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
           <bufferAttribute attach="attributes-color" args={[colors, 3]} />
         </bufferGeometry>
-        <pointsMaterial map={sprite} size={0.11} sizeAttenuation vertexColors transparent depthWrite={false} blending={AdditiveBlending} />
+        <pointsMaterial map={sprite} size={0.075} sizeAttenuation vertexColors transparent opacity={0.8} depthWrite={false} blending={AdditiveBlending} />
       </points>
       <mesh>
         <torusGeometry args={[ring, 0.012, 8, 128]} />
@@ -89,6 +89,17 @@ function Coin({ falling }: { falling: boolean }) {
   return <group ref={ref} scale={1.15}><primitive object={scene} /></group>;
 }
 
+/** A low pedestal under the standing coin, lit by one warm point light from above: the coin is staged, not floating in a ring. */
+function Pedestal() {
+  return (
+    <group position={[0, -1.5, 0]}>
+      <mesh><cylinderGeometry args={[0.95, 1.1, 0.24, 64]} /><meshStandardMaterial color="#0f3036" metalness={0.35} roughness={0.4} /></mesh>
+      <mesh position={[0, 0.125, 0]} rotation={[Math.PI / 2, 0, 0]}><torusGeometry args={[0.95, 0.018, 12, 96]} /><meshStandardMaterial color="#d99a4a" metalness={0.9} roughness={0.35} /></mesh>
+      <pointLight position={[0, 3.2, 1.6]} intensity={14} color="#ed9038" distance={9} decay={2} />
+    </group>
+  );
+}
+
 /** Particle spiral swirling into a ring. Speeds up on hover; the camera dives in when `falling`. */
 export default function VortexScene({ active, hover, falling, onReady }: { active: boolean; hover: boolean; falling: boolean; onReady: () => void }) {
   return (
@@ -102,7 +113,7 @@ export default function VortexScene({ active, hover, falling, onReady }: { activ
     >
       <Spiral hover={hover} falling={falling} />
       <Studio />
-      <Suspense fallback={null}><Coin falling={falling} /></Suspense>
+      <Suspense fallback={null}><Coin falling={falling} /><Pedestal /></Suspense>
     </Canvas>
   );
 }

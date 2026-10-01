@@ -20,7 +20,7 @@ export default function AboutPage() {
   const next = () => ({ number: String(++n).padStart(2, "0"), tone: (n % 2 === 0 ? "paper" : "ink") as "paper" | "ink" });
   return (
     <>
-      <PageHeader number="01" label="About" title="Who we are" art="workshop" />
+      <PageHeader number="01" label="About" title="Who we are" art="startup-ecosystem" />
 
       {(() => { const s = next(); return (
         <Section id="who" number={s.number} title="The club" heading="In our words" tone={s.tone}>

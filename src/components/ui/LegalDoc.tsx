@@ -7,7 +7,7 @@ const SAFE_HREF = /^(https?:\/\/|mailto:|\/)/;
 function inline(text: string): ReactNode[] {
   return text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
     const bold = /^\*\*([^*]+)\*\*$/.exec(part);
-    if (bold) return <strong key={i}>{bold[1]}</strong>;
+    if (bold) return <strong key={i} className="[font-weight:inherit] text-fg underline decoration-line underline-offset-4">{bold[1]}</strong>;
     const link = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(part);
     if (link && SAFE_HREF.test(link[2])) return <a key={i} href={link[2]} className="text-link underline underline-offset-4">{link[1]}</a>;
     return part;
@@ -41,5 +41,5 @@ export function LegalDoc({ source }: { source: string }) {
     else out.push(<p key={out.length} className="my-4">{inline(line)}</p>);
   }
   flush();
-  return <div className="t-body max-w-[68ch] !text-base leading-[1.7]">{out}</div>;
+  return <div className="t-body max-w-[68ch]">{out}</div>;
 }

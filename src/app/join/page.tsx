@@ -17,7 +17,7 @@ export default function JoinPage() {
   return (
     <>
       <PageHeader
-        number="01" label="Join" art="workshop" title={open ? "Recruitment is open" : "Recruitment is closed for now"}
+        number="01" label="Join" art="rocket-launch-abstract" title={open ? "Recruitment is open" : "Recruitment is closed for now"}
         lede={open ? "Apply through the form." : "We are not taking applications right now. Tell us you are interested and we will write when the next round opens."}
       />
       <div className="bg-bg pb-28 text-fg">

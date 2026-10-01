@@ -12,6 +12,13 @@ const ART = {
   "pitch-stage": ["Pitch-stage abstract.png", "An empty stage with a lone lectern under one orange spotlight, rows of empty seats in the dark."],
   "sponsors-band": ["Sponsors band.png", "Stacked black stone and brass blocks like a podium, lit by orange light."],
   vortex: ["Vortex texture.png", "A spiral of orange and teal light particles around a bright core."],
+  "startup-ecosystem": ["startup-ecosystem.png", "A branching network of small glowing orange nodes joined by fine cyan lines on a dark teal background."],
+  "network-city": ["network-city.png", "An aerial view of a city grid reduced to fine orange and cyan light lines on near-black."],
+  "boardroom-table": ["boardroom-table.png", "An empty boardroom at night with a long dark table, a pool of warm light and city lights through the glass."],
+  "rocket-launch-abstract": ["rocket-launch-abstract.png", "A small brass and black model rocket lifting off a dark surface on an orange flame and smoke."],
+  "hero-bars-bg": ["hero-bars-bg.png", "Matte black and brushed brass bars of rising height on a dark reflective floor, lit from the right."],
+  "hero-coin-macro": ["hero-coin-macro.png", "A thick brass coin standing on edge on a dark polished surface with an orange backlight."],
+  "trophy-plinth": ["trophy-plinth.png", "A brass trophy cup on a dark plinth with orange rim light."],
   workshop: ["Workshopideas.png", "A dark desk with an open blank notebook, sticky notes, a pen and a laptop, lit warm."],
 };
 await mkdir(OUT, { recursive: true });

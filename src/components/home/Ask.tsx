@@ -19,7 +19,7 @@ export function Ask() {
               <Label>{String(i + 1).padStart(2, "0")}</Label>
               <span className="t-h1">{r.title}</span>
               <Body as="span">{r.text}</Body>
-              <span aria-hidden="true" className="hidden transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>
+              <span aria-hidden="true" className="t-ui hidden transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>
             </Link>
           </li>
         ))}

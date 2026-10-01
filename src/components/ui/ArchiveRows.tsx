@@ -9,7 +9,7 @@ import { H3, Label } from "./Type";
 type Row = { href: string; title: string; meta: string; kind: string; a: ArtKey; b: ArtKey };
 
 // Generated art stands in as the cover until the club has real cover art. Event photographs are not used on these rows.
-const COVERS: [ArtKey, ArtKey][] = [["pitch-stage", "workshop"], ["workshop", "manifesto"], ["sponsors-band", "pitch-stage"]];
+const COVERS: [ArtKey, ArtKey][] = [["pitch-stage", "rocket-launch-abstract"], ["workshop", "hero-coin-macro"], ["sponsors-band", "boardroom-table"]];
 
 /**
  * The events ledger with hover-swap covers: each row carries two generated covers that cross-fade and lift 4px on hover or focus,
@@ -17,7 +17,7 @@ const COVERS: [ArtKey, ArtKey][] = [["pitch-stage", "workshop"], ["workshop", "m
  */
 export function ArchiveRows({ flagship }: { flagship?: ClubEvent }) {
   const rows: Row[] = [
-    ...(flagship ? [{ href: `/events/${flagship.slug}`, title: flagship.title, meta: fmtRange(flagship.dateStart, flagship.dateEnd), kind: "Flagship", a: "vortex" as ArtKey, b: "workshop" as ArtKey }] : []),
+    ...(flagship ? [{ href: `/events/${flagship.slug}`, title: flagship.title, meta: fmtRange(flagship.dateStart, flagship.dateEnd), kind: "Flagship", a: "vortex" as ArtKey, b: "trophy-plinth" as ArtKey }] : []),
     ...archive.map((s, i) => ({ href: `/gallery#${s.slug}`, title: s.title, meta: s.when, kind: "Photo set", a: COVERS[i % COVERS.length][0], b: COVERS[i % COVERS.length][1] })),
   ];
   return (

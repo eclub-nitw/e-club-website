@@ -18,7 +18,7 @@ export function LedgerStage() {
   const [tabVisible, setTabVisible] = useState(true);
 
   useEffect(() => {
-    if (!canRunWebGL()) return;
+    if (!window.matchMedia("(min-width: 1024px)").matches || !canRunWebGL()) return; // the live composition is the wide one
     let cancelled = false, timer = 0;
     const go = () => { timer = window.setTimeout(() => { if (!cancelled) setMount(true); }, 1200); };
     if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });

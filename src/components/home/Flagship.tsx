@@ -18,7 +18,7 @@ export function Flagship({ event }: { event: ClubEvent }) {
     <Section id="flagship" number="06" title="Flagship" heading={event.title} bare className="isolate overflow-hidden py-24 md:py-36">
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         <Art name="pitch-stage" sizes="100vw" className="size-full object-cover" />
-        <div className="art-veil absolute inset-0" style={{ "--veil": "74%" } as React.CSSProperties} />
+        <div className="art-veil absolute inset-0" style={{ "--veil": "86%" } as React.CSSProperties} />
       </div>
       <Container>
         <Label className="border-t border-line pt-4">06 — Flagship · {fmtRange(event.dateStart, event.dateEnd)}</Label>

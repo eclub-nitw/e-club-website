@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { BackSide, Color, DoubleSide, EquirectangularReflectionMapping, MathUtils, Mesh, MeshStandardMaterial, ShadowMaterial, type Group, type Object3D } from "three";
+import { BackSide, Color, DoubleSide, EquirectangularReflectionMapping, MathUtils, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, ShadowMaterial, type Group, type Object3D } from "three";
 
 const BARS = "/models/rising-ledger.glb"; // 7 beveled ink bars + brass caps, modelled in Blender, KHR_mesh_quantization only (no decoder: CSP forbids wasm-unsafe-eval)
 const COIN = "/models/ledger-coin.glb";
@@ -21,7 +21,7 @@ function Studio() {
   const tex = useLoader(RGBELoader, HDRI);
   useEffect(() => {
     tex.mapping = EquirectangularReflectionMapping;
-    scene.environment = tex; scene.environmentIntensity = 0.55;
+    scene.environment = tex; scene.environmentIntensity = 1.15;
     return () => { scene.environment = null; };
   }, [tex, scene, gl]);
   return null;
@@ -35,7 +35,7 @@ function Bars() {
     m.traverse((o: Object3D) => {
       if (!(o instanceof Mesh)) return;
       const src = o.material as MeshStandardMaterial;
-      const c = src.clone(); c.transparent = true; c.opacity = 0.2; c.depthWrite = false; c.side = BackSide;
+      const c = src.clone(); c.transparent = true; c.opacity = 0.05; c.depthWrite = false; c.side = BackSide;
       o.material = c; o.castShadow = false;
     });
     m.scale.y = -1;
@@ -44,7 +44,8 @@ function Bars() {
   const pairs = useMemo(() => {
     const out: { live: Object3D[]; ghost: Object3D[]; i: number }[] = [];
     for (let i = 0; i < 7; i++) {
-      const pick = (root: Object3D) => [root.getObjectByName(`Bar${i}`), root.getObjectByName(`Cap${i}`)].filter((o): o is Object3D => !!o);
+      // quantisation puts a dequantisation scale AND translation on every node, so scaling about the floor means scaling both y-scale and y-position
+      const pick = (root: Object3D) => [root.getObjectByName(`Bar${i}`), root.getObjectByName(`Cap${i}`)].filter((o): o is Object3D => !!o).map((o) => { o.userData.sy = o.scale.y; o.userData.ty = o.position.y; return o; });
       out.push({ live: pick(scene), ghost: pick(mirror), i });
     }
     return out;
@@ -52,8 +53,15 @@ function Bars() {
   const t0 = useRef<number | null>(null);
 
   useEffect(() => {
-    scene.traverse((o) => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = false; } });
-    for (const p of pairs) for (const o of [...p.live, ...p.ghost]) o.scale.y = 0.001;
+    scene.traverse((o) => {
+      if (!(o instanceof Mesh)) return;
+      o.castShadow = true; o.receiveShadow = false;
+      const m = o.material as MeshPhysicalMaterial;
+      m.anisotropy = 0; m.clearcoat = 0; m.sheen = 0; // the Blender brush maps to a smeared highlight that blows out the caps; keep plain PBR
+      if (m.name === "InkMatte") { m.color.set("#2a5963"); m.metalness = 0.15; m.roughness = 0.5; } // ink body: lifted so the front reads teal, not black
+      else { m.color.set("#e08a2e"); m.metalness = 0.5; m.roughness = 0.45; m.envMapIntensity = 0.6; } // brass cap
+    });
+    for (const p of pairs) for (const o of [...p.live, ...p.ghost]) { o.scale.y = o.userData.sy * 0.001; o.position.y = o.userData.ty * 0.001; }
   }, [scene, pairs]);
 
   useFrame(({ clock }) => {
@@ -61,8 +69,7 @@ function Bars() {
     const now = clock.elapsedTime * 1000 - t0.current;
     for (const p of pairs) {
       const s = Math.max(0.001, easeOutExpo(MathUtils.clamp((now - p.i * STAGGER_MS) / RISE_MS, 0, 1)));
-      for (const o of p.live) o.scale.y = s;
-      for (const o of p.ghost) o.scale.y = s;
+      for (const o of [...p.live, ...p.ghost]) { o.scale.y = o.userData.sy * s; o.position.y = o.userData.ty * s; }
     }
   });
   return <><primitive object={scene} /><primitive object={mirror} /></>;
@@ -73,7 +80,7 @@ type CoinSpec = { pos: [number, number, number]; rot: [number, number, number]; 
 const COINS: CoinSpec[] = [
   { pos: [2.6, 0.5, 2.4], rot: [0, -0.38, 0], scale: 0.5 },
   { pos: [0, 2.19, 0], rot: [-1.45, 0.3, 0], scale: 0.3 },
-  { pos: [-1.5, 2.7, 0.6], rot: [1.2, 0.4, 0.3], scale: 0.34, spin: 0.6 },
+  { pos: [-0.35, 2.9, 0.6], rot: [1.2, 0.4, 0.3], scale: 0.34, spin: 0.6 },
   { pos: [2.0, 3.3, 1.0], rot: [2.0, -0.3, -0.5], scale: 0.26, spin: -0.5 },
 ];
 
@@ -98,11 +105,11 @@ function Coins() {
 /** Camera matches the Blender poster (35 mm, shifted so the scene sits right of the copy) and drifts a little with the pointer. */
 function Rig({ pointer, width, height }: { pointer: Pointer; width: number; height: number }) {
   const { camera } = useThree();
-  const base = useMemo(() => ({ x: -1.6, y: 2.5, z: 14.8 }), []);
+  const base = useMemo(() => ({ x: -1.6, y: 2.6, z: 15.6 }), []);
   useEffect(() => {
     const cam = camera as import("three").PerspectiveCamera;
-    cam.fov = 32; cam.aspect = width / height;
-    cam.setViewOffset(width, height, -0.15 * width, 0.03 * height, width, height);
+    cam.fov = 42; cam.aspect = width / height;
+    cam.setViewOffset(width, height, -0.2 * width, 0.06 * height, width, height);
     cam.updateProjectionMatrix();
   }, [camera, width, height]);
   useFrame((_, dt) => {
@@ -117,10 +124,11 @@ function Rig({ pointer, width, height }: { pointer: Pointer; width: number; heig
 function Lights() {
   return (
     <>
-      <directionalLight position={[5.5, 3.6, -5]} intensity={3.2} color={new Color("#ed9038")} />
-      <directionalLight position={[6.5, 0.8, 1.5]} intensity={1.1} color={new Color("#ed9038")} />
-      <directionalLight position={[-4.5, 4.2, -3.5]} intensity={0.9} color={new Color("#36afaa")} />
-      <directionalLight position={[0, 7.5, 3]} intensity={1.6} color={new Color("#fff1dc")} castShadow shadow-mapSize={[1024, 1024]} shadow-radius={6} shadow-camera-left={-7} shadow-camera-right={7} shadow-camera-top={7} shadow-camera-bottom={-3} />
+      <directionalLight position={[-2, 3.5, 9]} intensity={1.0} color={new Color("#ffe9cc")} />
+      <directionalLight position={[-7, 2, 5]} intensity={0.8} color={new Color("#36afaa")} />
+      <directionalLight position={[8, 1.5, 2.5]} intensity={1.5} color={new Color("#ed9038")} />
+      <directionalLight position={[3, 5, -7]} intensity={0.6} color={new Color("#ed9038")} />
+      <directionalLight position={[0, 8, 3]} intensity={0.1} color={new Color("#fff1dc")} castShadow shadow-mapSize={[1024, 1024]} shadow-radius={6} shadow-camera-left={-7} shadow-camera-right={7} shadow-camera-top={7} shadow-camera-bottom={-3} />
     </>
   );
 }
@@ -150,7 +158,7 @@ export default function RisingLedger({ pointer, active, onReady }: { pointer: Po
   return (
     <Canvas
       frameloop={active ? "always" : "never"} dpr={[1, 1.5]} shadows
-      camera={{ position: [-1.6, 2.5, 14.8], fov: 32, near: 0.1, far: 80 }}
+      camera={{ position: [-1.6, 2.6, 15.6], fov: 42, near: 0.1, far: 80 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
       className="!pointer-events-none"

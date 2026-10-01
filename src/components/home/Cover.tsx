@@ -19,15 +19,15 @@ export function Cover({ flagship }: { flagship?: ClubEvent }) {
     <Section id="cover" number="01" title="Cover" bare className="isolate flex min-h-[100svh] flex-col overflow-hidden">
       <div className="absolute inset-0 -z-30 h-full">
         <picture>
-          <source media="(max-width: 767px)" type="image/avif" srcSet="/images/art/poster-portrait.avif" />
-          <source media="(max-width: 767px)" type="image/webp" srcSet="/images/art/poster-portrait.webp" />
+          <source media="(max-width: 1023px)" type="image/avif" srcSet="/images/art/poster-portrait.avif" />
+          <source media="(max-width: 1023px)" type="image/webp" srcSet="/images/art/poster-portrait.webp" />
           <source type="image/avif" srcSet="/images/art/poster-1024.avif 1024w, /images/art/poster-1600.avif 1600w" sizes="100vw" />
           <source type="image/webp" srcSet="/images/art/poster-1024.webp 1024w, /images/art/poster-1600.webp 1600w" sizes="100vw" />
-          <img src="/images/art/poster-1600.webp" width={1600} height={900} alt="" fetchPriority="high" decoding="async" className="cover-poster size-full object-cover object-right max-md:object-bottom" />
+          <img src="/images/art/poster-1600.webp" width={1600} height={900} alt="" fetchPriority="high" decoding="async" className="cover-poster size-full object-cover object-right max-lg:object-bottom" />
         </picture>
-        <div className="absolute inset-x-0 bottom-0 h-[55%] bg-[linear-gradient(0deg,color-mix(in_oklab,var(--bg)_88%,transparent),transparent)] md:hidden" />
       </div>
       <p aria-hidden="true" data-word="E-CLUB" className="t-impact ghost-word pointer-events-none absolute -bottom-[0.06em] left-[-0.02em] -z-20 select-none whitespace-nowrap text-club-paper/[0.14]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 -z-[15] hidden h-[26%] bg-[linear-gradient(0deg,color-mix(in_oklab,var(--bg)_94%,transparent),transparent)] lg:block" />
       <LedgerStage />
 
       <Container className="flex flex-1 flex-col justify-between pb-8 pt-28 md:pb-12 md:pt-36">
@@ -35,7 +35,7 @@ export function Cover({ flagship }: { flagship?: ClubEvent }) {
           <li>{copy.cover.kicker[0]}</li><li aria-hidden="true" className="h-px w-8 bg-line md:w-16" /><li>{copy.cover.kicker[1]}</li>
         </ul>
 
-        <div className="mt-16 md:mt-24 lg:max-w-[60%]">
+        <div className="mt-16 lg:mt-24 lg:max-w-[60%]">
           <H1><span className="w-light">The Entrepreneurship Club of</span> <span className="w-heavy">NIT Warangal</span></H1>
           <Lede className="mt-8 max-w-[24ch] text-body">{copy.cover.lede[0]}</Lede>
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
@@ -44,8 +44,9 @@ export function Cover({ flagship }: { flagship?: ClubEvent }) {
           </div>
         </div>
 
+        <div aria-hidden="true" className="min-h-[30svh] lg:hidden" />
         {flagship && (
-          <div className="mt-16 grid items-end gap-5 border-t border-line pt-4 md:mt-20 md:grid-cols-[1fr_auto]">
+          <div className="mt-8 grid max-w-[34rem] items-end gap-5 border-t border-line pt-4 lg:mt-20">
             <div>
               <Label>Now on · {fmtRange(flagship.dateStart, flagship.dateEnd)}</Label>
               <p className="t-h3 mt-3"><Link href={`/events/${flagship.slug}`} className="underline decoration-line decoration-2 underline-offset-8 hover:decoration-accent">{flagship.title}</Link></p>

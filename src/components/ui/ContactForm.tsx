@@ -12,8 +12,8 @@ const schema = z.object({
 type Field = "name" | "email" | "message" | "age";
 type Status = "idle" | "sending" | "sent" | "error";
 
-const input = "peer block min-h-14 w-full rounded-[2px] border border-line bg-transparent px-4 pb-2 pt-6 text-base text-fg placeholder-transparent transition-colors hover:border-fg/40 focus-visible:border-accent disabled:opacity-50 aria-[invalid=true]:border-accent-text";
-const floating = "pointer-events-none absolute left-4 top-4 origin-left text-base text-muted transition-transform duration-200 peer-focus:-translate-y-3 peer-focus:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-3 peer-[:not(:placeholder-shown)]:scale-75 motion-reduce:transition-none";
+const input = "t-body peer block min-h-14 w-full max-w-none rounded-[2px] border border-line bg-transparent px-4 pb-2 pt-6 text-base text-fg placeholder-transparent transition-colors hover:border-fg/40 focus-visible:border-accent disabled:opacity-50 aria-[invalid=true]:border-accent-text";
+const floating = "t-ui pointer-events-none absolute left-4 top-4 origin-left text-muted transition-transform duration-200 peer-focus:-translate-y-3 peer-focus:scale-75 peer-[:not(:placeholder-shown)]:-translate-y-3 peer-[:not(:placeholder-shown)]:scale-75 motion-reduce:transition-none";
 
 /**
  * Contact form UI. There is no backend yet (it is a later phase), and the site stores nothing: on submit the fields are validated,
@@ -50,7 +50,7 @@ export function ContactForm({ to, subject }: { to: string; subject: string }) {
     <div className="relative">
       <input id={`${uid}-${f}`} name={f} type={type} autoComplete={autoComplete} placeholder=" " disabled={status === "sending"} aria-invalid={!!err(f)} aria-describedby={err(f) ? `${uid}-${f}-e` : undefined} className={input} />
       <label htmlFor={`${uid}-${f}`} className={floating}>{label}</label>
-      {err(f) && <p id={`${uid}-${f}-e`} className="mt-2 text-sm text-accent-text">{err(f)}</p>}
+      {err(f) && <p id={`${uid}-${f}-e`} className="t-ui mt-2 text-accent-text">{err(f)}</p>}
     </div>
   );
 
@@ -60,15 +60,15 @@ export function ContactForm({ to, subject }: { to: string; subject: string }) {
       <div className="relative">
         <textarea id={`${uid}-message`} name="message" rows={5} placeholder=" " disabled={status === "sending"} aria-invalid={!!err("message")} aria-describedby={err("message") ? `${uid}-message-e` : undefined} className={`${input} min-h-40 resize-y`} />
         <label htmlFor={`${uid}-message`} className={floating}>Your message</label>
-        {err("message") && <p id={`${uid}-message-e`} className="mt-2 text-sm text-accent-text">{err("message")}</p>}
+        {err("message") && <p id={`${uid}-message-e`} className="t-ui mt-2 text-accent-text">{err("message")}</p>}
       </div>
-      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden"><label>Company<input name="company" tabIndex={-1} autoComplete="off" /></label></div>
+      <div aria-hidden="true" className="t-ui absolute -left-[9999px] h-0 w-0 overflow-hidden"><label>Company<input name="company" tabIndex={-1} autoComplete="off" /></label></div>
       <div>
-        <label className="flex min-h-11 cursor-pointer items-start gap-3 text-base">
+        <label className="flex min-h-11 cursor-pointer items-start gap-3">
           <input type="checkbox" name="age" aria-invalid={!!err("age")} aria-describedby={err("age") ? `${uid}-age-e` : undefined} className="mt-1 size-5 accent-[var(--accent)]" />
           <span className="t-body">I am 18 or older.</span>
         </label>
-        {err("age") && <p id={`${uid}-age-e`} className="mt-1 text-sm text-accent-text">{err("age")}</p>}
+        {err("age") && <p id={`${uid}-age-e`} className="t-ui mt-1 text-accent-text">{err("age")}</p>}
       </div>
       <p className="t-label text-muted">We do not store what you type here. Sending opens your email app.</p>
       <div>

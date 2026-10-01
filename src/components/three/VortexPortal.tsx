@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { canRunWebGL } from "@/lib/webgl";
-import vortexArt from "../../../public/images/generated/vortex.webp";
-import coinPoster from "../../../public/images/generated/coin-poster.webp";
+import vortexArt from "../../../public/images/art/vortex-800.webp";
+import coinPoster from "../../../public/images/art/coin-poster.webp";
 
 const VortexScene = dynamic(() => import("./VortexScene"), { ssr: false });
 const FALL_MS = 550; // "fall into the vortex" must stay under 600 ms
@@ -70,7 +70,7 @@ export function VortexPortal({ href, label }: { href: string; label: string }) {
         {mount && <VortexScene active={onScreen && tabVisible} hover={hover} falling={falling} onReady={() => setDrawn(true)} />}
       </div>
       <span aria-hidden="true" className={`pointer-events-none absolute inset-0 z-10 bg-bg transition-opacity ease-in ${falling ? "opacity-100" : "opacity-0"}`} style={{ transitionDuration: `${FALL_MS}ms` }} />
-      <span className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between bg-gradient-to-t from-bg to-transparent px-5 pb-4 pt-12 font-mono text-xs uppercase tracking-[0.08em]">
+      <span className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between bg-gradient-to-t from-bg to-transparent px-5 pb-4 pt-12 t-label">
         <span>Enter the vortex</span>
         <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none">→</span>
       </span>

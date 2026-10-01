@@ -17,7 +17,7 @@ export function PageHeader({ number, label, title, lede, tone = "ink", art, chil
       {art && tone === "ink" && (
         <div aria-hidden="true" className="parallax-photo absolute inset-0 -z-10">
           <Art name={art} priority sizes="100vw" className="size-full object-cover" />
-          <div className="art-veil absolute inset-0" style={{ "--veil": "80%" } as React.CSSProperties} />
+          <div className="art-veil absolute inset-0" style={{ "--veil": "86%" } as React.CSSProperties} />
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg to-transparent" />
         </div>
       )}

@@ -9,8 +9,9 @@ const b = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-raster
 const ctx = await b.newContext({ viewport: { width: +w, height: +h }, hasTouch: !!touch, isMobile: !!touch, deviceScaleFactor: 1, reducedMotion: rm ? "reduce" : "no-preference" });
 const p = await ctx.newPage(); const errs = [];
 p.on("console", (m) => { if (m.type() === "error") errs.push(m.text().slice(0, 160)); });
+p.on("response", (r) => { if (r.status() >= 400) errs.push(r.status() + " " + new URL(r.url()).pathname); });
 p.on("pageerror", (e) => errs.push("PAGEERR " + e.message.slice(0, 160)));
-await p.goto("http://localhost:3100/" + path.replace(/^[/]/, ""), { waitUntil: "load" });
+await p.goto(`http://localhost:${process.env.PORT ?? 3100}/` + path.replace(/^[/]/, ""), { waitUntil: "load" });
 await p.waitForTimeout(4500);
 const n = await p.evaluate(() => document.querySelectorAll("main [data-section]").length);
 const tops = await p.evaluate(() => [...document.querySelectorAll("main [data-section]")].map((e) => Math.round(e.getBoundingClientRect().top + scrollY)));

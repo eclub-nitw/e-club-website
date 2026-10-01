@@ -20,7 +20,7 @@ export function EventRow({ event, upcoming }: { event: ClubEvent; upcoming: bool
       </span>
       <span className="t-label col-start-2 text-muted md:col-start-auto">{TYPE_LABEL[event.type]}</span>
       <span className="t-label tabular col-start-2 text-muted md:col-start-auto">{fmtRange(event.dateStart, event.dateEnd)}</span>
-      <span aria-hidden className="hidden text-muted transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>
+      <span aria-hidden className="t-ui hidden text-muted transition-transform duration-200 group-hover:translate-x-1 md:block">→</span>
     </Link>
   );
 }

@@ -21,7 +21,7 @@ const socials = [
 
 const listed = sponsors.filter((s) => s.consent);
 
-const linkCls = "inline-flex min-h-11 items-center whitespace-nowrap text-body underline-offset-4 hover:text-fg hover:underline";
+const linkCls = "t-ui inline-flex min-h-11 items-center whitespace-nowrap text-body underline-offset-4 hover:text-fg hover:underline";
 
 /** The last slide: one huge closing line in the serif voice, a "Thank you / Questions?" tag, then the working links. */
 export function Footer() {
@@ -37,7 +37,7 @@ export function Footer() {
             <ul className="mt-4 flex flex-wrap items-center gap-x-10 gap-y-2">
               {listed.map((s) => <li key={s.name}><SponsorLogo sponsor={s} /></li>)}
             </ul>
-            <p className="t-body mt-4 text-sm">
+            <p className="t-ui mt-4 text-body">
               Names and logos belong to their owners; see the <Link href="/disclaimer" className="underline underline-offset-4 hover:text-club-paper">disclaimer</Link>.
             </p>
           </div>
@@ -45,7 +45,7 @@ export function Footer() {
         <div className="grid gap-x-8 gap-y-14 md:grid-cols-3 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div className="md:col-span-3 lg:col-span-1">
             <Label>Entrepreneurship Club · NIT Warangal</Label>
-            <a href={`mailto:${site.email}`} className="mt-4 inline-flex min-h-11 items-center break-all text-lg underline decoration-accent decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
+            <a href={`mailto:${site.email}`} className="t-body mt-4 inline-flex min-h-11 items-center break-all underline decoration-accent decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
           </div>
           {cols.map((c) => (
             <nav key={c.title} aria-label={c.title}>
@@ -63,7 +63,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="mt-16 flex flex-col gap-4 border-t border-line pt-6 text-sm text-muted md:flex-row md:items-center md:justify-between">
+        <div className="t-ui mt-16 flex flex-col gap-4 border-t border-line pt-6 text-muted md:flex-row md:items-center md:justify-between">
           <nav aria-label="Legal">
             <ul className="flex flex-wrap gap-x-5">
               {Object.entries(legalPages).map(([slug, p]) => <li key={slug}><Link href={`/${slug}`} className="inline-flex min-h-11 items-center underline-offset-4 hover:text-club-paper hover:underline">{p.title}</Link></li>)}
