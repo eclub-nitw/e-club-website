@@ -1,5 +1,35 @@
 # ASSETS
 
+## V4 update (1 Oct 2026): supersedes the sections below where they conflict
+**AI-generated art** (14 files, owner-generated; originals in git-ignored `raw-media/generated/`) is converted by `node scripts/build-art.mjs` to `public/images/art/<key>-{800,1600}.{avif,webp}` plus a 24px blur placeholder in `src/data/art.ts`. Sources are 1672 px wide (hero-bars-bg and network-city 1916, trophy-plinth 1122x1402), so 1600 is the largest honest size: the brief's 2400 px variant was NOT produced (it would be an upscale). Decorative only, `alt=""`, never presented as photographs of the club.
+
+| Key | Used on |
+|---|---|
+| manifesto | Home 02 backdrop |
+| pitch-stage | Home 06 flagship stage; Events header; ledger covers |
+| vortex | Venture Vortex portal still; event-page header; flagship ledger cover |
+| sponsors-band | Home 08; Sponsors header and partner panel; ledger cover |
+| workshop | ledger cover |
+| startup-ecosystem | About header |
+| network-city | Team header |
+| boardroom-table | Contact header; ledger cover |
+| rocket-launch-abstract | Join header; ledger cover |
+| hero-bars-bg | 404 backdrop |
+| hero-coin-macro | ledger cover |
+| trophy-plinth | flagship ledger hover cover |
+| hero-poster (generated) | Not used: the cover poster is now a Blender render of the live scene, so poster and scene match. Original kept in raw-media |
+| paper-tile | Not used: it is a 16:9 render, not a seamless tile; paper sections stay flat tokens |
+
+**Cover poster and 3D** (Blender 5.1.2 via MCP): `public/images/art/poster-{1024,1600}.*` and `poster-portrait.*` are Cycles renders of the Rising Ledger (7 bevelled ink bars with brass caps, coins, a glossy floor that fades to transparent so there is no horizon line, orange rim and cyan fill). Their background is exactly `#0b2226`, the page ink. `public/models/rising-ledger.glb` (35 KB, weld + KHR_mesh_quantization, no decoder) and `public/models/ledger-coin.glb` (140 KB, from V3) are the live objects.
+
+**HDRI**: `public/models/studio-256.hdr` (99 KB) is "Ferndale Studio 08" by Dimitrios Savva (photography) and Jarod Guest (processing), from Poly Haven, licence CC0, resampled to 256x128 in Blender. The 1k source is in git-ignored `raw-media/_hdri`.
+
+**Moments**: `public/images/moments/<id>-{1024,1600}.{avif,webp}` are 8 frames in one ink-teal to warm-paper duotone, 3:2 (`scripts/build-moments.mjs`). Excluded: 03-39 (student in a checked dress in the foreground), 01-10 (close-up of a seated student), 02-23 (near-duplicate of 02-22).
+
+**Fonts**: see `docs/TYPE-SYSTEM.md` (`scripts/subset-fonts-v4.py`).
+
+---
+
 ## AI-generated images (owner-generated in Gemini/ChatGPT, 30 Sep 2026)
 Originals live in `raw-media/generated/` (gitignored). Converted with sharp to WebP + AVIF (1600 px wide; paper tile 1024) in `public/images/generated/`. All are abstract, no people, no text. Alt text is set where each is used.
 

@@ -1,5 +1,5 @@
 // Usage: node scripts/sheet.cjs out.jpg cols cellW cellH file...   Contact sheet of screenshots (top-aligned crop).
-const sharp = require("sharp");
+import sharp from "sharp";
 const [out, cols, cw, ch, ...files] = process.argv.slice(2);
 const c = +cols, W = +cw, H = +ch;
 (async () => {

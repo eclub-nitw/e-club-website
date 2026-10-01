@@ -25,11 +25,11 @@ export default function GalleryPage() {
             {archive.map((s) => <a key={s.slug} href={`#${s.slug}`} className="t-label inline-flex min-h-11 items-center rounded-[2px] border border-line px-4 text-muted transition-colors hover:border-accent hover:text-fg">{s.label}</a>)}
           </nav>
           <div className="space-y-24">
-            {archive.map((s) => (
+            {archive.map((s, si) => (
               <section key={s.slug} id={s.slug} aria-labelledby={`g-${s.slug}`}>
                 <Label className="border-t border-line pt-4">{s.when}</Label>
                 <H2 id={`g-${s.slug}`} className="mb-8 mt-4">{s.title}</H2>
-                <Gallery items={photos.filter((p) => p.event === s.slug).map((p) => ({ id: p.id, event: p.event, w: p.w, h: p.h, alt: p.alt, caption: caption(p), blur: p.blur }))} />
+                <Gallery items={photos.filter((p) => p.event === s.slug).map((p) => ({ id: p.id, event: p.event, w: p.w, h: p.h, alt: p.alt, caption: caption(p), blur: p.blur }))} eagerCount={si === 0 ? 3 : 0} />
               </section>
             ))}
           </div>

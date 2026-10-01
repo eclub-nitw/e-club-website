@@ -8,7 +8,7 @@ export type GalleryItem = { id: string; event: string; w: number; h: number; alt
  * Masonry of club photographs (CSS columns, natural aspect, blur-up behind each) with a lightbox on a native modal <dialog>:
  * focus is trapped and restored, Esc closes, arrow keys and horizontal swipe step through, captions and a counter are always shown.
  */
-export function Gallery({ items }: { items: GalleryItem[] }) {
+export function Gallery({ items, eagerCount = 0 }: { items: GalleryItem[]; eagerCount?: number }) {
   const dlg = useRef<HTMLDialogElement>(null);
   const start = useRef<number | null>(null);
   const [i, setI] = useState(0);
@@ -26,7 +26,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
               <picture>
                 <source type="image/avif" srcSet={srcSet(it, "avif")} sizes="(min-width: 768px) 33vw, 50vw" />
                 <source type="image/webp" srcSet={srcSet(it, "webp")} sizes="(min-width: 768px) 33vw, 50vw" />
-                <img src={fileOf(it, 640, "webp")} alt={it.alt} width={it.w} height={it.h} loading="lazy" fetchPriority="low" decoding="async" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transition-none" />
+                <img src={fileOf(it, 640, "webp")} alt={it.alt} width={it.w} height={it.h} loading={n < eagerCount ? "eager" : "lazy"} fetchPriority={n < eagerCount ? "high" : "low"} decoding="async" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transition-none" />
               </picture>
               <span className="sr-only">View larger: {it.caption}</span>
             </button>
