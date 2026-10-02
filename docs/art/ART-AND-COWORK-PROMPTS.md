@@ -37,5 +37,15 @@ Priority if you only have time for a few: 3 (startup ecosystem), 1, 5, 12, 2.
 5. List videos with duration and size and suggest which would work as a 6 to 10 second silent loop.
 Report what you rejected and why. Ask me before touching anything outside raw-media\_curation."
 
+## Part F. Extra art for V5 (append the art bible; keep the same naming style)
+Only generate these if you have time after sending the club posters. They are for the vortex tunnel panels and event covers, since raw event photos now live only in the Gallery.
+15. `cover-workshop.png` (3:2): "Dark workshop room seen from the back, rows of empty chairs facing a lit blank whiteboard, orange light from the whiteboard, no people, no writing."
+16. `cover-competition.png` (3:2): "A single trophy-like brass cup and a stack of blank paper decks on a dark table, spotlight from above, orange rim light, no text."
+17. `cover-talk.png` (3:2): "Two empty armchairs and a small table on a dark stage, warm pool of orange light, haze, no people, no logos."
+18. `cover-summit.png` (3:2): "Wide empty auditorium aisle leading to a lit stage, orange wash on the stage, cyan accent on the side walls, no people, no screens with text."
+19. `sapling-macro.png` (4:5): "Macro of a small green sapling pushing out of dark soil, backlit by warm orange light, shallow depth of field, dew drops, dark ink-teal background."
+20. `map-glow-texture.png` (16:9): "Abstract dark ink-teal field of fine orange dust and cyan hairlines radiating outward from a single bright point, subtle, high negative space, no map, no text."
+If you only do three: 19, 20, 15.
+
 ## Part E. Cowork prompt: club content draft (after you paste LinkedIn/Instagram text into docs\CONTENT-INTAKE.md)
 "Read the file `docs\CONTENT-INTAKE.md` I filled in. Produce `docs\CONTENT-DRAFT.md` containing: a 40-word club description, a 15-word tagline (3 options), 6 verticals with one line each, event summaries, and 3 closing-line options, using ONLY facts present in my intake file. Mark every sentence that is not directly from my text as CONFIRM. Do not invent numbers, names, years or quotes. Voice: short, specific, first-person plural, dry confidence, none of: unleash, elevate, empower, seamless, revolutionary, cutting-edge."
