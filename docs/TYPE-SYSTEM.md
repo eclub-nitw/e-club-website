@@ -40,3 +40,20 @@ Orange is never used as small text on paper. Cyan is for light effects only. Tok
 
 ## What the audits actually measured
 Contrast is not guessed: `audit-v4.mjs` hides the text, screenshots the real pixels behind each text line (art, veils, 3D poster) and takes the worst pixel against the text colour: 4.5:1 for small text, 3:1 for large. It found and fixed real failures (countdown labels over the poster's orange glow, header labels over the vortex art, h1 over a flying coin).
+
+# V5 caps (supersede the sizes above)
+Owner feedback 2 Oct: "font sizes are irrelevantly huge in places". Hard caps, measured on the rendered DOM at 1440 by `node scripts/type-audit.mjs` (fails on any text node over its cap and prints the largest per page):
+
+| Voice | V5 spec | Notes |
+|---|---|---|
+| Impact (`.t-impact`) | `clamp(3.5rem, 10vw, 9rem)` (max 144 px) | Wordmark or giant numeral, at most once per viewport; not currently used on a page |
+| Stat numeral (`.t-stat`, `.t-impact-s`) | `clamp(2.75rem, 5vw, 5rem)` (max 80 px at 1440 = 72 px) | Numbers sequence, prize figure |
+| H1 | `clamp(2.25rem, 4.2vw, 3.75rem)` (60 px) | |
+| H2 | `clamp(1.75rem, 3vw, 2.5rem)` (40 px) | |
+| H3 | `clamp(1.25rem, 1.8vw, 1.625rem)` (26 px) | |
+| Lede (`.t-lede`, `.t-lede-xl`) | `clamp(1.25rem, 1.8vw, 1.75rem)` / H2-sized | |
+| Body | 17-19 px, measure 62ch | |
+| Label | 11 px, 12 px from 768 | |
+| Ghost word (`.t-ghost`) | up to 18vw, opacity 7%, `aria-hidden`, text from `data-word` (generated content, so no text node) | Decorative only |
+
+Result on the final build: largest non-ghost text is 72 px on `/` and `/venture-vortex` (a stat numeral) and 60 px (the H1) on every other page.
