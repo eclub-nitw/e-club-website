@@ -18,7 +18,7 @@ import { speakers } from "@/data/speakers";
 import { voices } from "@/data/voices";
 import { fmtDate } from "@/lib/format";
 
-export const revalidate = 3600; // dates decide the ticker and CTAs at render time; refresh hourly
+export const revalidate = 300; // dates decide the ticker and CTAs at render time; refresh every 5 minutes (the nav and pill correct themselves in the browser)
 
 export const metadata: Metadata = {
   title: { absolute: site.name },
@@ -33,8 +33,8 @@ export default function Home() {
   const [r1, r2, r3] = event.rounds;
   const open = registerOpen();
   const ticker = [
-    open ? "Venture Vortex 2026 registration is live on Unstop, closes 3 Oct" : "Venture Vortex 2026",
-    `Round 1 · submissions ${day(r1.start)} to ${day(r1.end)} · result 10 Oct · online`,
+    open ? `Venture Vortex 2026 registration is live on Unstop, closes ${day(event.registration.end)}` : "Venture Vortex 2026",
+    `Round 1 · submissions ${day(r1.start)} to ${day(r1.end)} · result ${day(event.round1Result)} · online`,
     `Round 2 · ${day(r2.start)} to ${day(r2.end)} · online`,
     `Round 3 · ${day(r3.start)} to ${day(r3.end)} · NIT Warangal`,
     "Part of Technozion",

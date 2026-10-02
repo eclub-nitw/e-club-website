@@ -23,8 +23,12 @@
 
 /* Masked text reveal: 700ms, expo-out, 40ms word stagger, transform only. */
 .mask-word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-.mask-word > span { display: inline-block; transform: translateY(110%); transition: transform 700ms var(--ease-out-expo); transition-delay: calc(var(--i) * 40ms); }
-.mask-in .mask-word > span { transform: none; }
+.mask-word > span { display: inline-block; }
+/* Hidden only when scripting is on, so headings are never lost to a slow or blocked script. */
+@media (scripting: enabled) {
+  .mask-word > span { transform: translateY(110%); transition: transform 700ms var(--ease-out-expo); transition-delay: calc(var(--i) * 40ms); }
+  .mask-in .mask-word > span { transform: none; }
+}
 @keyframes mask-up { from { transform: translateY(110%); } to { transform: none; } }
 .mask-now .mask-word > span { transform: none; animation: mask-up 700ms var(--ease-out-expo) both; animation-delay: calc(var(--i) * 40ms); }
 

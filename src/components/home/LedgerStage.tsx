@@ -37,11 +37,14 @@ export function LedgerStage() {
       pointer.current = { x: ((e.clientX - r.left) / r.width) * 2 - 1, y: ((e.clientY - r.top) / r.height) * 2 - 1 };
     };
     const vis = () => setTabVisible(document.visibilityState === "visible");
-    const scroll = () => { const r = host.getBoundingClientRect(); grow.current = Math.min(1, Math.max(0, -r.top / r.height)); };
-    window.addEventListener("scroll", scroll, { passive: true });
+    let raf = 0; // the hero grows the bars while it scrolls away: read once per frame, and only while it is on screen
+    const frame = () => { raf = 0; const r = host.getBoundingClientRect(); grow.current = Math.min(1, Math.max(0, -r.top / r.height)); };
+    const scroll = () => { if (!raf) raf = requestAnimationFrame(frame); };
+    const watch = new IntersectionObserver(([e]) => { if (e.isIntersecting) window.addEventListener("scroll", scroll, { passive: true }); else window.removeEventListener("scroll", scroll); });
+    watch.observe(host);
     host.addEventListener("pointermove", move, { passive: true });
     document.addEventListener("visibilitychange", vis);
-    return () => { io.disconnect(); host.removeEventListener("pointermove", move); window.removeEventListener("scroll", scroll); document.removeEventListener("visibilitychange", vis); };
+    return () => { io.disconnect(); watch.disconnect(); cancelAnimationFrame(raf); host.removeEventListener("pointermove", move); window.removeEventListener("scroll", scroll); document.removeEventListener("visibilitychange", vis); };
   }, []);
 
   // Mount once, after load and idle. It is never torn down: disposing a WebGL context in the middle of a scroll costs a 200-400 ms task,
@@ -53,9 +56,11 @@ export function LedgerStage() {
   }, [eligible]);
 
   const ready = () => box.current?.closest("section")?.setAttribute("data-live", "");
+  // A lost WebGL context (driver reset, memory pressure) hands the hero back to the poster instead of leaving an empty canvas over it.
+  const lost = () => { setMount(false); setEligible(false); box.current?.closest("section")?.removeAttribute("data-live"); };
   return (
     <div ref={box} aria-hidden="true" data-scene={mount ? "live" : "poster"} className="pointer-events-none absolute inset-0 -z-10">
-      {mount && <RisingLedger pointer={pointer} grow={grow} active={onScreen && tabVisible} onReady={ready} />}
+      {mount && <RisingLedger pointer={pointer} grow={grow} active={onScreen && tabVisible} onReady={ready} onLost={lost} />}
     </div>
   );
 }

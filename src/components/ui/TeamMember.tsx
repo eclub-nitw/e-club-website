@@ -14,7 +14,7 @@ export function TeamMember({ member }: { member: Member }) {
       <Label className="md:order-none">{member.role}</Label>
       <span className="flex items-center gap-4 md:justify-end">
         {member.linkedin && (
-          <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="t-label inline-flex min-h-11 items-center text-link underline underline-offset-4 transition-opacity duration-200 hover:no-underline md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100">
+          <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="t-label inline-flex min-h-11 items-center text-link underline underline-offset-4 transition-opacity duration-200 hover:no-underline [@media(hover:hover)_and_(min-width:768px)]:opacity-0 [@media(hover:hover)_and_(min-width:768px)]:group-hover:opacity-100 [@media(hover:hover)_and_(min-width:768px)]:focus-visible:opacity-100">
             LinkedIn<span className="sr-only"> profile of {member.name} (opens in a new tab)</span>
           </a>
         )}

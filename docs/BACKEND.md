@@ -6,7 +6,7 @@ The site is statically generated. The only server code is one Route Handler, `PO
 1. **Same-origin check.** The `Origin` header must be our own host (CSRF defence). Missing or foreign: 403.
 2. **Content type and size.** JSON only, 8 KB maximum (415 / 413).
 3. **Honeypot.** A filled `company` field gets a fake 200 and nothing is stored.
-4. **Rate limit.** 5 per client per 10 minutes and 120 per hour overall (429 with `Retry-After`). The client address is hashed in memory for the counter and never stored. The counter is per server instance; for a hard guarantee also enable the host's WAF/rate limiting.
+4. **Rate limit.** 5 per client per 10 minutes and 300 per hour overall (429 with `Retry-After`). The client address is hashed in memory for the counter and never stored. The counter is per server instance; for a hard guarantee also enable the host's WAF/rate limiting.
 5. **Validation** (`src/lib/contact-schema.ts`, the same code the form runs): name 2-80, email, message 10-2000, 18+ confirmation, strings only, control characters stripped. 400 with per-field messages.
 6. **Store** (`src/lib/server/store.ts`): one `submissions` document with `kind` (`contact` | `join`), `name`, `email`, `message`, `createdAt`, `expiresAt` (12 months later). No IP, no user agent. Failure or missing credentials: 503, and the form opens the visitor's own email app with the message pre-filled, so nothing is lost silently.
 

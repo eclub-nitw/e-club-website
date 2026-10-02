@@ -4,7 +4,7 @@ import { createHash } from "node:crypto";
 // honeypot, strict validation, the same-origin check and the body cap do the rest. For hard guarantees put the host's WAF in front.
 const hits = new Map<string, number[]>();
 const PER_CLIENT = { max: 5, windowMs: 10 * 60_000 };
-const GLOBAL = { max: 120, windowMs: 60 * 60_000 };
+const GLOBAL = { max: 300, windowMs: 60 * 60_000 };
 const MAX_KEYS = 5000;
 
 const take = (key: string, max: number, windowMs: number, now: number) => {

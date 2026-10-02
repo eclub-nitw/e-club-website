@@ -18,6 +18,17 @@ function sameOrigin(req: Request): boolean {
 }
 
 /**
+ * The address of the client as seen by our own proxy. Vercel sets x-vercel-forwarded-for itself; failing that x-real-ip; failing that the LAST
+ * x-forwarded-for entry (the one our nearest proxy appended). The first entry is client-supplied and trivially spoofed, so it is never used.
+ */
+function clientAddress(req: Request): string {
+  const own = req.headers.get("x-vercel-forwarded-for") ?? req.headers.get("x-real-ip");
+  if (own) return own.split(",")[0].trim();
+  const xff = req.headers.get("x-forwarded-for")?.split(",");
+  return xff?.[xff.length - 1]?.trim() || "unknown";
+}
+
+/**
  * POST /api/contact  { kind: "contact" | "join", name, email, message, age: true, company: "" }
  * 200 stored · 400 invalid · 403 wrong origin · 413 too large · 415 wrong type · 429 slow down · 503 storage not configured or down
  * (the form then falls back to the visitor's own email app, so nothing is ever lost silently).
@@ -39,8 +50,7 @@ export async function POST(req: Request) {
   // Honeypot: a real visitor never sees this field. Answer like a success so bots learn nothing, and store nothing.
   if (typeof body.company === "string" && body.company !== "") return json({ ok: true });
 
-  const forwarded = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  const wait = limit(forwarded || req.headers.get("x-real-ip") || "unknown");
+  const wait = limit(clientAddress(req));
   if (wait > 0) return json({ error: "rate_limited" }, 429, { "retry-after": String(wait) });
 
   const result = validateContact(body);

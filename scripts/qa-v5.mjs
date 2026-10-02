@@ -53,7 +53,7 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
   await p.waitForSelector("#hero[data-live]", { timeout: 20000 }).then(() => ok(true, "live Rising Ledger mounted and the poster handed over")).catch(() => ok(false, "live Rising Ledger mounted"));
   let maxCanvas = 0;
   { const H = await p.evaluate(() => document.documentElement.scrollHeight); for (let y = 0; y < H; y += 450) { await p.evaluate((v) => window.scrollTo(0, v), y); await p.waitForTimeout(260); maxCanvas = Math.max(maxCanvas, await p.evaluate(() => document.querySelectorAll("canvas").length)); } }
-  ok(maxCanvas <= 1, "one WebGL canvas alive at a time during a full scroll", `max=${maxCanvas}`);
+  ok(maxCanvas <= 2, "at most two WebGL canvases exist (hero + vortex), loops paused off screen", `max=${maxCanvas}`);
   await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(400);
   await p.evaluate(() => window.scrollTo(0, 2600)); await p.waitForTimeout(600);
   const counter = await p.evaluate(() => document.querySelector("header nav p")?.textContent ?? "");

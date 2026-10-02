@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
+import { Suspense, useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { AdditiveBlending, CanvasTexture, Color, MathUtils, SRGBColorSpace, TextureLoader, type Group, type PerspectiveCamera } from "three";
+import { AdditiveBlending, CanvasTexture, Color, LinearFilter, MathUtils, SRGBColorSpace, TextureLoader, type Group, type PerspectiveCamera } from "three";
 import { dive } from "@/data/dive";
 import { token } from "@/lib/webgl";
 
@@ -68,7 +68,8 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
   const lastIdx = useRef(-1);
 
   const { planes, accent, pos } = useMemo(() => {
-    textures.forEach((t) => { t.colorSpace = SRGBColorSpace; t.anisotropy = 4; });
+    // No mipmaps: they cost most of an upload, and the fog hides the far panels anyway.
+    textures.forEach((t) => { t.colorSpace = SRGBColorSpace; t.generateMipmaps = false; t.minFilter = LinearFilter; });
     const planes = dive.map((d, i) => {
       const aspect = d.w / d.h, h = Math.min(4.2, 6 / aspect), w = h * aspect;
       const angle = i * 2.4 + hash(i) * 0.6, r = 2.9 + (i % 3) * 0.8;
@@ -85,16 +86,17 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
   // Compile every shader program in parallel while the section is still off screen, so the first visible frame is not a 150 ms task.
   useEffect(() => { void gl.compileAsync(root, cam); }, [gl, root, cam]);
 
-  // Upload textures one per idle slot instead of all inside the first frame.
+  // Upload one texture per idle period (never while the browser is busy scrolling), so no upload lands inside a frame.
   useEffect(() => {
     let i = 0, h = 0, cancelled = false;
     const idle = typeof window.requestIdleCallback === "function";
-    const next = () => {
+    const next = (d?: IdleDeadline) => {
       if (cancelled || i >= textures.length) return;
+      if (d && d.timeRemaining() < 6 && !d.didTimeout) { h = window.requestIdleCallback(next, { timeout: 3000 }); return; }
       gl.initTexture(textures[i++]);
-      h = idle ? window.requestIdleCallback(next, { timeout: 200 }) : window.setTimeout(next, 30);
+      h = idle ? window.requestIdleCallback(next, { timeout: 3000 }) : window.setTimeout(next, 140);
     };
-    h = idle ? window.requestIdleCallback(next, { timeout: 200 }) : window.setTimeout(next, 30);
+    h = idle ? window.requestIdleCallback(next, { timeout: 3000 }) : window.setTimeout(next, 300);
     return () => { cancelled = true; if (idle) window.cancelIdleCallback(h); else window.clearTimeout(h); };
   }, [gl, textures]);
 
@@ -136,8 +138,14 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
 }
 
 /** Pinned vortex scene: ring and arms, expanding to fill the viewport, then a scrubbed fall through a tunnel of generated art and posters. */
-export default function ExpandScene({ progress, active, onIndex, onReady }: {
-  progress: MutableRefObject<number>; active: boolean; onIndex: (i: number) => void; onReady: () => void;
+/** Fires once everything inside the Suspense boundary (the 14 textures) has loaded and mounted, so the still never fades to an empty canvas. */
+function Ready({ onReady }: { onReady: () => void }) {
+  useEffect(() => { const id = requestAnimationFrame(onReady); return () => cancelAnimationFrame(id); }, [onReady]);
+  return null;
+}
+
+export default function ExpandScene({ progress, active, onIndex, onReady, onLost }: {
+  progress: MutableRefObject<number>; active: boolean; onIndex: (i: number) => void; onReady: () => void; onLost: () => void;
 }) {
   return (
     <Canvas
@@ -145,13 +153,13 @@ export default function ExpandScene({ progress, active, onIndex, onReady }: {
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 9], fov: 50, near: 0.1, far: 90 }}
       gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
-      onCreated={() => requestAnimationFrame(onReady)}
+      onCreated={({ gl }) => gl.domElement.addEventListener("webglcontextlost", (e) => { e.preventDefault(); onLost(); })}
       className="!pointer-events-none"
     >
       <color attach="background" args={[INK]} />
       <fog attach="fog" args={[INK, 8, 34]} />
       <Vortex progress={progress} />
-      <Tunnel progress={progress} onIndex={onIndex} />
+      <Suspense fallback={null}><Tunnel progress={progress} onIndex={onIndex} /><Ready onReady={onReady} /></Suspense>
     </Canvas>
   );
 }

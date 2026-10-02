@@ -81,6 +81,8 @@ try {
   let last;
   for (let i = 0; i < 7; i++) last = await post(3101, good, { "x-forwarded-for": "10.9.9.9" });
   ok(last.status === 429 && Number(last.headers.get("retry-after")) > 0, "per-client rate limit answers 429 with Retry-After", `status=${last.status}`);
+  r = await post(3101, good, { "x-forwarded-for": "7.7.7.7, 10.9.9.9" });
+  ok(r.status === 429, "rotating a spoofed first X-Forwarded-For entry does not escape the limit");
   r = await post(3101, good, { "x-forwarded-for": "10.8.8.8" });
   ok(r.status === 200, "a different client is not limited");
   ok(!JSON.stringify(docs).includes("evil"), "rejected requests wrote nothing");

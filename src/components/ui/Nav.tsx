@@ -91,7 +91,7 @@ export function Nav() {
         </nav>
       </header>
 
-      <dialog ref={drawer} aria-label="Menu" onClose={() => document.documentElement.classList.remove("lenis-stopped")}
+      <dialog ref={drawer} data-lenis-prevent aria-label="Menu" onClose={() => document.documentElement.classList.remove("lenis-stopped")}
         className="menu m-0 h-full max-h-none w-full max-w-none bg-bg p-0 text-fg backdrop:bg-transparent">
         <div className="mx-auto flex h-full max-w-[1280px] flex-col px-5 py-2 md:px-10">
           <div className="flex h-16 items-center justify-between">

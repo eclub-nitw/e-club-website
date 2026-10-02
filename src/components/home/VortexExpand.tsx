@@ -32,12 +32,12 @@ export function VortexExpand({ number, children }: { number: string; children: R
     const el = root.current;
     if (!el) return;
     if (!canRunWebGL()) { const id = requestAnimationFrame(() => setFallback(true)); return () => cancelAnimationFrame(id); }
-    const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) setMount(true); }, { rootMargin: "200% 0px" }); // build and compile early
+    const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setMount(true); near.disconnect(); } }, { rootMargin: "200% 0px" }); // build and compile early
     const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { rootMargin: "10% 0px" });             // render only when visible
     near.observe(el); io.observe(el);
     // Warm it up in the background a few seconds after load (desktop with a capable GPU only), so no first-frame cost lands mid-scroll.
     let warm = 0;
-    const go = () => { warm = window.setTimeout(() => setMount(true), 3500); };
+    const go = () => { warm = window.setTimeout(() => { if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(() => setMount(true), { timeout: 4000 }); else setMount(true); }, 3500); };
     if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
     const vis = () => setTabVisible(document.visibilityState === "visible");
     document.addEventListener("visibilitychange", vis);
@@ -49,9 +49,9 @@ export function VortexExpand({ number, children }: { number: string; children: R
       <div className="dive-live">
         <ScrollTrack onScrub={(p) => { progress.current = p; }} style={{ "--track-h": "360vh" } as React.CSSProperties}>
           <div className="stage">
-            <img src="/images/dive/stage.webp" alt="" width={1024} height={576} loading="lazy" decoding="async" className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${drawn ? "opacity-0" : "opacity-40"}`} />
+            <img src="/images/dive/stage.webp" alt="" width={768} height={432} loading="lazy" decoding="async" className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${drawn ? "opacity-0" : "opacity-40"}`} />
             <div aria-hidden="true" data-scene={mount ? (drawn ? "live" : "loading") : "still"} className={`absolute inset-0 transition-opacity duration-700 ${drawn ? "opacity-100" : "opacity-0"}`}>
-              {mount && !fallback && <ExpandScene progress={progress} active={onScreen && tabVisible} onIndex={setIndex} onReady={() => setDrawn(true)} />}
+              {mount && !fallback && <ExpandScene progress={progress} active={onScreen && tabVisible} onIndex={setIndex} onReady={() => setDrawn(true)} onLost={() => { setMount(false); setDrawn(false); setFallback(true); }} />}
             </div>
             {/* radial vignette and the closing fade to the stage ink: opacity only */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,var(--bg)_100%)]" style={{ opacity: "calc(0.25 + var(--p) * 0.5)" }} />

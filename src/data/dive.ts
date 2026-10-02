@@ -2,86 +2,86 @@
 export const dive = [
  {
   "slug": "boardroom",
-  "w": 1024,
-  "h": 576,
+  "w": 768,
+  "h": 432,
   "poster": false
  },
  {
   "slug": "talk",
-  "w": 1024,
-  "h": 683,
+  "w": 768,
+  "h": 512,
   "poster": false
  },
  {
   "slug": "workshop",
-  "w": 1024,
-  "h": 683,
+  "w": 768,
+  "h": 512,
   "poster": false
  },
  {
   "slug": "coin",
-  "w": 1024,
-  "h": 576,
+  "w": 768,
+  "h": 432,
   "poster": false
  },
  {
   "slug": "map-glow",
-  "w": 1024,
-  "h": 576,
+  "w": 768,
+  "h": 432,
   "poster": false
  },
  {
   "slug": "network",
-  "w": 1024,
-  "h": 439,
+  "w": 768,
+  "h": 329,
   "poster": false
  },
  {
   "slug": "rocket",
-  "w": 1024,
-  "h": 576,
+  "w": 768,
+  "h": 432,
   "poster": false
  },
  {
   "slug": "sapling",
-  "w": 1024,
-  "h": 1280,
+  "w": 768,
+  "h": 960,
   "poster": false
  },
  {
   "slug": "ecosystem",
-  "w": 1024,
-  "h": 576,
+  "w": 768,
+  "h": 432,
   "poster": false
  },
  {
   "slug": "trophy",
-  "w": 1024,
-  "h": 1280,
+  "w": 768,
+  "h": 960,
   "poster": false
  },
  {
   "slug": "ideas",
-  "w": 1024,
-  "h": 576,
+  "w": 768,
+  "h": 432,
   "poster": false
  },
  {
   "slug": "stage",
-  "w": 1024,
-  "h": 576,
+  "w": 768,
+  "h": 432,
   "poster": false
  },
  {
   "slug": "poster-announcement",
-  "w": 1024,
-  "h": 1452,
+  "w": 768,
+  "h": 1089,
   "poster": true
  },
  {
   "slug": "poster-why",
-  "w": 1024,
-  "h": 1452,
+  "w": 768,
+  "h": 1089,
   "poster": true
  }
 ] as const;

@@ -6,7 +6,6 @@ import { Cursor } from "@/components/ui/Cursor";
 import { Footer } from "@/components/ui/Footer";
 import { FloatingPill } from "@/components/ui/FloatingPill";
 import { Nav } from "@/components/ui/Nav";
-import { ShaderWarm } from "@/components/ui/ShaderWarm";
 import { VentureTree } from "@/components/ui/VentureTree";
 import "./globals.css";
 
@@ -27,7 +26,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="grain antialiased">
         <SmoothScroll />
         <Cursor />
-        <ShaderWarm />
         <Nav />
         <VentureTree />
         <main id="main">{children}</main>
