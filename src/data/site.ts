@@ -10,5 +10,6 @@ export const site = {
   address: { locality: "Warangal", region: "Telangana", country: "IN" }, // CONFIRM full address with the club
   foundedYear: null as number | null,         // CONFIRM with the club
   tagline: null as string | null,             // CONFIRM: one line the club approves; hidden while null
+  brochureUrl: "",                            // CONFIRM: sponsorship brochure PDF/link, shown only when set
   recruitmentUrl: "",                         // CONFIRM: Google Form link, only while recruitment is open
 } as const;

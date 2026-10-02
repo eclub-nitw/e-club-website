@@ -35,7 +35,15 @@ export default function SponsorsPage() {
           <Label className="mt-10 max-w-[60ch] normal-case tracking-normal">Names and logos are trademarks of their owners and appear with their permission. Their appearance here does not imply endorsement unless stated. See our <Link href="/disclaimer" className="text-link underline underline-offset-4">disclaimer</Link>.</Label>
         </Section>
       )}
-      <Section id="tiers" number={String(++n).padStart(2, "0")} title="Ways to partner" heading="Three ways in" tone={listed.length ? "ink" : "paper"}>
+      <Section id="collaborators" number={String(++n).padStart(2, "0")} title="This year" heading="Venture Vortex 2026 collaborators" tone={listed.length ? "ink" : "paper"}>
+        <ul className="border-b border-line">
+          {sponsors.map((s) => (
+            <li key={s.name} className="rule-draw grid gap-x-8 gap-y-1 py-5 md:grid-cols-[14rem_1fr]"><Label>{s.role}</Label><span className="t-h3">{s.name}</span></li>
+          ))}
+        </ul>
+        <p className="t-ui mt-6 max-w-[62ch] text-body">Named on the official poster. Names are trademarks of their owners and appear as plain text; their appearance here does not imply endorsement unless stated. See our <Link href="/disclaimer" className="text-link underline underline-offset-4">disclaimer</Link>.</p>
+      </Section>
+      <Section id="tiers" number={String(++n).padStart(2, "0")} title="Ways to partner" heading="Three ways in" tone={listed.length ? "paper" : "ink"}>
         <ol>{TIERS.map((t, i) => (
           <li key={t.name} className="rule-draw grid gap-x-8 gap-y-2 py-6 md:grid-cols-[3rem_1fr_2fr]">
             <Label className="pt-2">{String(i + 1).padStart(2, "0")}</Label><H3>{t.name}</H3><Body>{t.text}</Body>
@@ -47,6 +55,7 @@ export default function SponsorsPage() {
         <Container>
           <Label className="border-t border-line pt-4">{String(n).padStart(2, "0")} — Partner with us</Label>
           <Body className="mt-8 max-w-[52ch]">To sponsor or collaborate on an event, write to us and tell us what you have in mind. We will reply with what is possible.</Body>
+          {site.brochureUrl && <p className="mt-6"><a className="text-link underline underline-offset-4" href={site.brochureUrl} target="_blank" rel="noopener noreferrer">Sponsorship brochure<span className="sr-only"> (opens in a new tab)</span></a></p>}
           <div className="mt-8"><Button href={`mailto:${site.email}?subject=${encodeURIComponent("Partnership enquiry")}`}>Email {site.email}</Button></div>
         </Container>
       </Section>
