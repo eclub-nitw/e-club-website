@@ -4,6 +4,8 @@
  * Sources: (1) the official poster, (2) the Instagram caption, (3) the Unstop "Stages and Timelines" panel — AUTHORITATIVE for dates,
  * (4) the official Round 1 brief "Behind the Startup: Startup Teardown" (Google Doc shared by E-Club) — AUTHORITATIVE for Round 1 content.
  */
+import { registerUrl, rounds } from "./timeline";
+
 export const event = {
   name: "Venture Vortex",                       // spelling: VORTEX. Unstop's Round 3 text says "Vertex" — a typo, never copy it.
   tagline: "Decode the business. Craft what's next.",              // poster
@@ -18,7 +20,7 @@ export const event = {
   team: { min: 2, max: 4, crossCollege: true, lockedAfter: "Round 1 registration closes" },
   eligibility: "Undergraduate and postgraduate students across India. Working professionals can also participate.",
   fee: "Free",
-  registerUrl: "https://unstop.com/o/cxKq1kz?lb=usedZ8to",   // Unstop's own normalised link (utm/fbclid stripped)
+  registerUrl,
   unstopPageUrl: "https://unstop.com/competitions/venture-vortex-entrepreneurship-club-nit-warangal-1760873",
   // WhatsApp group: registered teams get the invite DIRECTLY FROM UNSTOP after they register (confirmed 29 Sep 2026) — E-Club does not send it.
   // Never put the actual invite link on this page. It is fine to tell people "you'll get it from Unstop after registering."
@@ -29,14 +31,7 @@ export const event = {
   linkedinPageName: "Entrepreneurship Club-NIT Warangal", // the exact page name teams must tag (from the Round 1 brief)
 
   // Times are IST (UTC+05:30), from the Unstop "Stages and Timelines" panel (authoritative).
-  rounds: [
-    { id: "r1", n: 1, name: "Behind the Startup", subtitle: "Startup teardown", mode: "Online · Unstop",
-      start: "2026-09-24T09:00:00+05:30", end: "2026-10-09T08:00:00+05:30" },
-    { id: "r2", n: 2, name: "Strategy Build", subtitle: "Marketing or Product vertical", mode: "Online · Unstop",
-      start: "2026-10-11T08:00:00+05:30", end: "2026-10-18T20:00:00+05:30" },
-    { id: "r3", n: 3, name: "Boardroom Showdown", subtitle: "Grand finale", mode: "On campus · NIT Warangal",
-      start: "2026-10-30T08:00:00+05:30", end: "2026-10-31T20:00:00+05:30" },
-  ],
+  rounds,
   // The Instagram caption says "Registration Deadline: October 5, 2026". E-Club decision: the Unstop timeline is absolute, so the page shows
   // ONLY the Unstop windows above. Leave null unless E-Club says otherwise in writing.
   registrationDeadline: null as string | null,

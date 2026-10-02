@@ -1,6 +1,5 @@
-"use client";
 import { copy } from "@/data/copy";
-import { event } from "@/data/event";
+import { rounds } from "@/data/timeline";
 import { indiaMap, projectLatLon } from "@/data/india-map";
 import { home, reach } from "@/data/reach";
 import { fmtRange } from "@/lib/format";
@@ -8,7 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { ScrollTrack } from "@/components/ui/ScrollTrack";
 import { H2, Label } from "@/components/ui/Type";
 
-const [r1, r2, r3] = event.rounds;
+const [r1, r2, r3] = rounds;
 const [hx, hy] = projectLatLon(home.lat, home.lon);
 const range = (r: { start: string; end: string }) => fmtRange(r.start, r.end).replace(/ 2026$/, "");
 // Phase 0 states the eligibility; 1 to 3 are the rounds. All from data/event.ts.

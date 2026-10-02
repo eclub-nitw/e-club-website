@@ -13,6 +13,7 @@ import { CampusToIndia } from "@/components/home/CampusToIndia";
 import { VortexExpand } from "@/components/home/VortexExpand";
 import { FlagshipStage } from "@/components/home/FlagshipStage";
 import { BackedBy, JoinUs, PosterWall, Speakers, Voices } from "@/components/home/Sections";
+import { startups } from "@/data/startups";
 import { speakers } from "@/data/speakers";
 import { voices } from "@/data/voices";
 import { fmtDate } from "@/lib/format";
@@ -39,6 +40,14 @@ export default function Home() {
     "Part of Technozion",
     "₹50,000 prize pool",
   ];
+  // Verified Venture Vortex facts only (data/event.ts, data/startups.ts). Not club-lifetime figures.
+  const stats = [
+    { value: String(event.rounds.length), label: "Rounds", note: "Two online, one on campus" },
+    { value: String(startups.length), label: "Startups to choose from", note: "Round 1 teardown" },
+    { value: `${event.team.min}–${event.team.max}`, label: "Members per team", note: "Cross-college allowed" },
+    { value: "₹50,000", label: "Prize pool", note: "Total cash pool" },
+    { value: "30–31 Oct", label: "Finale", note: "On campus, NIT Warangal" },
+  ];
   const n = (i: number) => String(i).padStart(2, "0");
   let c = 1;
   return (
@@ -46,7 +55,7 @@ export default function Home() {
       <JsonLd data={organizationLd()} />
       <Hero number={n(c++)} />
       <Ticker items={ticker} />
-      <Numbers number={n(c++)} />
+      <Numbers number={n(c++)} stats={stats} />
       <About number={n(c++)} />
       <Initiatives number={n(c++)} />
       <CampusToIndia number={n(c++)} />

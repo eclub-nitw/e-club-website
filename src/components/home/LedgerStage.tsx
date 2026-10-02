@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { canRunWebGL } from "@/lib/webgl";
+import { whenScrollQuiet } from "@/lib/quiet";
 
 const RisingLedger = dynamic(() => import("./RisingLedger"), { ssr: false });
 
@@ -48,8 +49,9 @@ export function LedgerStage() {
   useEffect(() => {
     if (!eligible) return;
     if (onScreen) { const id = requestAnimationFrame(() => setMount(true)); return () => cancelAnimationFrame(id); }
-    const t = window.setTimeout(() => { setMount(false); box.current?.closest("section")?.removeAttribute("data-live"); }, 2500);
-    return () => clearTimeout(t);
+    let cancel = () => {};
+    const t = window.setTimeout(() => { cancel = whenScrollQuiet(() => { setMount(false); box.current?.closest("section")?.removeAttribute("data-live"); }); }, 2500);
+    return () => { clearTimeout(t); cancel(); };
   }, [eligible, onScreen]);
 
   const ready = () => box.current?.closest("section")?.setAttribute("data-live", "");

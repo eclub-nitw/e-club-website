@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { event } from "@/data/event";
+import { registerUrl } from "@/data/timeline";
 import { useChapter, useNow } from "@/lib/hooks";
 import { pillState } from "@/lib/register-state";
 
@@ -21,7 +21,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 /** Register goes to Unstop while Round 1 is open; afterwards the pill points at the competition page. */
 function Register({ open, cls, onClick }: { open: boolean; cls: string; onClick?: () => void }) {
   return open
-    ? <a href={event.registerUrl} target="_blank" rel="noopener noreferrer" onClick={onClick} className={cls}>Register<span className="sr-only"> on Unstop (opens in a new tab)</span></a>
+    ? <a href={registerUrl} target="_blank" rel="noopener noreferrer" onClick={onClick} className={cls}>Register<span className="sr-only"> on Unstop (opens in a new tab)</span></a>
     : <Link href="/venture-vortex" onClick={onClick} className={cls}>Venture Vortex</Link>;
 }
 

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { dive } from "@/data/dive";
 import { canRunWebGL } from "@/lib/webgl";
+import { whenScrollQuiet } from "@/lib/quiet";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollTrack } from "@/components/ui/ScrollTrack";
@@ -42,8 +43,9 @@ export function VortexExpand({ number, children }: { number: string; children: R
   // One canvas alive at a time: far from the viewport the scene is torn down (React unmounts the canvas and its GPU resources).
   useEffect(() => {
     if (onScreen || !mount) return;
-    const t = window.setTimeout(() => { setMount(false); setDrawn(false); }, 2500);
-    return () => clearTimeout(t);
+    let cancel = () => {};
+    const t = window.setTimeout(() => { cancel = whenScrollQuiet(() => { setMount(false); setDrawn(false); }); }, 2500);
+    return () => { clearTimeout(t); cancel(); };
   }, [onScreen, mount]);
 
   return (
@@ -63,7 +65,7 @@ export function VortexExpand({ number, children }: { number: string; children: R
               <Container><H2 className="max-w-[14ch]">Venture Vortex 2026</H2><p className="t-label mt-4 text-muted">Scroll to enter</p></Container>
             </div>
             <div className="absolute inset-x-0 bottom-0 pb-8 md:pb-10"><Container className="flex items-end justify-between gap-6">
-              <Label aria-hidden="true" className="tabular">{String(index + 1).padStart(2, "0")} / {String(dive.length).padStart(2, "0")} · {ALT}</Label>
+              <Label aria-hidden="true" className="tabular">{String(index + 1).padStart(2, "0")} / {String(dive.length).padStart(2, "0")} · {dive[index].poster ? "Club poster." : ALT}</Label>
             </Container></div>
           </div>
         </ScrollTrack>
