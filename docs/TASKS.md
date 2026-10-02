@@ -17,3 +17,8 @@ Team: **Wahid** (head of tech; architecture, Home, SEO, legal integration, deplo
 
 ## Rules
 Same PR workflow as Venture Vortex: branches `name/feature`, PRs to `main`, reviewer ticks the checklist, no direct pushes to `main`. Content changes (adding an event/team member) are PRs that touch only `src/data/*` and `public/images/*`.
+
+## What remains per person (V6, 2 Oct 2026)
+- **Wahid** (shell, SEO, deploy): rotate the Firebase key (`docs/KEY-ROTATION.md`); buy the domain and run `docs/DOMAIN-CUTOVER.md`; Search Console and link-preview checks; merge `claude/v6-2026-10-02` after review; turn on branch protection and Dependabot security updates (suggested, not enabled).
+- **Saad** (events, gallery, Venture Vortex route): supply past-event names, dates and descriptions for `src/data/archive.ts` and `events.ts` via `docs/CONTENT-INTAKE.md` section 2; confirm photo consent per person where possible (today only a blanket club statement of 30 Sep); real-phone checks of `/gallery` and `/venture-vortex`.
+- **Shroth** (About, Team, Sponsors, Contact, legal): team roster with roles and written portrait consent; sponsor logo consents; testimonials; take `docs/LEGAL-REVIEW-NOTES.md` to the faculty reviewer and decide each row; contact-form wording.
