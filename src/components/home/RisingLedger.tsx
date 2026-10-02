@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { BackSide, Color, DoubleSide, EquirectangularReflectionMapping, MathUtils, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, ShadowMaterial, type Group, type Object3D } from "three";
+import { BackSide, Color, type DirectionalLight, DoubleSide, EquirectangularReflectionMapping, MathUtils, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, ShadowMaterial, type Group, type Object3D } from "three";
 
 const BARS = "/models/rising-ledger.glb"; // 7 beveled ink bars + brass caps, modelled in Blender, KHR_mesh_quantization only (no decoder: CSP forbids wasm-unsafe-eval)
 const COIN = "/models/ledger-coin.glb";
@@ -14,6 +14,7 @@ const RISE_MS = 900, STAGGER_MS = 70;
 const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
 type Pointer = { current: { x: number; y: number } };
+type Grow = { current: number };
 
 /** Studio reflections from a tiny HDRI; the scene itself stays transparent so the page ink shows through. */
 function Studio() {
@@ -28,7 +29,7 @@ function Studio() {
 }
 
 /** The bars rise from the floor one after another, each pair (body + cap) scaling about the floor so cap and body stay joined. */
-function Bars() {
+function Bars({ grow, pointer }: { grow: Grow; pointer: Pointer }) {
   const { scene } = useLoader(GLTFLoader, BARS);
   const mirror = useMemo(() => {
     const m = scene.clone(true);
@@ -64,11 +65,12 @@ function Bars() {
     for (const p of pairs) for (const o of [...p.live, ...p.ghost]) { o.scale.y = o.userData.sy * 0.001; o.position.y = o.userData.ty * 0.001; }
   }, [scene, pairs]);
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, dt) => {
     if (t0.current === null) t0.current = clock.elapsedTime * 1000;
     const now = clock.elapsedTime * 1000 - t0.current;
     for (const p of pairs) {
-      const s = Math.max(0.001, easeOutExpo(MathUtils.clamp((now - p.i * STAGGER_MS) / RISE_MS, 0, 1)));
+      // bars also grow with the page scroll (up to +16% as the hero leaves)
+      const s = Math.max(0.001, easeOutExpo(MathUtils.clamp((now - p.i * STAGGER_MS) / RISE_MS, 0, 1))) * (1 + 0.16 * grow.current);
       for (const o of [...p.live, ...p.ghost]) { o.scale.y = o.userData.sy * s; o.position.y = o.userData.ty * s; }
     }
   });
@@ -121,9 +123,21 @@ function Rig({ pointer, width, height }: { pointer: Pointer; width: number; heig
   return null;
 }
 
+/** A slow warm light that travels across the bars: the highlight on the brass caps moves, so the scene never reads as a still. */
+function Sweep() {
+  const ref = useRef<DirectionalLight>(null);
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const t = clock.elapsedTime;
+    ref.current.position.set(Math.sin(t * 0.32) * 9, 4 + Math.cos(t * 0.21) * 1.2, 6);
+  });
+  return <directionalLight ref={ref} intensity={0.9} color={new Color("#ffd9a8")} />;
+}
+
 function Lights() {
   return (
     <>
+      <Sweep />
       <directionalLight position={[-2, 3.5, 9]} intensity={1.0} color={new Color("#ffe9cc")} />
       <directionalLight position={[-7, 2, 5]} intensity={0.8} color={new Color("#36afaa")} />
       <directionalLight position={[8, 1.5, 2.5]} intensity={1.5} color={new Color("#ed9038")} />
@@ -154,7 +168,7 @@ function Sized({ pointer }: { pointer: Pointer }) {
  * Chapter 01's live scene: the Rising Ledger. Transparent canvas over the Blender poster; once the assets have loaded the poster
  * fades out and the bars rise from the floor. DPR is capped at 1.5, the loop pauses off screen, one context only.
  */
-export default function RisingLedger({ pointer, active, onReady }: { pointer: Pointer; active: boolean; onReady: () => void }) {
+export default function RisingLedger({ pointer, grow, active, onReady }: { pointer: Pointer; grow: Grow; active: boolean; onReady: () => void }) {
   return (
     <Canvas
       frameloop={active ? "always" : "never"} dpr={[1, 1.5]} shadows
@@ -165,7 +179,7 @@ export default function RisingLedger({ pointer, active, onReady }: { pointer: Po
     >
       <Suspense fallback={null}>
         <Studio /><Lights /><Floor />
-        <Bars /><Coins />
+        <Bars grow={grow} pointer={pointer} /><Coins />
         <Sized pointer={pointer} />
         <Ready onReady={onReady} />
       </Suspense>

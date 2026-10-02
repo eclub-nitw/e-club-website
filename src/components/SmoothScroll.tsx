@@ -2,10 +2,9 @@
 import { useEffect } from "react";
 
 /**
- * Smooth scrolling plus the ScrollTrigger bridge. Everything loads after first paint (idle), so neither
- * Lenis nor GSAP is part of the initial JS. Skipped under reduced motion and on touch devices: measured on the
- * mobile profile it raised TBT and event latency, and native touch scrolling is better anyway. Scenes on touch
- * import `@/lib/gsap` themselves and run on native scroll.
+ * Smooth scrolling (Lenis), loaded at idle so it is not part of the initial JS. Skipped under reduced motion and on touch devices:
+ * measured on the mobile profile it raised TBT and event latency, and native touch scrolling is better anyway. The scroll scenes
+ * read window scroll directly, so they behave the same with or without it.
  */
 export function SmoothScroll() {
   useEffect(() => {
@@ -13,10 +12,9 @@ export function SmoothScroll() {
     let cancelled = false;
     let stop = () => {};
     const start = async () => {
-      const [{ default: Lenis }, { ScrollTrigger }] = await Promise.all([import("lenis"), import("@/lib/gsap")]);
+      const { default: Lenis } = await import("lenis");
       if (cancelled) return;
       const lenis = new Lenis({ lerp: 0.1 });
-      lenis.on("scroll", ScrollTrigger.update);
       let raf = 0;
       const loop = (t: number) => { lenis.raf(t); raf = requestAnimationFrame(loop); };
       raf = requestAnimationFrame(loop);

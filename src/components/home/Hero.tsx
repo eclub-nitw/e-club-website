@@ -32,7 +32,7 @@ export function Hero({ number }: { number: string }) {
       <p aria-hidden="true" data-word="E-CLUB" className="t-ghost absolute -bottom-[0.06em] left-[-0.02em] -z-20 text-club-paper" />
       <LedgerStage />
 
-      <Container className="flex flex-1 flex-col justify-between pb-8 pt-28 md:pb-12 md:pt-36">
+      <Container className="flex flex-1 flex-col justify-between pb-24 pt-28 md:pb-12 md:pt-36">
         <ul className="t-label flex flex-wrap items-center gap-x-4 gap-y-1 border-y border-line py-3 text-muted">
           <li>{copy.hero.label}</li><li aria-hidden="true" className="h-px w-8 bg-line md:w-16" /><li>Warangal, Telangana</li>
         </ul>

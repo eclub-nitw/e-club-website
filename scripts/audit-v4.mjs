@@ -27,6 +27,7 @@ for (const w of widths) {
   for (const r of routes) {
     const p = await ctx.newPage();
     await p.goto(base + r, { waitUntil: "load" });
+    await p.addStyleTag({ content: ".pill-in{display:none !important}" }); // fixed status pill: floats over text at the viewport edge and would be read as its background
     await p.waitForTimeout(1200);
     const tag = `${r} @${w}`;
 
@@ -48,7 +49,7 @@ for (const w of widths) {
       const seen = new Set();
       while (walker.nextNode()) {
         const n = walker.currentNode; if (!n.textContent.trim()) continue;
-        const el = n.parentElement; if (!el || seen.has(el) || el.closest("script,style,noscript,[hidden]")) continue; seen.add(el);
+        const el = n.parentElement; if (!el || seen.has(el) || el.closest("script,style,noscript,[hidden]") || (el.closest("details:not([open])") && !el.closest("summary"))) continue; seen.add(el);
         const rg = document.createRange(); rg.selectNodeContents(n);
         const rects = [...rg.getClientRects()].filter((r) => r.width >= 2 && r.height >= 2);
         if (!rects.length) continue;
@@ -76,10 +77,11 @@ for (const w of widths) {
     // ---- 3. NAV (rest state at the top)
     const nav = await p.evaluate(() => { const n = document.querySelector("header nav"); const r = n?.getBoundingClientRect(); return r ? { top: r.top, bottom: r.bottom, left: r.left, right: r.right } : null; });
     if (nav) {
-      const under = boxes.filter((b) => b.y < nav.bottom && b.y + b.h > nav.top && b.x < nav.right && b.x + b.w > nav.left && !b.aria && !/E-Club|NITW|Venture Vortex|About|Events|Team|Sponsors|Gallery|Contact|\d\d \/ \d\d/.test(b.text));
+      const under = boxes.filter((b) => b.y < nav.bottom && b.y + b.h > nav.top && b.x < nav.right && b.x + b.w > nav.left && !b.aria && !/E-Club|NITW|Venture Vortex|Home|About|Initiatives|Team|Sponsors|Gallery|Contact|Register|\d\d \/ \d\d/.test(b.text));
       out(under.length === 0, `nav-overlap ${tag}`, under.length ? under.map((b) => b.text).join(", ") : "");
     }
 
+    await p.addStyleTag({ content: ".nav-wrap,.vtree{visibility:hidden !important}" }); // fixed chrome is checked above; here it would be sampled as the background of the text beneath it
     // ---- 2. CONTRAST against real pixels (text hidden)
     const vh = p.viewportSize().height, H = await p.evaluate(() => document.documentElement.scrollHeight);
     const lows = [];

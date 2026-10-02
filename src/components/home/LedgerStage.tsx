@@ -13,6 +13,7 @@ const RisingLedger = dynamic(() => import("./RisingLedger"), { ssr: false });
 export function LedgerStage() {
   const box = useRef<HTMLDivElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
+  const grow = useRef(0); // 0..1 as the hero scrolls away; the bars grow with it
   const [mount, setMount] = useState(false);
   const [eligible, setEligible] = useState(false);
   const [onScreen, setOnScreen] = useState(true);
@@ -36,9 +37,11 @@ export function LedgerStage() {
       pointer.current = { x: ((e.clientX - r.left) / r.width) * 2 - 1, y: ((e.clientY - r.top) / r.height) * 2 - 1 };
     };
     const vis = () => setTabVisible(document.visibilityState === "visible");
+    const scroll = () => { const r = host.getBoundingClientRect(); grow.current = Math.min(1, Math.max(0, -r.top / r.height)); };
+    window.addEventListener("scroll", scroll, { passive: true });
     host.addEventListener("pointermove", move, { passive: true });
     document.addEventListener("visibilitychange", vis);
-    return () => { io.disconnect(); host.removeEventListener("pointermove", move); document.removeEventListener("visibilitychange", vis); };
+    return () => { io.disconnect(); host.removeEventListener("pointermove", move); window.removeEventListener("scroll", scroll); document.removeEventListener("visibilitychange", vis); };
   }, []);
 
   // One canvas alive at a time: leaving the hero for good tears the scene down (the poster returns); coming back remounts it.
@@ -52,7 +55,7 @@ export function LedgerStage() {
   const ready = () => box.current?.closest("section")?.setAttribute("data-live", "");
   return (
     <div ref={box} aria-hidden="true" data-scene={mount ? "live" : "poster"} className="pointer-events-none absolute inset-0 -z-10">
-      {mount && <RisingLedger pointer={pointer} active={onScreen && tabVisible} onReady={ready} />}
+      {mount && <RisingLedger pointer={pointer} grow={grow} active={onScreen && tabVisible} onReady={ready} />}
     </div>
   );
 }
