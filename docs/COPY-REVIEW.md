@@ -10,11 +10,11 @@ Rule: a public sentence is allowed without review only if it comes from `docs/CO
 | 4 | About: "Who we are / The students who run entrepreneurship at NIT Warangal." and the lede "We run competitions and pitch sessions where ideas get presented, questioned and sharpened. Bring a startup you admire or one you have not built yet." | `copy.about` | Ours (replace with the club's own About text) | CONFIRM |
 | 5 | About page lede (manifesto): "Entrepreneurship Club is the student community at NIT Warangal for people who build or want to. This year our flagship is Venture Vortex 2026..." | `about.manifesto` | First sentence ours; second verified | CONFIRM first sentence |
 | 6 | "What we run / Competitions first. More as the club confirms them." and Venture Vortex rows | `copy.initiatives`, `Initiatives.tsx` | Rounds verified | CONFIRM wording |
-| 7 | "Campus to India / Two rounds online, open across the country. The finale is on our campus." and the four phase labels | `CampusToIndia.tsx`, `copy.reach` | Dates and eligibility from `event.ts`; Warangal is public geography | CONFIRM wording; **the faculty coordinator must review the India map depiction** (see ASSETS) |
+| 7 | "Campus to India / Two rounds online, open across the country. The finale is on our campus." and the four phase labels | `CampusToIndia.tsx`, `copy.reach` | Dates and eligibility from `event.ts`; Warangal is public geography | CONFIRM wording. India map depiction reviewed and approved by the owner / faculty coordinator on 2 Oct 2026 (see ASSETS) |
 | 8 | Flagship stage copy ("Total prize pool", eligibility sentence, rounds list) | `FlagshipStage.tsx` | `event.ts` | Verified |
 | 9 | "Event posters / Our own flyers, newest first. Event photographs are in the Gallery." | `copy.posters` | Ours | CONFIRM |
 | 10 | Poster text transcriptions (shown as HTML under each poster) | `posters.ts` | Read off the club's own posters | Verified against the images |
-| 11 | Backed by: Master's Union (in collaboration with), Unstop (powered by), School2Startup (outreach partner), Technozion (part of), **Uplearn by Upstox (knowledge partner)** | `sponsors.ts` | First four from `event.ts`. **Uplearn is on the official poster but not in `event.ts`; owner to confirm.** | CONFIRM Uplearn |
+| 11 | Backed by: Master's Union, Unstop, School2Startup, Technozion, Uplearn by Upstox (knowledge partner) | `sponsors.ts`, `event.ts` | Official poster; Uplearn confirmed by the owner 2 Oct 2026 | Verified |
 | 12 | Disclaimer line near names: "Names are trademarks of their respective owners; appearing here does not imply endorsement, partnership or sponsorship unless explicitly stated." | `Sections.tsx`, Footer | Wording taken from `content/legal/DISCLAIMER.md` (itself an unreviewed draft) | **Legal review needed** |
 | 13 | "Join us / Come to an event, or write to us." and Contact "Before you write" paragraph | `copy.join`, `contact/page.tsx` | Ours | CONFIRM |
 | 14 | Closing line "Every company starts as an argument in a room." | `copy.closing` | Ours | CONFIRM |
@@ -27,19 +27,22 @@ Rule: a public sentence is allowed without review only if it comes from `docs/CO
 | 21 | Contact form microcopy, 18+ confirmation, "Sending opens your email app." | `ContactForm.tsx` | Ours; behaviour is real (mailto hand-off, nothing stored) | CONFIRM; replace when the backend exists |
 | 22 | Venture Vortex page: FAQ answers, Round 1/2/3 sections | `features/venture-vortex` | `event.ts` (official brief and Unstop panel) | Verified; the "WhatsApp group from Unstop" answer is the confirmed 29 Sep mechanism |
 | 23 | 404 "Slide not found. That address is not in this deck." | `not-found.tsx` | Ours | CONFIRM tone |
+| 25 | Forms: "We use your details only to reply to you."; success and fallback toasts | `ContactForm.tsx` | Ours; **the privacy policy (human-reviewed legal text, not edited by me) must be checked against docs/BACKEND.md before the backend is switched on** | Legal review |
 | 24 | Page descriptions (metadata) for every route | each `page.tsx` | Ours | CONFIRM |
 
 ## Posters: consent records (`src/data/posters.ts`)
-| Poster | Shown | Basis |
-|---|---|---|
-| `vv-announcement` (Technozion, E-Club, Master's Union, Unstop, Uplearn, S2S logos) | yes | `consent: "club-owned poster, confirm"` (partner logos appear as part of the club's own poster) |
-| `vv-why` ("Why participate", no faces, no logos) | yes | `consent: true` |
-| `venture_vortex2` ("Decode, Craft, Defend": a woman's face in a stock-style photograph) | **no** (not built, not shipped) | Owner to confirm it is club material and may be shown |
-| `venture_vortex3` ("Timeline": a group of identifiable people; dates 22 Sep to 3 Oct registration differ from the Unstop timeline the owner declared authoritative) | **no** | Owner to confirm the people's consent and which dates are right |
+On 2 Oct 2026 the owner confirmed all four posters are the club's own, that their dates are correct, and that they may be shown. All four ship.
+| Poster | Basis |
+|---|---|
+| `vv-announcement` (partner logos) | `"club-owned poster, owner confirmed 2026-10-02"` |
+| `vv-tracks` (Decode, Craft, Defend; a woman's face) | same |
+| `vv-timeline` (Timeline; a group of people) | same |
+| `vv-why` (no faces, no logos) | `true` |
+
+**Dates changed on 2 Oct 2026 (owner):** the timeline poster is the source. Registration 22 Sep to 3 Oct, Round 1 submissions 24 Sep to 9 Oct 08:00, result 10 Oct, Round 2 track lock 11 to 18 Oct, Round 3 30 to 31 Oct. The poster gives dates only; registration is treated as closing at the end of 3 Oct IST and the 08:00 submission cut-off is kept from Unstop (CONFIRM the exact times). The poster prints "Result Oct 10" under Round 2 as well; it is transcribed as printed in the poster text and not used anywhere else.
 
 ## Other items needing a human
-- **India map** (`src/data/india-map.ts`): outline from Natural Earth's India point-of-view dataset, which follows the boundary as recognised by India. Map depiction is legally sensitive in India: the faculty coordinator should review it before launch.
-- **Faculty mentor line**: the public NITW student-welfare page lists Prof. Altaf Q. H. Badar (Electrical Engineering) as the club's mentor. Not shown; `about.facultyCoordinator` is `null` until the owner confirms.
+- **Faculty mentor line** (Prof. Altaf Q. H. Badar, Electrical Engineering): from the public NITW student-welfare page; approved by the owner on 2 Oct 2026 and shown on /about.
 - **Legal pages** (`content/legal/*.md`): untouched, still noindex drafts.
 - Not attributed to the club: NITW E-Summit '25 and Technozion achievements. "Business Club NITW" (@bclubnitw) is a different club and is not used anywhere.
 

@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { canRunWebGL } from "@/lib/webgl";
-import { whenScrollQuiet } from "@/lib/quiet";
 
 const RisingLedger = dynamic(() => import("./RisingLedger"), { ssr: false });
 
@@ -45,14 +44,13 @@ export function LedgerStage() {
     return () => { io.disconnect(); host.removeEventListener("pointermove", move); window.removeEventListener("scroll", scroll); document.removeEventListener("visibilitychange", vis); };
   }, []);
 
-  // One canvas alive at a time: leaving the hero for good tears the scene down (the poster returns); coming back remounts it.
+  // Mount once, after load and idle. It is never torn down: disposing a WebGL context in the middle of a scroll costs a 200-400 ms task,
+  // and while off screen the loop is paused (frameloop "never"), so the idle canvas costs memory only.
   useEffect(() => {
     if (!eligible) return;
-    if (onScreen) { const id = requestAnimationFrame(() => setMount(true)); return () => cancelAnimationFrame(id); }
-    let cancel = () => {};
-    const t = window.setTimeout(() => { cancel = whenScrollQuiet(() => { setMount(false); box.current?.closest("section")?.removeAttribute("data-live"); }); }, 2500);
-    return () => { clearTimeout(t); cancel(); };
-  }, [eligible, onScreen]);
+    const id = requestAnimationFrame(() => setMount(true));
+    return () => cancelAnimationFrame(id);
+  }, [eligible]);
 
   const ready = () => box.current?.closest("section")?.setAttribute("data-live", "");
   return (

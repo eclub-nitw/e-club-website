@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { dive } from "@/data/dive";
 import { canRunWebGL } from "@/lib/webgl";
-import { whenScrollQuiet } from "@/lib/quiet";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollTrack } from "@/components/ui/ScrollTrack";
@@ -16,8 +15,8 @@ const ALT = "Generated artwork, not a photograph.";
 /**
  * Chapter "Flagship", part one: the vortex expand. Pinned: a small vortex ring grows until it fills the viewport, then the page falls
  * through it and down a tunnel of generated art and the club's posters (scrubbed by scroll, reversible), landing on the stage below.
- * Touch, reduced motion, low-end GPUs and Save-Data get a vertical stack of the same art with clip-path reveals instead. One canvas,
- * mounted only near the viewport and torn down by React on leave.
+ * Touch, reduced motion, low-end GPUs and Save-Data get a vertical stack of the same art with clip-path reveals instead. The canvas is
+ * mounted once, only when the section is near the viewport, and its loop pauses off screen (never disposed mid-scroll: that was a 200-400 ms task).
  */
 export function VortexExpand({ number, children }: { number: string; children: React.ReactNode }) {
   const root = useRef<HTMLElement>(null);
@@ -33,20 +32,17 @@ export function VortexExpand({ number, children }: { number: string; children: R
     const el = root.current;
     if (!el) return;
     if (!canRunWebGL()) { const id = requestAnimationFrame(() => setFallback(true)); return () => cancelAnimationFrame(id); }
-    const io = new IntersectionObserver(([e]) => { setOnScreen(e.isIntersecting); if (e.isIntersecting) setMount(true); }, { rootMargin: "60% 0px" });
-    io.observe(el);
+    const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) setMount(true); }, { rootMargin: "200% 0px" }); // build and compile early
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { rootMargin: "10% 0px" });             // render only when visible
+    near.observe(el); io.observe(el);
+    // Warm it up in the background a few seconds after load (desktop with a capable GPU only), so no first-frame cost lands mid-scroll.
+    let warm = 0;
+    const go = () => { warm = window.setTimeout(() => setMount(true), 3500); };
+    if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
     const vis = () => setTabVisible(document.visibilityState === "visible");
     document.addEventListener("visibilitychange", vis);
-    return () => { io.disconnect(); document.removeEventListener("visibilitychange", vis); };
+    return () => { clearTimeout(warm); window.removeEventListener("load", go); near.disconnect(); io.disconnect(); document.removeEventListener("visibilitychange", vis); };
   }, []);
-
-  // One canvas alive at a time: far from the viewport the scene is torn down (React unmounts the canvas and its GPU resources).
-  useEffect(() => {
-    if (onScreen || !mount) return;
-    let cancel = () => {};
-    const t = window.setTimeout(() => { cancel = whenScrollQuiet(() => { setMount(false); setDrawn(false); }); }, 2500);
-    return () => { clearTimeout(t); cancel(); };
-  }, [onScreen, mount]);
 
   return (
     <section id="flagship" ref={root} data-section={`${number} — Flagship`} data-fallback={fallback || undefined} aria-label="Flagship: Venture Vortex 2026" className="dive relative bg-bg text-fg">

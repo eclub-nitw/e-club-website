@@ -60,6 +60,8 @@ function Vortex({ progress }: { progress: MutableRefObject<number> }) {
 function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onIndex: (i: number) => void }) {
   const textures = useLoader(TextureLoader, dive.map((d) => `/images/dive/${d.slug}.webp`));
   const gl = useThree((s) => s.gl);
+  const root = useThree((s) => s.scene);
+  const cam = useThree((s) => s.camera);
   const pointer = useThree((s) => s.pointer);
   const streaks = useRef<Group>(null);
   const smooth = useRef(0);
@@ -79,6 +81,9 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
     }
     return { planes, accent: new Color(token("--accent")), pos };
   }, [textures]);
+
+  // Compile every shader program in parallel while the section is still off screen, so the first visible frame is not a 150 ms task.
+  useEffect(() => { void gl.compileAsync(root, cam); }, [gl, root, cam]);
 
   // Upload textures one per idle slot instead of all inside the first frame.
   useEffect(() => {
