@@ -81,12 +81,12 @@ for (const w of widths) {
       out(under.length === 0, `nav-overlap ${tag}`, under.length ? under.map((b) => b.text).join(", ") : "");
     }
 
-    await p.addStyleTag({ content: ".nav-wrap,.vtree{visibility:hidden !important}" }); // fixed chrome is checked above; here it would be sampled as the background of the text beneath it
+    await p.addStyleTag({ content: ".audit-hide-chrome .nav-wrap,.audit-hide-chrome .vtree{visibility:hidden !important}" }); // below the first screen the fixed chrome would be sampled as the background of the text beneath it (the nav itself is checked at scroll 0)
     // ---- 2. CONTRAST against real pixels (text hidden)
     const vh = p.viewportSize().height, H = await p.evaluate(() => document.documentElement.scrollHeight);
     const lows = [];
     for (let y0 = 0; y0 < H; y0 += vh) {
-      await p.evaluate((y) => window.scrollTo(0, y), y0); await p.waitForTimeout(250);
+      await p.evaluate((y) => { window.scrollTo(0, y); document.documentElement.classList.toggle("audit-hide-chrome", y > 0); }, y0); await p.waitForTimeout(250);
       const sy = await p.evaluate(() => scrollY);
       const here = boxes.filter((b) => b.y >= sy && b.y + b.h <= sy + vh && b.op >= 0.5);
       if (!here.length) continue;
