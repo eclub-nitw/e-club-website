@@ -7,7 +7,7 @@ const engines = { chromium: devices["Desktop Chrome"], firefox: devices["Desktop
 export default defineConfig({
   testDir: "tests",
   reporter: "list",
-  use: { baseURL: process.env.BASE_URL ?? "http://localhost:3000" },
+  use: { baseURL: process.env.BASE_URL ?? "http://localhost:3000", ignoreHTTPSErrors: true },
   projects: [
     { name: "unit", testMatch: /^(?!.*e2e).*\.spec\.ts$/ },
     ...Object.entries(engines).flatMap(([name, device]) =>

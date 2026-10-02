@@ -263,3 +263,6 @@ html { scroll-padding-top: 6.5rem; }
 
 /* Home already has its own "Backed by" chapter (id="backed"); do not repeat the same names in the footer there. */
 body:has(#backed) .footer-backed { display: none; }
+
+/* WebKit sizes an img inside <picture> from its width attribute (1600) and ignores width:100% there; cap it so it can never widen the page. */
+picture > img { max-width: 100%; }
