@@ -1,11 +1,13 @@
-import { timingSafeEqual } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { isConfigured, purgeExpired } from "@/lib/server/store";
 
 export const dynamic = "force-dynamic";
 const headers = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
 const json = (body: object, status = 200) => Response.json(body, { status, headers });
 
-const same = (a: string, b: string) => a.length === b.length && timingSafeEqual(Buffer.from(a), Buffer.from(b));
+// Hash first so the comparison is constant-time and does not reveal the secret's length either.
+const digest = (s: string) => createHash("sha256").update(s).digest();
+const same = (a: string, b: string) => timingSafeEqual(digest(a), digest(b));
 
 /**
  * Daily retention job (vercel.json cron): deletes submissions older than 12 months.

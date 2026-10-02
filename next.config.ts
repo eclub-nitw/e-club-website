@@ -27,7 +27,7 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },              // no MIME sniffing
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()" },
-  { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+  { key: "Strict-Transport-Security", value: "max-age=86400" }, // one day while the final domain is being set up; raise per docs/DOMAIN-CUTOVER.md once it is stable on HTTPS
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },      // isolates our window from pages that open us
   { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
 ];

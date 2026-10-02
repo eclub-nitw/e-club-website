@@ -53,3 +53,5 @@ serviceAccount*.json
 
 .vercel
 .env*
+/test-results/
+/playwright-report/

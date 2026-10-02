@@ -3,6 +3,7 @@
 import { createServer } from "node:http";
 import { generateKeyPairSync, createVerify } from "node:crypto";
 import { spawn } from "node:child_process";
+import { request } from "node:http";
 
 let fails = 0;
 const ok = (c, name, d = "") => { if (!c) fails++; console.log(`${c ? "PASS" : "FAIL"}  ${name}${d ? "  " + d : ""}`); };
@@ -25,6 +26,7 @@ const mock = createServer((req, res) => {
     if (req.url?.startsWith("/v1/projects/proj-test/databases/(default)/documents/submissions") && req.headers.authorization === "Bearer tok-123") {
       docs.push(JSON.parse(body)); res.writeHead(200, { "content-type": "application/json" }).end("{}"); return;
     }
+    if (req.url === "/v1/projects/proj-test/databases/(default)/documents:runQuery" && req.headers.authorization === "Bearer tok-123") { res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify([{ readTime: "2026-01-01T00:00:00Z" }])); return; }
     res.writeHead(403).end("{}");
   });
 });
@@ -41,7 +43,7 @@ const post = (port, body, headers = {}, raw = false) => fetch(`http://localhost:
 const good = { kind: "contact", name: "Test Person", email: "test@example.com", message: "Hello, a question about the club.", age: true, company: "" };
 
 // ---- configured server
-const s1 = await start(3101, { FIREBASE_PROJECT_ID: "proj-test", FIREBASE_CLIENT_EMAIL: "svc@test.iam", FIREBASE_PRIVATE_KEY: pem.replace(/\n/g, "\\n"), ALLOW_TEST_ENDPOINTS: "1", TEST_TOKEN_URL: "http://localhost:4555/token", TEST_FIRESTORE_URL: "http://localhost:4555" });
+const s1 = await start(3101, { FIREBASE_PROJECT_ID: "proj-test", FIREBASE_CLIENT_EMAIL: "svc@test.iam", FIREBASE_PRIVATE_KEY: pem.replace(/\n/g, "\\n"), CRON_SECRET: "0123456789abcdef-secret", ALLOW_TEST_ENDPOINTS: "1", TEST_TOKEN_URL: "http://localhost:4555/token", TEST_FIRESTORE_URL: "http://localhost:4555" });
 try {
   let r = await post(3101, good, { "x-forwarded-for": "10.0.0.1" });
   ok(r.status === 200 && (await r.json()).ok === true, "valid submission is accepted");
@@ -71,6 +73,25 @@ try {
   ok(r.status === 403, "foreign Origin is refused (CSRF)");
   r = await fetch("http://localhost:3101/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(good) });
   ok(r.status === 403, "missing Origin is refused");
+  r = await post(3101, good, { origin: "https://e-club-nitw.vercel.app", "x-forwarded-for": "10.0.1.1" });
+  ok(r.status === 200, "the legacy vercel.app origin is allowed");
+  r = await post(3101, good, { origin: "https://e-club-nitw.vercel.app.evil.example", "x-forwarded-for": "10.0.1.2" });
+  ok(r.status === 403, "a look-alike origin is refused");
+  r = await post(3101, good, { origin: "null", "x-forwarded-for": "10.0.1.3" });
+  ok(r.status === 403, "Origin: null (sandboxed frame) is refused");
+  const forged = await new Promise((res) => { const q = request({ host: "localhost", port: 3101, path: "/api/contact", method: "POST", agent: false, headers: { host: "evil.example", origin: "https://evil.example", "content-type": "application/json" } }, (m) => { m.resume(); res(m.statusCode); }); q.on("error", () => res(0)); q.end(JSON.stringify(good)); });
+  ok(forged === 403, "a forged Host header cannot vouch for a foreign Origin");
+  r = await post(3101, JSON.stringify({ ...good, message: "é".repeat(5000) }), { "x-forwarded-for": "10.0.1.4" }, true);
+  ok(r.status === 413, "the body cap counts bytes, not characters (5000 two-byte characters = 10 kB)");
+  const cron = (auth) => fetch("http://localhost:3101/api/cron/purge", { headers: auth ? { authorization: auth } : {} });
+  ok((await cron()).status === 401, "cron: no Authorization is refused");
+  ok((await cron("Bearer wrong")).status === 401, "cron: wrong secret is refused");
+  ok((await cron("Bearer 0123456789abcdef-secreX")).status === 401, "cron: same-length wrong secret is refused");
+  ok((await cron("0123456789abcdef-secret")).status === 401, "cron: secret without the Bearer scheme is refused");
+  r = await cron("Bearer 0123456789abcdef-secret");
+  ok(r.status === 200 && (await r.json()).deleted === 0 && r.headers.get("cache-control") === "no-store", "cron: the right secret runs the purge (mock Firestore, nothing expired)");
+  r = await fetch("http://localhost:3101/api/cron/purge", { method: "POST", headers: { authorization: "Bearer 0123456789abcdef-secret" } });
+  ok(r.status === 405, "cron: POST is not allowed");
   r = await post(3101, "name=x", { "content-type": "application/x-www-form-urlencoded", "x-forwarded-for": "10.0.0.10" }, true);
   ok(r.status === 415, "non-JSON content type is refused");
   r = await post(3101, JSON.stringify({ ...good, message: "y".repeat(20000) }), { "x-forwarded-for": "10.0.0.11" }, true);
@@ -90,10 +111,12 @@ try {
 
 // ---- unconfigured server
 // explicit empty values: a real .env.local must never leak into this test (process env wins over .env files)
-const s2 = await start(3102, { FIREBASE_PROJECT_ID: "", FIREBASE_CLIENT_EMAIL: "", FIREBASE_PRIVATE_KEY: "", CRON_SECRET: "" });
+const s2 = await start(3102, { FIREBASE_PROJECT_ID: "", FIREBASE_CLIENT_EMAIL: "", FIREBASE_PRIVATE_KEY: "", CRON_SECRET: "", ALLOW_TEST_ENDPOINTS: "1" });
 try {
   const r = await post(3102, good, { "x-forwarded-for": "10.1.1.1" });
   ok(r.status === 503 && (await r.json()).error === "storage_unavailable", "no credentials: 503 so the form falls back to email");
+  const c = await fetch("http://localhost:3102/api/cron/purge", { headers: { authorization: "Bearer " } });
+  ok(c.status === 503 && (await c.json()).error === "disabled", "cron: with no CRON_SECRET the endpoint is disabled, not open");
 } finally { s2.kill(); }
 
 // ---- storage failure

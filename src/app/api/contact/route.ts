@@ -1,21 +1,12 @@
 import { validateContact } from "@/lib/contact-schema";
 import { limit } from "@/lib/server/rate-limit";
 import { isConfigured, saveSubmission } from "@/lib/server/store";
-import { site } from "@/data/site";
+import { isAllowedOrigin } from "@/lib/server/origin";
 
 export const dynamic = "force-dynamic";
 const MAX_BODY = 8 * 1024;
 const base = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
 const json = (body: object, status = 200, extra: Record<string, string> = {}) => Response.json(body, { status, headers: { ...base, ...extra } });
-
-/** Same-origin only. Browsers always send Origin on a cross-site POST, so a foreign (or missing) origin is refused: this is the CSRF defence. */
-function sameOrigin(req: Request): boolean {
-  const origin = req.headers.get("origin");
-  if (!origin) return false; // our own form always sends it
-  let host: string;
-  try { host = new URL(origin).host; } catch { return false; }
-  return host === req.headers.get("host") || host === new URL(site.url).host;
-}
 
 /**
  * The address of the client as seen by our own proxy. Vercel sets x-vercel-forwarded-for itself; failing that x-real-ip; failing that the LAST
@@ -34,12 +25,12 @@ function clientAddress(req: Request): string {
  * (the form then falls back to the visitor's own email app, so nothing is ever lost silently).
  */
 export async function POST(req: Request) {
-  if (!sameOrigin(req)) return json({ error: "forbidden" }, 403);
+  if (!isAllowedOrigin(req.headers.get("origin"))) return json({ error: "forbidden" }, 403);
   if (!(req.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json")) return json({ error: "unsupported" }, 415);
   if (Number(req.headers.get("content-length") ?? 0) > MAX_BODY) return json({ error: "too_large" }, 413);
 
   const text = await req.text();
-  if (text.length > MAX_BODY) return json({ error: "too_large" }, 413);
+  if (Buffer.byteLength(text) > MAX_BODY) return json({ error: "too_large" }, 413);
   let body: Record<string, unknown>;
   try {
     const parsed: unknown = JSON.parse(text);
