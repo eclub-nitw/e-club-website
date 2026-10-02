@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useChapter } from "@/lib/hooks";
 
@@ -17,13 +17,16 @@ export function VentureTree() {
   const pathname = usePathname();
   const chapter = useChapter(pathname);
   const root = useRef<HTMLDivElement>(null);
+  const [atEnd, setAtEnd] = useState(false); // the footer is not a chapter, so the tree also grows once the page is read to its end
 
   useEffect(() => {
     let raf = 0;
     const update = () => {
       raf = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      root.current?.style.setProperty("--pp", (max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0).toFixed(4));
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      root.current?.style.setProperty("--pp", p.toFixed(4));
+      setAtEnd(p > 0.97);
     };
     const tick = () => { if (!raf) raf = requestAnimationFrame(update); };
     update();
@@ -34,7 +37,7 @@ export function VentureTree() {
 
   const total = Math.min(MAX_LEAVES, chapter?.total ?? 0);
   const at = chapter?.index ?? -1;
-  const last = !!chapter && chapter.total > 1 && chapter.index === chapter.total - 1;
+  const last = atEnd || (!!chapter && chapter.total > 1 && chapter.index === chapter.total - 1);
   const bud = !!chapter && chapter.id === "flagship";
   // chapters beyond the leaf budget share the last leaves
   const reached = total === 0 ? -1 : Math.min(total - 1, Math.round((at / Math.max(1, (chapter?.total ?? 1) - 1)) * (total - 1)));

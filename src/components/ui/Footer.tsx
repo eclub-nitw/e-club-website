@@ -24,7 +24,7 @@ export function Footer() {
   const logos = sponsors.filter((s) => s.consent && s.logo);
   return (
     <footer className="bg-club-ink text-club-paper">
-      <Container className="pb-10 pt-20 md:pt-28">
+      <Container className="pb-24 pt-20 md:pt-28">
         <Label className="border-t border-line pt-4">Get in touch</Label>
         <ul className="mt-6 grid gap-4 md:grid-cols-3">
           {cards.map((c) => (

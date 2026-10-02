@@ -33,7 +33,7 @@ for (const w of widths) {
     // ---- token sizes at this width
     const tokens = await p.evaluate(() => {
       const probe = (cls) => { const e = document.createElement("p"); e.className = cls; e.textContent = "x"; document.body.append(e); const c = getComputedStyle(e); const o = { size: c.fontSize, family: c.fontFamily }; e.remove(); return o; };
-      return Object.fromEntries(["t-impact", "t-impact-s", "t-h1", "t-h2", "t-h3", "t-lede", "t-lede-xl", "t-body", "t-label", "t-ui", "t-wordmark"].map((k) => [k, probe(k)]));
+      return Object.fromEntries(["t-impact", "t-impact-s", "t-stat", "t-h1", "t-h2", "t-h3", "t-lede", "t-lede-xl", "t-body", "t-label", "t-ui", "t-wordmark"].map((k) => [k, probe(k)]));
     });
     const sizes = new Set(Object.values(tokens).map((t) => t.size));
     const famOf = (f) => (/bricolage/i.test(f) ? "display" : /serif/i.test(f) && /instrument/i.test(f) ? "serif" : /instrument/i.test(f) ? "sans" : /jetbrains|mono/i.test(f) ? "mono" : f);

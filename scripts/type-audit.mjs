@@ -18,4 +18,37 @@ const css = (await Promise.all((await readdir(".next/static/chunks")).filter((n)
 const fams = new Set([...css.matchAll(/font-family:\s*([^;}]+)/g)].map((m) => m[1].split(",")[0].replace(/["']/g, "").trim()));
 console.log("font-family first tokens in built CSS:", [...fams].join(" | "));
 console.log(bad ? `\n${bad} ad-hoc type usages` : "\nno ad-hoc type usage");
-process.exit(bad ? 1 : 0);
+
+// 3. Rendered caps (V5). Needs a production server: node scripts/type-audit.mjs [baseUrl]. Every visible text node at 1440 must stay at or under
+//    60px (stat numerals 80px, impact 144px). Decorative ghost words are generated content, so they have no text node to measure.
+//    Reports the largest text node per page. Skipped when no server answers.
+const base = (process.argv[2] ?? "http://localhost:3100").replace(/\/$/, "");
+let caps = 0;
+try {
+  const sitemap = await (await fetch(`${base}/sitemap.xml`)).text();
+  const routes = [...new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname))];
+  const { chromium } = await import("@playwright/test");
+  const browser = await chromium.launch({ channel: "chrome" });
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
+  for (const r of routes) {
+    const p = await ctx.newPage(); await p.goto(base + r, { waitUntil: "load" }); await p.waitForTimeout(600);
+    const top = await p.evaluate(() => {
+      let best = { size: 0, text: "", cls: "" }; const over = [];
+      const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      while (w.nextNode()) {
+        const n = w.currentNode; if (!n.textContent.trim()) continue;
+        const el = n.parentElement; if (!el || el.closest("script,style,noscript,.sr-only")) continue;
+        const c = getComputedStyle(el); if (c.display === "none" || c.visibility === "hidden") continue;
+        const size = parseFloat(c.fontSize), cls = el.className?.toString() ?? "";
+        const cap = /\bt-impact\b/.test(cls) ? 144 : /\bt-stat\b|\bt-impact-s\b/.test(cls) ? 80 : 60;
+        if (size > best.size) best = { size, text: n.textContent.trim().slice(0, 30), cls: cls.slice(0, 30) };
+        if (size > cap + 0.5) over.push(`${size}px ${cls.slice(0, 24)} "${n.textContent.trim().slice(0, 20)}"`);
+      }
+      return { best, over };
+    });
+    console.log(`${top.over.length ? "FAIL" : "PASS"}  ${r}  largest ${top.best.size}px (${top.best.cls.trim() || "-"} "${top.best.text}")${top.over.length ? "  OVER: " + top.over.join(" | ") : ""}`);
+    caps += top.over.length; await p.close();
+  }
+  await browser.close();
+} catch (e) { console.log("rendered caps skipped (no server):", String(e).slice(0, 80)); }
+process.exit(bad || caps ? 1 : 0);

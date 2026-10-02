@@ -14,13 +14,14 @@ export function LedgerStage() {
   const box = useRef<HTMLDivElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
   const [mount, setMount] = useState(false);
+  const [eligible, setEligible] = useState(false);
   const [onScreen, setOnScreen] = useState(true);
   const [tabVisible, setTabVisible] = useState(true);
 
   useEffect(() => {
     if (!window.matchMedia("(min-width: 1024px)").matches || !canRunWebGL()) return; // the live composition is the wide one
     let cancelled = false, timer = 0;
-    const go = () => { timer = window.setTimeout(() => { if (!cancelled) setMount(true); }, 1200); };
+    const go = () => { timer = window.setTimeout(() => { if (!cancelled) setEligible(true); }, 1200); };
     if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
     return () => { cancelled = true; clearTimeout(timer); window.removeEventListener("load", go); };
   }, []);
@@ -39,6 +40,14 @@ export function LedgerStage() {
     document.addEventListener("visibilitychange", vis);
     return () => { io.disconnect(); host.removeEventListener("pointermove", move); document.removeEventListener("visibilitychange", vis); };
   }, []);
+
+  // One canvas alive at a time: leaving the hero for good tears the scene down (the poster returns); coming back remounts it.
+  useEffect(() => {
+    if (!eligible) return;
+    if (onScreen) { const id = requestAnimationFrame(() => setMount(true)); return () => cancelAnimationFrame(id); }
+    const t = window.setTimeout(() => { setMount(false); box.current?.closest("section")?.removeAttribute("data-live"); }, 2500);
+    return () => clearTimeout(t);
+  }, [eligible, onScreen]);
 
   const ready = () => box.current?.closest("section")?.setAttribute("data-live", "");
   return (
