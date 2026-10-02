@@ -3,14 +3,15 @@ import { useState } from "react";
 import { Gallery, type GalleryItem } from "./Gallery";
 
 const PAGE = 12;
+const FIRST = 6; // the first screen of photographs; "Load more" then adds 12 at a time
 
-/** Gallery: a session filter and 12 photographs at a time with "Load more". Every image below the first three is lazy with a blur-up. */
+/** Gallery: a session filter, the first 6 photographs, then "Load more" adds 12 at a time. Only the first image is eager; the rest are lazy with a blur-up. */
 export function GalleryBrowser({ items, sessions }: { items: GalleryItem[]; sessions: { slug: string; label: string }[] }) {
   const [session, setSession] = useState("all");
-  const [shown, setShown] = useState(PAGE);
+  const [shown, setShown] = useState(FIRST);
   const list = session === "all" ? items : items.filter((p) => p.event === session);
   const visible = list.slice(0, shown);
-  const pick = (s: string) => { setSession(s); setShown(PAGE); };
+  const pick = (s: string) => { setSession(s); setShown(FIRST); };
 
   return (
     <div>
@@ -23,7 +24,7 @@ export function GalleryBrowser({ items, sessions }: { items: GalleryItem[]; sess
           </button>
         ))}
       </div>
-      <Gallery key={session} items={visible} eagerCount={3} />
+      <Gallery key={session} items={visible} eagerCount={1} />
       <div className="mt-12 flex items-center gap-6">
         {visible.length < list.length && (
           <button type="button" onClick={() => setShown((n) => n + PAGE)} className="t-ui inline-flex min-h-11 items-center rounded-[2px] border border-line px-6 transition-colors hover:border-accent">Load more</button>
