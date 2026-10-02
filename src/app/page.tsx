@@ -33,8 +33,8 @@ export default function Home() {
   const [r1, r2, r3] = event.rounds;
   const open = registerOpen();
   const ticker = [
-    open ? "Venture Vortex 2026 registration is live on Unstop" : "Venture Vortex 2026",
-    `Round 1 · ${day(r1.start)} to ${day(r1.end)} · online`,
+    open ? "Venture Vortex 2026 registration is live on Unstop, closes 3 Oct" : "Venture Vortex 2026",
+    `Round 1 · submissions ${day(r1.start)} to ${day(r1.end)} · result 10 Oct · online`,
     `Round 2 · ${day(r2.start)} to ${day(r2.end)} · online`,
     `Round 3 · ${day(r3.start)} to ${day(r3.end)} · NIT Warangal`,
     "Part of Technozion",

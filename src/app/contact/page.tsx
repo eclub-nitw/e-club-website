@@ -39,7 +39,7 @@ export default function ContactPage() {
         <Container className="mt-24 grid gap-16 lg:grid-cols-[1.2fr_1fr] lg:gap-24">
           <div id="join" className="scroll-mt-28">
             <Label className="mb-6 border-t border-line pt-4">04 — Join the club</Label>
-            <ContactForm to={site.email} subject="Join E-Club NIT Warangal" />
+            <ContactForm to={site.email} subject="Join E-Club NIT Warangal" kind="join" />
           </div>
           <div>
             <Label className="mb-2 border-t border-line pt-4">Before you write</Label>

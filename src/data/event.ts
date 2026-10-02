@@ -4,7 +4,7 @@
  * Sources: (1) the official poster, (2) the Instagram caption, (3) the Unstop "Stages and Timelines" panel — AUTHORITATIVE for dates,
  * (4) the official Round 1 brief "Behind the Startup: Startup Teardown" (Google Doc shared by E-Club) — AUTHORITATIVE for Round 1 content.
  */
-import { registerUrl, rounds } from "./timeline";
+import { registerUrl, registration, round1Result, rounds } from "./timeline";
 
 export const event = {
   name: "Venture Vortex",                       // spelling: VORTEX. Unstop's Round 3 text says "Vertex" — a typo, never copy it.
@@ -14,6 +14,7 @@ export const event = {
   collaboration: "Master's Union",              // poster logo reads "master's union university"; caption says "Master's Union"
   platformPartner: "Unstop",                    // poster: "Powered by"
   outreachPartner: "School2Startup (S2S)",      // poster + caption: "Outreach Partner"
+  knowledgePartner: "Uplearn by Upstox",        // poster: "Knowledge Partner" (confirmed by the owner 2 Oct 2026)
   fest: "Technozion, NIT Warangal",
   prize: { totalInr: 50000, label: "₹50,000 total cash prize pool", extras: ["Upstox courses", "Exclusive goodies", "National-level certificates"] },
   // CONFIRMED E-Club decision (29 Sep 2026): the split between winner and runner-up stays undisclosed for now. Never display a split or add one later without checking with Wahid first.
@@ -30,11 +31,11 @@ export const event = {
   linkedinUrl: "https://www.linkedin.com/company/entrepreneurship-club-nitw/",
   linkedinPageName: "Entrepreneurship Club-NIT Warangal", // the exact page name teams must tag (from the Round 1 brief)
 
-  // Times are IST (UTC+05:30), from the Unstop "Stages and Timelines" panel (authoritative).
+  // Times are IST (UTC+05:30). 2 Oct 2026: the owner confirmed the dates on the club's timeline poster (registration to 3 Oct, submissions to 9 Oct,
+  // result 10 Oct); the older Instagram "5 Oct" deadline is superseded and never shown. See data/timeline.ts.
   rounds,
-  // The Instagram caption says "Registration Deadline: October 5, 2026". E-Club decision: the Unstop timeline is absolute, so the page shows
-  // ONLY the Unstop windows above. Leave null unless E-Club says otherwise in writing.
-  registrationDeadline: null as string | null,
+  registration,
+  round1Result,
   shortlistAnnouncement: null as string | null,  // not published anywhere; show nothing
 
   // ── Round 1 (official brief) ─────────────────────────────────────────────────────────────

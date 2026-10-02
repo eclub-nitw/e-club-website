@@ -6,7 +6,7 @@ import { pillState } from "@/lib/register-state";
 
 const left = (ms: number) => {
   const d = Math.floor(ms / 86_400_000), h = Math.floor((ms % 86_400_000) / 3_600_000);
-  return d > 0 ? `${d}d ${h}h left in Round 1` : `${h}h left in Round 1`;
+  return d > 0 ? `${d}d ${h}h left to register` : `${h}h left to register`;
 };
 
 /** Bottom-right status pill whose wording follows today's date against the Unstop timeline (lib/register-state.ts). Hidden on the Venture Vortex page and after the finale. */

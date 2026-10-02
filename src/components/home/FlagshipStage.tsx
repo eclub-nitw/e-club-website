@@ -36,7 +36,7 @@ export function FlagshipStage() {
               <li key={r.id} className="rule-draw grid gap-x-6 gap-y-1 py-6">
                 <Label className="text-accent-text">Round {r.n} · {r.mode}</Label>
                 <H3>{r.name}</H3>
-                <Label className="tabular">{fmtRange(r.start, r.end)} · {r.subtitle}</Label>
+                <Label className="tabular">{r.n === 1 ? "Submissions " : ""}{fmtRange(r.start, r.end)} · {r.subtitle}</Label>
               </li>
             ))}
           </ol>

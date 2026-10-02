@@ -1,5 +1,5 @@
 import { event } from "@/data/event";
-import { fmtRange } from "@/lib/format";
+import { fmtDate, fmtRange } from "@/lib/format";
 import { registerOpen } from "@/lib/register-state";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -58,8 +58,8 @@ export function VentureVortexPage() {
             <Body className="mt-6">Tear down one of 50 Indian startups, build a marketing or product strategy, and defend it live on campus.</Body>
             <p className="t-stat tabular mt-8 text-highlight">₹50,000</p>
             <Label className="mt-2">Total prize pool</Label>
-            <div className="mt-8"><Countdown start={open ? r1.end : r3.start} end={open ? r1.end : r3.end} /></div>
-            <Label className="mt-3">{open ? "Until Round 1 closes" : "Until the finale"}</Label>
+            <div className="mt-8"><Countdown start={open ? event.registration.end : r3.start} end={open ? event.registration.end : r3.end} /></div>
+            <Label className="mt-3">{open ? "Until registration closes, 3 Oct" : "Until the finale"}</Label>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
               {open && <Button href={event.registerUrl}>Register on Unstop</Button>}
               <Button href="#rounds" variant={open ? "secondary" : "primary"}>See the rounds</Button>
@@ -77,8 +77,8 @@ export function VentureVortexPage() {
       <section data-section="02 — Facts" aria-labelledby="facts-h" className="border-y border-line py-12">
         <Container>
           <h2 id="facts-h" className="sr-only">Key facts</h2>
-          <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[["Teams", `${event.team.min} to ${event.team.max} members`], ["Open to", "UG, PG and working professionals across India"], ["Entry", event.fee], ["Finale", `On campus, ${range(r3)}`]].map(([k, v]) => (
+          <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[["Registration", `Closes ${fmtDate(event.registration.end)}`], ["Teams", `${event.team.min} to ${event.team.max} members`], ["Open to", "UG, PG and working professionals across India"], ["Entry", event.fee], ["Finale", `On campus, ${range(r3)}`]].map(([k, v]) => (
               <div key={k}><dt><Label>{k}</Label></dt><dd className="t-body mt-2">{v}</dd></div>
             ))}
           </dl>
@@ -93,7 +93,7 @@ export function VentureVortexPage() {
               <li key={r.id} className="rule-draw grid gap-x-8 gap-y-1 py-6 md:grid-cols-[6rem_1fr_16rem]">
                 <Label className="text-accent-text">Round {r.n}</Label>
                 <div><H3>{r.name}</H3><Body className="mt-1">{r.subtitle}</Body></div>
-                <Label className="tabular">{range(r)}<br />{r.mode}</Label>
+                <Label className="tabular">{r.n === 1 ? "Submissions " : ""}{range(r)}<br />{r.mode}{r.n === 1 && <><br />Registration {range(event.registration)}<br />Result {fmtDate(event.round1Result)}</>}</Label>
               </li>
             ))}
           </ol>

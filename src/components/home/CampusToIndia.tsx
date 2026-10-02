@@ -13,7 +13,7 @@ const range = (r: { start: string; end: string }) => fmtRange(r.start, r.end).re
 // Phase 0 states the eligibility; 1 to 3 are the rounds. All from data/event.ts.
 const PHASES = [
   { key: "Open across India", title: "UG, PG and working professionals", sub: "Any college, any city" },
-  { key: "Round 1 · Online", title: range(r1), sub: r1.name },
+  { key: "Round 1 · Online", title: range(r1), sub: `${r1.name} · registration to 3 Oct` },
   { key: "Round 2 · Online", title: range(r2), sub: r2.name },
   { key: "Round 3 · Warangal Campus", title: range(r3), sub: r3.name },
 ];

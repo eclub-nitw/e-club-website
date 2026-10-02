@@ -1,0 +1,9 @@
+rules_version = '2';
+// Deny everything to clients. The website writes through its own server (src/lib/server/store.ts) with a service account, which bypasses these rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

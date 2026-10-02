@@ -2,8 +2,7 @@
 // Sources are 1113 px wide, so there is no 1600 variant: upscaling would be dishonest. sharp drops EXIF/ICC by default.
 import sharp from "sharp";
 import fs from "node:fs";
-// venture_vortex2 (stock-style portrait) and venture_vortex3 (people, and dates that differ from the Unstop timeline) are NOT built: see src/data/posters.ts.
-const MAP = { "venture_vortex.jpeg": "vv-announcement", "venture_vortex4.jpeg": "vv-why" };
+const MAP = { "venture_vortex.jpeg": "vv-announcement", "venture_vortex2.jpeg": "vv-tracks", "venture_vortex3.jpeg": "vv-timeline", "venture_vortex4.jpeg": "vv-why" };
 const out = "public/images/posters";
 fs.mkdirSync(out, { recursive: true });
 const blur = {};

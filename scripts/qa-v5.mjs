@@ -110,7 +110,7 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
   await c.close();
 }
 // ---- floating pill follows the Unstop timeline (fake clock) and hides on /venture-vortex
-for (const [iso, want] of [["2026-10-02T12:00:00+05:30", /Register on Unstop/], ["2026-10-10T12:00:00+05:30", /Round 1 closed/], ["2026-10-14T12:00:00+05:30", /Round 2 in progress/], ["2026-10-25T12:00:00+05:30", /Finale on campus, 30/], ["2026-10-30T12:00:00+05:30", /Finale on campus$/], ["2026-11-02T12:00:00+05:30", null]]) {
+for (const [iso, want] of [["2026-10-02T12:00:00+05:30", /Register on Unstop.*left to register/], ["2026-10-04T12:00:00+05:30", /Registration closed/], ["2026-10-10T12:00:00+05:30", /Round 1 closed/], ["2026-10-14T12:00:00+05:30", /Round 2 in progress/], ["2026-10-25T12:00:00+05:30", /Finale on campus, 30/], ["2026-10-30T12:00:00+05:30", /Finale on campus$/], ["2026-11-02T12:00:00+05:30", null]]) {
   const c = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const p = await c.newPage(); await p.clock.setFixedTime(new Date(iso)); await p.goto(base + "/about", { waitUntil: "load" }); await p.waitForTimeout(900);
   const t = await p.evaluate(() => document.querySelector(".pill-in")?.textContent.trim().replace(/\s+/g, " ") ?? null);

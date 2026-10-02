@@ -29,6 +29,7 @@ export default function AboutPage() {
         <Section id="who" number={s.number} title="The club" heading="In short" tone={s.tone}>
           <Lede className="max-w-[34ch]">{about.mission ?? about.manifesto}</Lede>
           {site.foundedYear && <Label className="mt-8">Founded {site.foundedYear}</Label>}
+          {about.facultyCoordinator && <Label className="mt-8">Faculty mentor · {about.facultyCoordinator}</Label>}
         </Section>
       ); })()}
 
@@ -55,7 +56,6 @@ export default function AboutPage() {
 
       {(() => { const s = next(); return (
         <Section id="join" number={s.number} title="How to join" heading="Take part" tone={s.tone}>
-          {about.facultyCoordinator && <Body className="mb-8">Faculty coordinator: {about.facultyCoordinator}</Body>}
           <div className="flex flex-wrap gap-x-8 gap-y-4"><Button href="/contact#join">Join the club</Button><Button href="/initiatives" variant="secondary">See initiatives</Button><Button href="/team" variant="secondary">Meet the team</Button></div>
         </Section>
       ); })()}

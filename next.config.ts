@@ -1,48 +1,50 @@
 import type { NextConfig } from "next";
 
-// Security headers applied to every route. This is what "no security loopholes" means in
-// practice for a static Next.js site: no server to breach, but the browser still needs telling
-// what it's allowed to do. Do not remove any of these without writing down why in the PR.
+// Security headers on every route. Do not remove one without writing down why in the PR.
+// The CSP lists only the origins this site really uses. If you add an external script, embed or API, add its exact origin here:
+// never widen to a wildcard or 'unsafe-eval' to make an error go away.
+const csp = [
+  "default-src 'self'",
+  // Next injects small inline bootstrap scripts, so 'unsafe-inline' stays until nonces are wired in; no eval, no remote scripts.
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  // YouTube's CDN serves the video facade thumbnail; blob: is for WebGL texture decoding.
+  "img-src 'self' data: blob: https://i.ytimg.com",
+  "font-src 'self' data:",
+  "media-src 'self'",
+  "frame-src https://www.youtube-nocookie.com",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const securityHeaders = [
-  // Stop the site from being framed by another origin (clickjacking).
-  { key: "X-Frame-Options", value: "DENY" },
-  // Stop the browser guessing content types (MIME sniffing).
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  // Only send the origin, not the full URL with query params, to other sites via Referer.
+  { key: "Content-Security-Policy", value: csp },
+  { key: "X-Frame-Options", value: "DENY" },                       // clickjacking (older browsers; CSP frame-ancestors covers the rest)
+  { key: "X-Content-Type-Options", value: "nosniff" },              // no MIME sniffing
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  // Lock down powerful browser APIs this site has no reason to use.
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
-  // Force HTTPS for a year, including subdomains, once first served over HTTPS (Vercel default anyway).
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()" },
   { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
-  // Content Security Policy: only allow scripts/styles/fonts/images from ourselves and the
-  // specific third parties this site actually uses (self-hosted fonts via next/font need no
-  // external font-src; YouTube embeds and Vercel Analytics are the only external origins).
-  // If you add a new external script or embed, add its origin here — do not switch to 'unsafe-inline'
-  // or a wildcard to make an error go away; find the exact origin instead.
-  {
-    key: "Content-Security-Policy",
-    value: [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: https:",
-      "font-src 'self' data:",
-      "frame-src https://www.youtube-nocookie.com",
-      "connect-src 'self' https://vitals.vercel-insights.com",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "frame-ancestors 'none'",
-    ].join("; "),
-  },
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },      // isolates our window from pages that open us
+  { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
 ];
 
+// Art, posters and models are replaced by renaming, never in place, so a month of caching is safe and removes repeat-visit transfer.
+const longCache = [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }];
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      { source: "/images/:path*", headers: longCache },
+      { source: "/models/:path*", headers: longCache },
+    ];
   },
-  images: {
-    formats: ["image/avif", "image/webp"],
-  },
+  images: { formats: ["image/avif", "image/webp"] },
 };
 
 export default nextConfig;

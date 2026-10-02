@@ -1,0 +1,54 @@
+import { validateContact } from "@/lib/contact-schema";
+import { limit } from "@/lib/server/rate-limit";
+import { isConfigured, saveSubmission } from "@/lib/server/store";
+import { site } from "@/data/site";
+
+export const dynamic = "force-dynamic";
+const MAX_BODY = 8 * 1024;
+const base = { "cache-control": "no-store", "x-content-type-options": "nosniff" };
+const json = (body: object, status = 200, extra: Record<string, string> = {}) => Response.json(body, { status, headers: { ...base, ...extra } });
+
+/** Same-origin only. Browsers always send Origin on a cross-site POST, so a foreign (or missing) origin is refused: this is the CSRF defence. */
+function sameOrigin(req: Request): boolean {
+  const origin = req.headers.get("origin");
+  if (!origin) return false; // our own form always sends it
+  let host: string;
+  try { host = new URL(origin).host; } catch { return false; }
+  return host === req.headers.get("host") || host === new URL(site.url).host;
+}
+
+/**
+ * POST /api/contact  { kind: "contact" | "join", name, email, message, age: true, company: "" }
+ * 200 stored · 400 invalid · 403 wrong origin · 413 too large · 415 wrong type · 429 slow down · 503 storage not configured or down
+ * (the form then falls back to the visitor's own email app, so nothing is ever lost silently).
+ */
+export async function POST(req: Request) {
+  if (!sameOrigin(req)) return json({ error: "forbidden" }, 403);
+  if (!(req.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json")) return json({ error: "unsupported" }, 415);
+  if (Number(req.headers.get("content-length") ?? 0) > MAX_BODY) return json({ error: "too_large" }, 413);
+
+  const text = await req.text();
+  if (text.length > MAX_BODY) return json({ error: "too_large" }, 413);
+  let body: Record<string, unknown>;
+  try {
+    const parsed: unknown = JSON.parse(text);
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) throw new Error("shape");
+    body = parsed as Record<string, unknown>;
+  } catch { return json({ error: "bad_json" }, 400); }
+
+  // Honeypot: a real visitor never sees this field. Answer like a success so bots learn nothing, and store nothing.
+  if (typeof body.company === "string" && body.company !== "") return json({ ok: true });
+
+  const forwarded = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const wait = limit(forwarded || req.headers.get("x-real-ip") || "unknown");
+  if (wait > 0) return json({ error: "rate_limited" }, 429, { "retry-after": String(wait) });
+
+  const result = validateContact(body);
+  if (!result.ok) return json({ error: "invalid", fields: result.errors }, 400);
+
+  if (!isConfigured()) return json({ error: "storage_unavailable" }, 503);
+  try { await saveSubmission(result.data); } catch { return json({ error: "storage_unavailable" }, 503); } // nothing from the submission is logged
+  return json({ ok: true });
+}
+
+export const GET = () => json({ error: "method_not_allowed" }, 405, { allow: "POST" });

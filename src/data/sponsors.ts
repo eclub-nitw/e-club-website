@@ -14,5 +14,5 @@ export const sponsors: Sponsor[] = [
   { name: "Unstop", role: "Powered by", consent: false, href: "https://unstop.com/o/cxKq1kz?lb=usedZ8to" },
   { name: "School2Startup", role: "Outreach partner", consent: false },
   { name: "Technozion", role: "Part of", consent: false },
-  { name: "Uplearn by Upstox", role: "Knowledge partner", consent: false },   // on the poster; not in event.ts: CONFIRM
+  { name: "Uplearn by Upstox", role: "Knowledge partner", consent: false },
 ];
