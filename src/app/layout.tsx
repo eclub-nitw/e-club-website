@@ -4,13 +4,15 @@ import { site } from "@/data/site";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Cursor } from "@/components/ui/Cursor";
 import { Footer } from "@/components/ui/Footer";
+import { FloatingPill } from "@/components/ui/FloatingPill";
 import { Nav } from "@/components/ui/Nav";
+import { VentureTree } from "@/components/ui/VentureTree";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: `${site.name} — Entrepreneurship Club, NIT Warangal`, template: `%s | ${site.name}` },
-  description: "The Entrepreneurship Club of NIT Warangal: events, competitions, speaker sessions and a community for student founders.",
+  title: { default: site.name, template: `%s | ${site.name}` },
+  description: "E-Club NIT Warangal: competitions, pitch sessions and a community for student founders. Flagship: Venture Vortex 2026.",
   alternates: { canonical: "/" },
   openGraph: { siteName: site.name, locale: "en_IN", type: "website" },
   twitter: { card: "summary_large_image" },
@@ -25,7 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScroll />
         <Cursor />
         <Nav />
+        <VentureTree />
         <main id="main">{children}</main>
+        <FloatingPill />
         <Footer />
       </body>
     </html>

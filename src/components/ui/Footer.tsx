@@ -1,69 +1,60 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import { copy } from "@/data/copy";
-import { legalPages } from "@/lib/legal";
 import { sponsors } from "@/data/sponsors";
+import { legalPages } from "@/lib/legal";
+import { ArrowButton } from "./ArrowButton";
 import { Container } from "./Container";
 import { SponsorLogo } from "./SponsorLogo";
-import { ArrowButton } from "./ArrowButton";
 import { Label } from "./Type";
 
-const cols = [
-  { title: "Explore", links: [["/about", "About"], ["/events", "Events"], ["/gallery", "Gallery"], ["/team", "Team"]] },
-  { title: "Get involved", links: [["/join", "Join the club"], ["/sponsors", "Partner with us"], ["/contact", "Contact"]] },
+const quick = [["/", "Home"], ["/about", "About"], ["/initiatives", "Initiatives"], ["/team", "Team"], ["/sponsors", "Sponsors"], ["/gallery", "Gallery"], ["/contact", "Contact"]] as const;
+
+// Three contact cards. Email, Instagram and LinkedIn only: no personal phone numbers, ever.
+const cards = [
+  { label: "Email", value: site.email, href: `mailto:${site.email}`, external: false },
+  { label: "Instagram", value: "@eclubnitw", href: site.instagram, external: true },
+  { label: "LinkedIn", value: "Entrepreneurship Club-NIT Warangal", href: site.linkedin, external: true },
 ] as const;
-
-const socials = [
-  { label: "Instagram", href: site.instagram },
-  { label: "LinkedIn", href: site.linkedin },
-  { label: "YouTube", href: site.youtube },
-].filter((s) => s.href);
-
-const listed = sponsors.filter((s) => s.consent);
 
 const linkCls = "t-ui inline-flex min-h-11 items-center whitespace-nowrap text-body underline-offset-4 hover:text-fg hover:underline";
 
-/** The last slide: one huge closing line in the serif voice, a "Thank you / Questions?" tag, then the working links. */
+/** The last slide: three contact cards, quick links, the partner block, legal links and one closing line. */
 export function Footer() {
+  const logos = sponsors.filter((s) => s.consent && s.logo);
   return (
     <footer className="bg-club-ink text-club-paper">
-      <Container className="pb-10 pt-20 md:pt-36">
-        <Label className="border-t border-line pt-4">{copy.thanks}</Label>
-        <p className="t-lede-xl mt-8 max-w-[16ch]">{copy.closing[0]}</p>
-        <div className="mt-20 md:mt-28" />
-        {listed.length > 0 && (
-          <div className="mb-16 border-y border-line py-8">
-            <Label>Backed by</Label>
-            <ul className="mt-4 flex flex-wrap items-center gap-x-10 gap-y-2">
-              {listed.map((s) => <li key={s.name}><SponsorLogo sponsor={s} /></li>)}
-            </ul>
-            <p className="t-ui mt-4 text-body">
-              Names and logos belong to their owners; see the <Link href="/disclaimer" className="underline underline-offset-4 hover:text-club-paper">disclaimer</Link>.
-            </p>
-          </div>
-        )}
-        <div className="grid gap-x-8 gap-y-14 md:grid-cols-3 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
-          <div className="md:col-span-3 lg:col-span-1">
-            <Label>Entrepreneurship Club · NIT Warangal</Label>
-            <a href={`mailto:${site.email}`} className="t-body mt-4 inline-flex min-h-11 items-center break-all underline decoration-accent decoration-2 underline-offset-8 hover:no-underline">{site.email}</a>
-          </div>
-          {cols.map((c) => (
-            <nav key={c.title} aria-label={c.title}>
-              <Label as="h2">{c.title}</Label>
-              <ul className="mt-3">{c.links.map(([href, label]) => <li key={href}><Link href={href} className={linkCls}>{label}</Link></li>)}</ul>
-            </nav>
+      <Container className="pb-10 pt-20 md:pt-28">
+        <Label className="border-t border-line pt-4">Get in touch</Label>
+        <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          {cards.map((c) => (
+            <li key={c.label}>
+              <a href={c.href} {...(c.external && { target: "_blank", rel: "noopener noreferrer" })} data-cursor="OPEN"
+                className="group block min-h-32 rounded-[2px] border border-line p-5 transition-[transform,border-color] duration-200 hover:-translate-y-1 hover:border-accent motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+                <Label>{c.label}</Label>
+                <span className="t-h3 mt-4 block break-words">{c.value}</span>
+                {c.external && <span className="sr-only"> (opens in a new tab)</span>}
+              </a>
+            </li>
           ))}
-          <nav aria-label="Social">
-            <Label as="h2">Follow</Label>
-            <ul className="mt-3">
-              {socials.map((s) => (
-                <li key={s.label}><a href={s.href} target="_blank" rel="noopener noreferrer" className={linkCls}>{s.label}<span className="sr-only"> (opens in a new tab)</span></a></li>
-              ))}
-            </ul>
+        </ul>
+
+        <div className="mt-16 grid gap-x-8 gap-y-12 md:grid-cols-[1fr_1.4fr]">
+          <nav aria-label="Footer">
+            <Label as="h2">Pages</Label>
+            <ul className="mt-3 grid grid-cols-2 gap-x-6">{quick.map(([href, label]) => <li key={href}><Link href={href} className={linkCls}>{label}</Link></li>)}</ul>
           </nav>
+          <div>
+            <Label as="h2">Backed by</Label>
+            <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1">{sponsors.map((s) => <li key={s.name} className="t-ui py-2 text-body">{s.name}</li>)}</ul>
+            {logos.length > 0 && <ul className="mt-3 flex flex-wrap items-center gap-x-8">{logos.map((s) => <li key={s.name}><SponsorLogo sponsor={s} /></li>)}</ul>}
+            <p className="t-ui mt-3 text-muted">Names belong to their owners and imply no endorsement beyond what is stated. See the <Link href="/disclaimer" className="underline underline-offset-4 hover:text-club-paper">disclaimer</Link>.</p>
+          </div>
         </div>
 
-        <div className="t-ui mt-16 flex flex-col gap-4 border-t border-line pt-6 text-muted md:flex-row md:items-center md:justify-between">
+        <p className="t-lede mt-20 max-w-[28ch] md:mt-28">{copy.closing}</p>
+
+        <div className="t-ui mt-14 flex flex-col gap-4 border-t border-line pt-6 text-muted md:flex-row md:items-center md:justify-between">
           <nav aria-label="Legal">
             <ul className="flex flex-wrap gap-x-5">
               {Object.entries(legalPages).map(([slug, p]) => <li key={slug}><Link href={`/${slug}`} className="inline-flex min-h-11 items-center underline-offset-4 hover:text-club-paper hover:underline">{p.title}</Link></li>)}

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ year: str
   const { year } = await params;
   return {
     title: `Team ${year}`,
-    description: `The Entrepreneurship Club of NIT Warangal team for ${year}.`,
+    description: `E-Club NIT Warangal team for ${year}.`,
     alternates: { canonical: `/team/${year}` },
   };
 }

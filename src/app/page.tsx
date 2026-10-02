@@ -1,40 +1,61 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
-import { isUpcoming, sortedEvents } from "@/lib/events";
+import { event } from "@/data/event";
+import { registerOpen } from "@/lib/register-state";
 import { organizationLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
-import { Cover } from "@/components/home/Cover";
-import { Problem } from "@/components/home/Problem";
-import { Solution } from "@/components/home/Solution";
-import { Traction } from "@/components/home/Traction";
-import { Product } from "@/components/home/Product";
-import { Flagship } from "@/components/home/Flagship";
-import { Moments } from "@/components/home/Moments";
-import { Investors } from "@/components/home/Investors";
-import { Ask } from "@/components/home/Ask";
+import { Hero } from "@/components/home/Hero";
+import { Ticker } from "@/components/home/Ticker";
+import { Numbers } from "@/components/home/Numbers";
+import { About } from "@/components/home/About";
+import { Initiatives } from "@/components/home/Initiatives";
+import { CampusToIndia } from "@/components/home/CampusToIndia";
+import { VortexExpand } from "@/components/home/VortexExpand";
+import { FlagshipStage } from "@/components/home/FlagshipStage";
+import { BackedBy, JoinUs, PosterWall, Speakers, Voices } from "@/components/home/Sections";
+import { speakers } from "@/data/speakers";
+import { voices } from "@/data/voices";
+import { fmtDate } from "@/lib/format";
 
-export const revalidate = 3600; // "upcoming" is decided at render time; refresh hourly
+export const revalidate = 3600; // dates decide the ticker and CTAs at render time; refresh hourly
 
 export const metadata: Metadata = {
-  title: { absolute: `${site.name} — Entrepreneurship Club, NIT Warangal` },
+  title: { absolute: site.name },
+  description: "E-Club NIT Warangal runs competitions and pitch sessions for student founders. Flagship: Venture Vortex 2026, an all-India startup strategy competition.",
   alternates: { canonical: "/" },
 };
 
-/** The home page is a nine-slide pitch deck: cover, problem, solution, traction, product, flagship, moments, investors, ask. */
+const day = (iso: string) => fmtDate(iso).replace(/ 2026$/, "");
+
+/** Home follows the IIT E-Cell order: hero, ticker, numbers, about, initiatives, reach map, flagship, posters, speakers, voices, backed by, join. */
 export default function Home() {
-  const flagship = sortedEvents().find((e) => e.type === "flagship" && isUpcoming(e));
+  const [r1, r2, r3] = event.rounds;
+  const open = registerOpen();
+  const ticker = [
+    open ? "Venture Vortex 2026 registration is live on Unstop" : "Venture Vortex 2026",
+    `Round 1 · ${day(r1.start)} to ${day(r1.end)} · online`,
+    `Round 2 · ${day(r2.start)} to ${day(r2.end)} · online`,
+    `Round 3 · ${day(r3.start)} to ${day(r3.end)} · NIT Warangal`,
+    "Part of Technozion",
+    "₹50,000 prize pool",
+  ];
+  const n = (i: number) => String(i).padStart(2, "0");
+  let c = 1;
   return (
     <>
       <JsonLd data={organizationLd()} />
-      <Cover flagship={flagship} />
-      <Problem />
-      <Solution />
-      <Traction />
-      <Product flagship={flagship} />
-      {flagship && <Flagship event={flagship} />}
-      <Moments />
-      <Investors />
-      <Ask />
+      <Hero number={n(c++)} />
+      <Ticker items={ticker} />
+      <Numbers number={n(c++)} />
+      <About number={n(c++)} />
+      <Initiatives number={n(c++)} />
+      <CampusToIndia number={n(c++)} />
+      <VortexExpand number={n(c++)}><FlagshipStage /></VortexExpand>
+      <PosterWall number={n(c++)} />
+      {speakers.length > 0 && <Speakers number={n(c++)} />}
+      {voices.length > 0 && <Voices number={n(c++)} />}
+      <BackedBy number={n(c++)} />
+      <JoinUs number={n(c++)} />
     </>
   );
 }

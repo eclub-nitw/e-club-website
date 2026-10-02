@@ -9,7 +9,7 @@ import { Body, H3, Label } from "@/components/ui/Type";
 
 export const metadata: Metadata = {
   title: "Team",
-  description: "The people running the Entrepreneurship Club of NIT Warangal this year, with links to past teams.",
+  description: "The people running E-Club NIT Warangal this year, with links to past teams.",
   alternates: { canonical: "/team" },
 };
 
@@ -26,7 +26,7 @@ export default function TeamPage() {
             <div className="rule-draw max-w-3xl py-8">
               <Label className="text-accent-text">Roster coming</Label>
               <H3 className="mt-3">Names and roles will be listed here once the club confirms them.</H3>
-              <Body className="mt-4">Want to be on the next roster? <Link href="/join" className="text-link underline underline-offset-4">See how to join</Link>.</Body>
+              <Body className="mt-4">Want to be on the next roster? <Link href="/contact#join" className="text-link underline underline-offset-4">See how to join</Link>.</Body>
             </div>
           )}
           {years.length > 1 && (

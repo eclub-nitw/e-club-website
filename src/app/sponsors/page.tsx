@@ -12,7 +12,7 @@ import { Body, H3, Label } from "@/components/ui/Type";
 
 export const metadata: Metadata = {
   title: "Sponsors and partners",
-  description: "Organisations that have backed the Entrepreneurship Club of NIT Warangal, and how to partner with us.",
+  description: "Organisations that have backed E-Club NIT Warangal, and how to partner with us.",
   alternates: { canonical: "/sponsors" },
 };
 

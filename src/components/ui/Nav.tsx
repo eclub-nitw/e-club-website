@@ -2,18 +2,28 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { event } from "@/data/event";
+import { useChapter, useNow } from "@/lib/hooks";
+import { pillState } from "@/lib/register-state";
 
 export const NAV_LINKS = [
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/events", label: "Events" },
+  { href: "/initiatives", label: "Initiatives" },
   { href: "/team", label: "Team" },
   { href: "/sponsors", label: "Sponsors" },
   { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
-const FLAGSHIP = { href: "/events/venture-vortex-2026", label: "Venture Vortex 2026" };
 const pad = (n: number) => String(n).padStart(2, "0");
+
+/** Register goes to Unstop while Round 1 is open; afterwards the pill points at the competition page. */
+function Register({ open, cls, onClick }: { open: boolean; cls: string; onClick?: () => void }) {
+  return open
+    ? <a href={event.registerUrl} target="_blank" rel="noopener noreferrer" onClick={onClick} className={cls}>Register<span className="sr-only"> on Unstop (opens in a new tab)</span></a>
+    : <Link href="/venture-vortex" onClick={onClick} className={cls}>Venture Vortex</Link>;
+}
 
 function Wordmark() {
   return (
@@ -33,8 +43,9 @@ export function Nav() {
   const pathname = usePathname();
   const drawer = useRef<HTMLDialogElement>(null);
   const [hidden, setHidden] = useState(false);
-  const [seen, setSeen] = useState({ path: "", index: 0, total: 0, label: "" });
-  const here = seen.path === pathname ? seen : null;
+  const here = useChapter(pathname);
+  const now = useNow();
+  const open = now !== null && pillState(now)?.kind === "register";
 
   useEffect(() => {
     let last = window.scrollY, raf = 0;
@@ -50,23 +61,10 @@ export function Nav() {
     return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", onScroll); };
   }, []);
 
-  useEffect(() => {
-    const els = [...document.querySelectorAll<HTMLElement>("main [data-section]")];
-    if (!els.length) return;
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) {
-        const i = els.indexOf(e.target as HTMLElement);
-        setSeen({ path: pathname, index: i, total: els.length, label: ((e.target as HTMLElement).dataset.section ?? "").replace(/^\d+ — /, "") });
-      }
-    }, { rootMargin: "-30% 0px -60% 0px" });
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [pathname]);
-
   const openMenu = () => { document.documentElement.classList.add("lenis-stopped"); drawer.current?.showModal(); };
   const closeMenu = () => drawer.current?.close();
 
-  const current = (href: string) => pathname.startsWith(href);
+  const current = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   const linkCls = (href: string) =>
     `inline-flex min-h-11 items-center px-3 t-ui transition-colors ${current(href) ? "text-fg underline decoration-accent decoration-2 underline-offset-[10px]" : "text-muted hover:text-fg"}`;
   const flagCls = "inline-flex min-h-11 items-center whitespace-nowrap rounded-full bg-accent px-4 t-ui text-accent-fg transition duration-200 hover:-translate-y-0.5 hover:brightness-110 motion-reduce:hover:translate-y-0";
@@ -74,7 +72,6 @@ export function Nav() {
   return (
     <>
       <a href="#main" className="t-label fixed left-4 top-4 z-[100] -translate-y-24 rounded-[2px] bg-accent px-4 py-3 text-accent-fg focus:translate-y-0">Skip to content</a>
-      <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[2px]"><span className="rail block size-full origin-left bg-accent" /></div>
 
       <header data-hidden={hidden} className="nav-wrap fixed inset-x-0 top-3 z-50 flex justify-center px-3">
         <nav aria-label="Primary" className="nav-surface flex w-full max-w-[1100px] items-center justify-between gap-2 rounded-full py-1 pl-5 pr-1.5 text-fg">
@@ -86,7 +83,7 @@ export function Nav() {
             </p>
           )}
           <ul className="ml-auto hidden items-center lg:flex">{NAV_LINKS.map((l) => <li key={l.href}><Link href={l.href} className={linkCls(l.href)} aria-current={current(l.href) ? "page" : undefined}>{l.label}</Link></li>)}</ul>
-          <Link href={FLAGSHIP.href} className={`${flagCls} max-md:hidden`}>{FLAGSHIP.label}</Link>
+          <Register open={open} cls={`${flagCls} max-md:hidden`} />
           <button type="button" onClick={openMenu} aria-haspopup="dialog" className="ml-auto inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-fg lg:hidden">
             <span className="sr-only">Open menu</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 6h14M3 14h14" stroke="currentColor" strokeWidth="1.5" /></svg>
@@ -116,7 +113,7 @@ export function Nav() {
               ))}
             </ul>
           </nav>
-          <div className="py-6"><Link href={FLAGSHIP.href} onClick={closeMenu} className={`${flagCls} w-full justify-center`}>{FLAGSHIP.label}</Link></div>
+          <div className="py-6"><Register open={open} cls={`${flagCls} w-full justify-center`} onClick={() => drawer.current?.close()} /></div>
         </div>
       </dialog>
     </>

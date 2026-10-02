@@ -52,13 +52,11 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 
 @keyframes bar-rise { from { transform: scaleY(0); } to { transform: none; } }
 
-/* Ticker: one row duplicated, translate by half its width for a seamless loop. */
-@keyframes ticker { to { transform: translateX(-50%); } }
-.ticker-track { animation: ticker 40s linear infinite; }
-.ticker:hover .ticker-track, .ticker[data-paused="true"] .ticker-track { animation-play-state: paused; }
+/* Ticker: one row, duplicated; Ticker.tsx translates it with a velocity-aware loop. Reduced motion: a wrapped static list. */
+.ticker-track { will-change: transform; }
 @media (prefers-reduced-motion: reduce) {
   .ticker { overflow: visible; }
-  .ticker-track { width: auto; flex-wrap: wrap; animation: none; row-gap: 0.5rem; }
+  .ticker-track { width: auto; flex-wrap: wrap; row-gap: 0.5rem; transform: none !important; }
   .ticker-dup, .ticker-toggle { display: none; }
 }
 
@@ -81,16 +79,16 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 .tone-paper { --body: color-mix(in oklab, var(--color-club-ink) 78%, var(--color-club-paper)); --accent-text: var(--color-club-orange-ink); }
 
 /* Impact: wordmark, giant numerals, one hero stat. Max one per viewport. */
-.t-impact { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 75; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.86; font-size: clamp(5rem, 18vw, 20rem); }
+.t-impact { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 75; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.86; font-size: clamp(3.5rem, 10vw, 9rem); }
 /* Impact S: the one hero stat when it shares a column with copy (the wordmark keeps the full size). */
-.t-impact-s { font-size: clamp(4rem, 11vw, 11rem); }
+.t-impact-s { font-size: clamp(3rem, 6vw, 5rem); }
 /* Headline: sentence case, three sizes. */
 .t-h1, .t-h2, .t-h3 { font-family: var(--font-display); font-weight: 600; font-variation-settings: "wdth" 100; letter-spacing: -0.025em; line-height: 1.02; text-wrap: balance; }
-.t-h1 { font-size: clamp(2.75rem, 6.5vw, 6rem); }
-.t-h2 { font-size: clamp(2rem, 4.2vw, 3.75rem); }
-.t-h3 { font-size: clamp(1.5rem, 2.4vw, 2.25rem); }
+.t-h1 { font-size: clamp(2.25rem, 4.2vw, 3.75rem); }
+.t-h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); }
+.t-h3 { font-size: clamp(1.25rem, 1.8vw, 1.625rem); }
 /* Lede / quote: serif roman. */
-.t-lede { font-family: var(--font-serif); font-weight: 400; font-style: normal; line-height: 1.15; font-size: clamp(1.5rem, 2.6vw, 2.5rem); text-wrap: pretty; }
+.t-lede { font-family: var(--font-serif); font-weight: 400; font-style: normal; line-height: 1.15; font-size: clamp(1.25rem, 1.8vw, 1.75rem); text-wrap: pretty; }
 /* Body */
 .t-body { font-family: var(--font-sans); font-weight: 400; line-height: 1.6; font-size: clamp(1.0625rem, 1.03rem + 0.12vw, 1.1875rem); max-width: 62ch; color: var(--body); }
 /* Label */
@@ -142,7 +140,7 @@ dialog::backdrop { background: color-mix(in oklab, var(--color-club-ink) 78%, tr
 
 /* ---- V4 shell ---- */
 html { scroll-padding-top: 6.5rem; }
-.t-lede-xl { font-family: var(--font-serif); font-weight: 400; font-style: normal; line-height: 1.02; letter-spacing: -0.01em; font-size: clamp(2.5rem, 7.2vw, 7rem); text-wrap: balance; }
+.t-lede-xl { font-family: var(--font-serif); font-weight: 400; font-style: normal; line-height: 1.02; letter-spacing: -0.01em; font-size: clamp(1.75rem, 3vw, 2.5rem); text-wrap: balance; }
 
 /* Nav: solid enough that nothing underneath is legible (ink at 90%), hairline border, hides on scroll down and returns on scroll up. */
 .nav-surface { background: color-mix(in oklab, var(--color-club-ink) 90%, transparent); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2); border: 1px solid color-mix(in oklab, var(--color-club-paper) 16%, transparent); }
@@ -181,3 +179,78 @@ html { scroll-padding-top: 6.5rem; }
 
 @keyframes toast-in { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
 .toast-in { animation: toast-in 250ms var(--ease-out-expo) both; }
+
+/* =====================================================================
+   V5
+   ===================================================================== */
+
+/* Type caps (docs/TYPE-SYSTEM.md): impact <= 9rem, stat numerals <= 5rem, h1 <= 3.75rem, h2 <= 2.5rem, h3 <= 1.625rem, lede <= 1.75rem.
+   The only larger text is a decorative ghost word: generated content (no text node), aria-hidden, opacity <= 8%, <= 18vw. */
+.t-ghost { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 75; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.86;
+  font-size: clamp(5rem, 18vw, 18vw); opacity: 0.07; pointer-events: none; user-select: none; white-space: nowrap; }
+.t-ghost::before { content: attr(data-word); }
+/* Stat numeral: the number in a numbers sequence. Max 5rem. */
+.t-stat { font-family: var(--font-display); font-weight: 700; font-variation-settings: "wdth" 85; letter-spacing: -0.03em; line-height: 0.95; font-size: clamp(2.75rem, 5vw, 5rem); }
+
+/* Scroll tracks: the stage is pinned while the track scrolls. Only when scripting is on and motion is welcome; otherwise a normal section in its final state. */
+.track { --p: 1; position: relative; }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .track { --p: 0; height: var(--track-h, 300vh); }
+  .track > .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+}
+
+/* Word-by-word lighting for the About lede: each word brightens as --p crosses its slot. */
+.word-light .w { opacity: 1; }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .word-light { --p: 0; }
+  .word-light .w { opacity: clamp(0.18, calc(0.18 + (var(--p) * (var(--n) + 2) - var(--i)) * 0.82), 1); }
+}
+
+/* Reach map: layered plane for depth, tilted with scroll. Transform and opacity only. */
+.map-plane { transform-style: preserve-3d; transform: perspective(1400px) rotateX(calc(26deg - var(--p) * 22deg)) rotateZ(calc(var(--p) * -2deg)); transform-origin: 50% 70%; will-change: transform; }
+.map-layer { transform: translateZ(calc(var(--z) * 1px)); }
+.track[data-step="0"] .map-fill { opacity: 0.55; }
+.map-fill { transition: opacity 700ms var(--ease-out-expo); }
+.map-glow { opacity: 0; transition: opacity 700ms var(--ease-out-expo); }
+.track[data-step="1"] .map-glow, .track[data-step="2"] .map-glow { opacity: 1; }
+.track[data-step="3"] .map-fill { opacity: 0.3; }
+.map-pin { opacity: 0; transform: scale(0.4); transform-box: fill-box; transform-origin: center; transition: opacity 500ms var(--ease-out-expo) 200ms, transform 700ms var(--ease-out-expo) 200ms; }
+.track[data-step="3"] .map-pin { opacity: 1; transform: none; }
+@keyframes pulse { from { transform: scale(0.3); opacity: 0.85; } to { transform: scale(2.4); opacity: 0; } }
+.pulse { transform-box: fill-box; transform-origin: center; animation: pulse 2.4s var(--ease-out-expo) infinite; }
+.ripple { transform-box: fill-box; transform-origin: center; animation: pulse 3.2s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .pulse, .ripple { animation: none; opacity: 0.35; } }
+.phase { opacity: 0; transform: translateY(40%); transition: opacity 500ms var(--ease-out-expo), transform 700ms var(--ease-out-expo); position: absolute; inset: 0 auto auto 0; }
+.track[data-step="0"] .phase-0, .track[data-step="1"] .phase-1, .track[data-step="2"] .phase-2, .track[data-step="3"] .phase-3 { opacity: 1; transform: none; }
+@media (scripting: none), (prefers-reduced-motion: reduce) { .phase { display: none; } }
+.phase-row { transition: color 300ms ease; color: var(--muted); }
+.track[data-step="1"] .row-1, .track[data-step="2"] .row-2, .track[data-step="3"] .row-3 { color: var(--fg); }
+
+/* Venture tree rail */
+.vtree { --pp: 0; }
+.vtree .stem { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--pp)); }
+.vtree .leaf { transform-box: fill-box; transform-origin: 0% 100%; transform: scale(0); opacity: 0; transition: transform 700ms var(--ease-out-expo), opacity 500ms var(--ease-out-expo); }
+.vtree .leaf[data-on="true"] { transform: scale(1); opacity: 1; }
+.vtree .bud, .vtree .branch { transform-box: fill-box; transform-origin: 50% 100%; transform: scale(0); opacity: 0; transition: transform 700ms var(--ease-out-expo), opacity 500ms var(--ease-out-expo); }
+.vtree[data-bud="true"] .bud, .vtree[data-tree="true"] .branch { transform: scale(1); opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .vtree .leaf, .vtree .bud, .vtree .branch { transition: none; } }
+
+/* Floating register pill and poster wall */
+.pill-in { animation: toast-in 500ms var(--ease-out-expo) both; }
+.poster-tile { transition: transform 250ms var(--ease-out-expo); }
+.poster-tile:hover, .poster-tile:focus-visible { transform: translateY(-4px); }
+@media (prefers-reduced-motion: reduce) { .poster-tile { transition: none; } .poster-tile:hover { transform: none; } }
+
+/* Vortex expand: the stack fallback reveals each panel with a clip-path; the live scene is a canvas pinned in .track. */
+.dive-live { display: none; }
+.dive-stack { display: block; }
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .dive:not([data-fallback]) .dive-live { display: block; }
+  .dive:not([data-fallback]) .dive-stack { display: none; }
+}
+
+/* Numbers sequence: rows not yet reached are dim, only while the track is pinned. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .stat-row { transition: opacity 500ms var(--ease-out-expo); }
+  .stat-row[data-on="false"] { opacity: 0.22; }
+}

@@ -7,8 +7,8 @@ export const serializeJsonLd = (data: unknown) => JSON.stringify(data).replace(/
 export const organizationLd = () => ({
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: site.legalName,
-  alternateName: site.name,
+  name: site.name,
+  alternateName: site.legalName,
   url: site.url,
   email: site.email,
   sameAs: [site.instagram, site.linkedin, site.youtube].filter(Boolean),
@@ -34,7 +34,7 @@ export const eventLd = (e: ClubEvent) => ({
   ...(e.dateEnd && { endDate: e.dateEnd }),
   eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
   location: { "@type": "Place", name: e.venue },
-  organizer: { "@type": "Organization", name: site.legalName, url: site.url },
-  url: `${site.url}/events/${e.slug}`,
+  organizer: { "@type": "Organization", name: site.name, url: site.url },
+  url: `${site.url}${e.href ?? `/initiatives/${e.slug}`}`,
   ...(e.registerUrl && { offers: { "@type": "Offer", url: e.registerUrl } }),
 });

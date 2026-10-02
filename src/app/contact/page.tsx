@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/Type";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Email the Entrepreneurship Club of NIT Warangal or find us on Instagram and LinkedIn.",
+  description: "Email E-Club NIT Warangal, ask to join, or find us on Instagram and LinkedIn.",
   alternates: { canonical: "/contact" },
 };
 
@@ -34,6 +34,17 @@ export default function ContactPage() {
               {site.youtube && <LedgerRow label="YouTube"><a className={ext} href={site.youtube} target="_blank" rel="noopener noreferrer">Our channel{newTab}</a></LedgerRow>}
               <LedgerRow label="Location">NIT Warangal, {site.address.locality}, {site.address.region}, India</LedgerRow>
             </dl>
+          </div>
+        </Container>
+        <Container className="mt-24 grid gap-16 lg:grid-cols-[1.2fr_1fr] lg:gap-24">
+          <div id="join" className="scroll-mt-28">
+            <Label className="mb-6 border-t border-line pt-4">04 — Join the club</Label>
+            <ContactForm to={site.email} subject="Join E-Club NIT Warangal" />
+          </div>
+          <div>
+            <Label className="mb-2 border-t border-line pt-4">Before you write</Label>
+            <p className="t-body mt-4">Tell us your name, year and branch, and what you would like to work on. Recruitment dates are announced on our Instagram and LinkedIn pages.</p>
+            {site.recruitmentUrl && <p className="mt-6"><a className={ext} href={site.recruitmentUrl} target="_blank" rel="noopener noreferrer">Open recruitment form{newTab}</a></p>}
           </div>
         </Container>
       </div>
