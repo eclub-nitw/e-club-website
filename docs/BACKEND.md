@@ -46,3 +46,10 @@ Vercel > Project > Settings > Environment Variables (Production and Preview): `F
 `), **`CRON_SECRET`** (copy from `.env.local`), `NEXT_PUBLIC_SITE_URL`. Redeploy. Until then production forms fall back to the visitor's email app and the purge job stays disabled.
 
 Rotate the key (Firebase console > Project settings > Service accounts) if the JSON was ever shared or synced; delete the downloaded JSON once the env vars are on the host.
+
+## Deployment (Vercel), 2 Oct 2026
+- Team `e-club-3868`, project **`e-club-nitw`** (`.vercel/` is local and gitignored). Production: **https://e-club-nitw.vercel.app** (deployed from the V5 branch with `vercel deploy --prod`).
+- All five variables are set for Production and Preview (`FIREBASE_*`, `CRON_SECRET`, `NEXT_PUBLIC_SITE_URL`); the key and secret are stored as sensitive. Re-push from `.env.local` any time with `node scripts/vercel-env.mjs https://<site-url>` (for example after the real domain exists, then redeploy).
+- `.vercelignore` keeps `raw-media`, `docs`, `.next`, `.env*` and key files out of the upload (without it the CLI uploaded 1.4 GB).
+- Verified on the live URL: every route 200, console clean, security headers present, a message from the live site landed in Firestore (then deleted), foreign origin 403, cron 401 without the secret and `{"deleted":0}` with it.
+- **Not yet done**: the GitHub connection (no auto-deploys on push). Vercel says the account has no GitHub login connection: Vercel > Account Settings > Authentication > connect GitHub, install the Vercel GitHub App on the `eclub-nitw` org (an org owner must approve), then `vercel git connect https://github.com/eclub-nitw/e-club-website`. Git deploys build the branch you push; `main` still holds the old V4 code until V5 is merged.

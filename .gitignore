@@ -50,3 +50,6 @@ next-env.d.ts
 # service-account keys: never commit
 *-firebase-adminsdk-*.json
 serviceAccount*.json
+
+.vercel
+.env*

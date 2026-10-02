@@ -1,0 +1,11 @@
+# Keep the upload small: Vercel builds from source, it does not need originals, docs, tooling output or secrets.
+raw-media
+docs
+.next
+node_modules
+.env*
+!.env.example
+*-firebase-adminsdk-*.json
+scene-scroll-trace*.json
+nitw.png
+tsconfig.tsbuildinfo

@@ -58,7 +58,7 @@ if (process.argv.includes("--list") || process.argv.includes("--purge-tests")) {
   const dt = await token("https://www.googleapis.com/auth/datastore");
   const l = await call(dt, "GET", `https://firestore.googleapis.com/v1/projects/${pid}/databases/(default)/documents/submissions`);
   for (const d of l.body.documents ?? []) {
-    const f = d.fields, test = /safe to delete/.test(f.message?.stringValue ?? "") || f.name?.stringValue === "Test Person";
+    const f = d.fields, test = /safe to delete/.test(f.message?.stringValue ?? "") || f.name?.stringValue === "Test Person" || f.name?.stringValue === "Live Deploy Check";
     console.log(`${d.name.split("/").pop()}  kind=${f.kind?.stringValue} name=${f.name?.stringValue} created=${f.createdAt?.timestampValue} expires=${f.expiresAt?.timestampValue} fields=${Object.keys(f).join(",")}${test ? "  [test]" : ""}`);
     if (test && process.argv.includes("--purge-tests")) console.log("  deleted:", (await call(dt, "DELETE", `https://firestore.googleapis.com/v1/${d.name}`)).status);
   }
