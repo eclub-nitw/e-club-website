@@ -5,7 +5,7 @@ The official, public website of the **Entrepreneurship Club (E-Club), NIT Warang
 
 ## Known facts
 - Club: Entrepreneurship Club (E-Club), NIT Warangal. Email: e_club@nitw.ac.in. Instagram: @eclubnitw. LinkedIn: https://www.linkedin.com/company/entrepreneurship-club-nitw/ (page name teams tag: "Entrepreneurship Club-NIT Warangal").
-- Flagship now: **Venture Vortex 2026**, all-India startup strategy competition, ₹50,000 prize pool, within Technozion (NIT Warangal's annual technical fest), final on campus 30–31 Oct 2026. Presented with Master's Union, powered by Unstop, outreach partner School2Startup. Full facts: the Venture Vortex repo's `docs/CONTEXT.md`.
+- Flagship now: **Venture Vortex 2026**, all-India startup strategy competition, ₹50,000 prize pool, within Technozion (NIT Warangal's annual technical fest), final on campus 30–31 Oct 2026. Presented with Masters' Union, powered by Unstop, outreach partner School2Startup. Full facts: the Venture Vortex repo's `docs/CONTEXT.md`.
 - General secretary: Bhavesh Vaishnav (public name only; his phone number must never appear on the site).
 - Tech team: Wahid (head), Saad, Shroth Parek; freshers Satyam and Sumit work on the Venture Vortex landing page.
 - Content still to come from the club (do NOT invent): year the club was founded, mission text, verticals/teams, list and dates of past events, stats (members, participants, sponsors, funds), team roster with photos, sponsor list and logos, gallery photos and videos (Google Drive folders: last year's assets received; this year's coming), alumni/startup stories, press mentions.

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
 import { event } from "@/data/event";
-import { currentPhase } from "@/lib/phase";
+import { currentPhase, dayTime } from "@/lib/phase";
 import { organizationLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Hero } from "@/components/home/Hero";
@@ -33,7 +33,7 @@ export default function Home() {
   const [r1, r2, r3] = event.rounds;
   const phase = currentPhase();
   const ticker = [
-    `Round 1 · submissions ${day(r1.start)} to ${day(r1.end)} · result ${day(event.round1Result)} · online`,
+    `Round 1 · submissions ${day(r1.start)} to ${dayTime(r1.end)} · result ${day(event.round1Result)} · online`,
     `Round 2 · ${day(r2.start)} to ${day(r2.end)} · online`,
     `Round 3 · ${day(r3.start)} to ${day(r3.end)} · NIT Warangal`,
     "Part of Technozion",

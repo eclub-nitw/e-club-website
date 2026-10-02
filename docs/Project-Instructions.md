@@ -17,7 +17,7 @@ The audience of every deliverable is national: students across India, judges, sp
 
 ## 2. Ground truth for Venture Vortex (authoritative; source file `src/data/event.ts`)
 - Name spelling: **Venture Vortex** (Unstop's Round 3 text says "Vertex": a typo, never copy). Poster tagline: "Decode the business. Craft what's next." Caption line: "Decode startups. Craft strategies. Pitch live."
-- Organiser: Entrepreneurship Club (E-Club), NIT Warangal. In collaboration with **Master's Union** (poster logo: "master's union university"). Powered by **Unstop**. Outreach partner **School2Startup (S2S)**. Part of **Technozion**, NIT Warangal. Finale on campus **30–31 Oct 2026**.
+- Organiser: Entrepreneurship Club (E-Club), NIT Warangal. In collaboration with **Masters' Union** (poster logo: "masters' union university"). Powered by **Unstop**. Outreach partner **School2Startup (S2S)**. Part of **Technozion**, NIT Warangal. Finale on campus **30–31 Oct 2026**.
 - Prize: **₹50,000 total cash prize pool** + Upstox courses + exclusive goodies + national-level certificates. The winner/runner-up split is NOT announced: never show one. Certificates ladder from the rules: participants → Certificate of Participation; finalists → Certificate of Merit + goodies; winner/runner-up → cash prize + certificate + goodies.
 - Team 2–4; cross-college and cross-year allowed; team locks when Round 1 registration closes. UG/PG students across India and working professionals. Free.
 - Register link: `https://unstop.com/o/cxKq1kz?lb=usedZ8to`. Contact: e_club@nitw.ac.in, Instagram @eclubnitw, LinkedIn `https://www.linkedin.com/company/entrepreneurship-club-nitw/` (page name teams tag: "Entrepreneurship Club-NIT Warangal").

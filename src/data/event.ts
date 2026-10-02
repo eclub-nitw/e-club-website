@@ -11,7 +11,7 @@ export const event = {
   tagline: "Decode the business. Craft what's next.",              // poster
   captionLine: "Decode startups. Craft strategies. Pitch live.",   // Instagram caption
   organiser: "Entrepreneurship Club (E-Club), NIT Warangal",
-  collaboration: "Master's Union",              // poster logo reads "master's union university"; caption says "Master's Union"
+  collaboration: "Masters' Union",              // spelling: Masters' Union (apostrophe after the s), as on the official poster and mastersunion.org (checked 2 Oct 2026). The Instagram caption's "Master's Union" is superseded; owner to confirm.
   platformPartner: "Unstop",                    // poster: "Powered by"
   outreachPartner: "School2Startup (S2S)",      // poster + caption: "Outreach Partner"
   knowledgePartner: "Uplearn by Upstox",        // poster: "Knowledge Partner" (confirmed by the owner 2 Oct 2026)

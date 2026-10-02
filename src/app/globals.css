@@ -260,3 +260,6 @@ html { scroll-padding-top: 6.5rem; }
   .stat-row { transition: opacity 500ms var(--ease-out-expo); }
   .stat-row[data-on="false"] { opacity: 0.22; }
 }
+
+/* Home already has its own "Backed by" chapter (id="backed"); do not repeat the same names in the footer there. */
+body:has(#backed) .footer-backed { display: none; }

@@ -10,7 +10,7 @@ export type Sponsor = {
 
 // Named on the official Venture Vortex 2026 poster (raw-media/posters). Shown as typographic names: no logo files without written consent.
 export const sponsors: Sponsor[] = [
-  { name: "Master's Union", role: "In collaboration with", consent: false },
+  { name: "Masters' Union", role: "In collaboration with", consent: false },
   { name: "Unstop", role: "Powered by", consent: false, href: "https://unstop.com/o/cxKq1kz?lb=usedZ8to" },
   { name: "School2Startup", role: "Outreach partner", consent: false },
   { name: "Technozion", role: "Part of", consent: false },

@@ -35,8 +35,16 @@ const securityHeaders = [
 // Art, posters and models are replaced by renaming, never in place, so a month of caching is safe and removes repeat-visit transfer.
 const longCache = [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }];
 
+// Once a custom domain is set as NEXT_PUBLIC_SITE_URL, the original vercel.app address 308-redirects to it (links already shared keep working).
+// Inert while the site URL is still the vercel.app address.
+const LEGACY_HOST = "e-club-nitw.vercel.app";
+const siteHost = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? `https://${LEGACY_HOST}`).host;
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  async redirects() {
+    return siteHost === LEGACY_HOST ? [] : [{ source: "/:path*", has: [{ type: "host" as const, value: LEGACY_HOST }], destination: `https://${siteHost}/:path*`, permanent: true }];
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

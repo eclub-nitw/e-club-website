@@ -14,7 +14,7 @@ Rule: a public sentence is allowed without review only if it comes from `docs/CO
 | 8 | Flagship stage copy ("Total prize pool", eligibility sentence, rounds list) | `FlagshipStage.tsx` | `event.ts` | Verified |
 | 9 | "Event posters / Our own flyers, newest first. Event photographs are in the Gallery." | `copy.posters` | Ours | CONFIRM |
 | 10 | Poster text transcriptions (shown as HTML under each poster) | `posters.ts` | Read off the club's own posters | Verified against the images |
-| 11 | Backed by: Master's Union, Unstop, School2Startup, Technozion, Uplearn by Upstox (knowledge partner) | `sponsors.ts`, `event.ts` | Official poster; Uplearn confirmed by the owner 2 Oct 2026 | Verified |
+| 11 | Backed by: Masters' Union, Unstop, School2Startup, Technozion, Uplearn by Upstox (knowledge partner) | `sponsors.ts`, `event.ts` | Official poster; Uplearn confirmed by the owner 2 Oct 2026 | Verified |
 | 12 | Disclaimer line near names: "Names are trademarks of their respective owners; appearing here does not imply endorsement, partnership or sponsorship unless explicitly stated." | `Sections.tsx`, Footer | Wording taken from `content/legal/DISCLAIMER.md` (itself an unreviewed draft) | **Legal review needed** |
 | 13 | "Join us / Come to an event, or write to us." and Contact "Before you write" paragraph | `copy.join`, `contact/page.tsx` | Ours | CONFIRM |
 | 14 | Closing line "Every company starts as an argument in a room." | `copy.closing` | Ours | CONFIRM |

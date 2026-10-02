@@ -14,7 +14,7 @@ export const posters: Poster[] = [
   {
     slug: "vv-announcement", title: "Venture Vortex 2026 announcement", event: "venture-vortex-2026", w: 1024, h: 1451,
     alt: "Dark navy poster with the white words Venture Vortex, the line Decode the business, craft what's next, and a row of partner logos.",
-    text: ["Technozion, NIT Warangal's, October 30 to 31 · Entrepreneurship Club", "Masters' Union University presents Venture Vortex", "Decode the business, craft what's next", "Powered by Unstop · Knowledge Partner Uplearn by Upstox · Outreach Partner S2S"],
+    text: ["NIT Warangal's Technozion, October 30 – 31 · Entrepreneurship Club", "masters' union university presents Venture Vortex", "Decode the business, craft what's next", "Powered by Unstop · Knowledge Partner Uplearn by Upstox · Outreach Partner S2S"],
     consent: "club-owned poster, owner confirmed 2026-10-02", show: true,
   },
   {

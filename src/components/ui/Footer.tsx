@@ -44,7 +44,7 @@ export function Footer() {
             <Label as="h2">Pages</Label>
             <ul className="mt-3 grid grid-cols-2 gap-x-6">{quick.map(([href, label]) => <li key={href}><Link href={href} className={linkCls}>{label}</Link></li>)}</ul>
           </nav>
-          <div>
+          <div className="footer-backed">
             <Label as="h2">Backed by</Label>
             <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1">{sponsors.map((s) => <li key={s.name} className="t-ui py-2 text-body">{s.name}</li>)}</ul>
             {logos.length > 0 && <ul className="mt-3 flex flex-wrap items-center gap-x-8">{logos.map((s) => <li key={s.name}><SponsorLogo sponsor={s} /></li>)}</ul>}
