@@ -1,15 +1,10 @@
 import { copy } from "@/data/copy";
-import { event } from "@/data/event";
-import { fmtRange } from "@/lib/format";
-import { registerOpen } from "@/lib/register-state";
-import { Button } from "@/components/ui/Button";
+import { currentPhase, viewOf } from "@/lib/phase";
 import { Container } from "@/components/ui/Container";
-import { Countdown } from "@/components/ui/Countdown";
+import { PhaseActions, PhaseCountdown } from "@/components/ui/PhaseActions";
 import { Section } from "@/components/ui/Section";
-import { H1, Label, Lede } from "@/components/ui/Type";
+import { H1, Lede } from "@/components/ui/Type";
 import { LedgerStage } from "./LedgerStage";
-
-const finale = event.rounds[2];
 
 /**
  * Chapter 01. The poster (a Blender render of the same scene, its background exactly the page ink) is the LCP image and the fallback for
@@ -17,7 +12,7 @@ const finale = event.rounds[2];
  * (generated content, 7% opacity). One focal point: the h1.
  */
 export function Hero({ number }: { number: string }) {
-  const open = registerOpen();
+  const phase = currentPhase();
   return (
     <Section id="hero" number={number} title="E-Club NIT Warangal" bare className="isolate flex min-h-[100svh] flex-col overflow-hidden">
       <div className="absolute inset-0 -z-30 h-full">
@@ -41,17 +36,13 @@ export function Hero({ number }: { number: string }) {
           <H1><span className="w-heavy">E-Club</span> <span className="w-light">NIT Warangal</span></H1>
           <Lede className="mt-6 max-w-[26ch] text-body">{copy.hero.tagline}</Lede>
           <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
-            {open
-              ? <Button href={event.registerUrl}>Register on Unstop</Button>
-              : <Button href="/venture-vortex">Venture Vortex 2026</Button>}
-            <Button href="/initiatives" variant="secondary">Explore initiatives</Button>
+            <PhaseActions initial={phase} lead={viewOf(phase).hero} then={{ label: "Explore initiatives", href: "/initiatives" }} />
           </div>
         </div>
 
         <div aria-hidden="true" className="min-h-[28svh] lg:hidden" />
         <div className="mt-8 grid max-w-[30rem] items-end gap-4 border-t border-line pt-4 lg:mt-16">
-          <Label>Finale on campus · {fmtRange(finale.start, finale.end)}</Label>
-          <Countdown start={finale.start} end={finale.end} />
+          <PhaseCountdown initial={phase} />
         </div>
       </Container>
     </Section>

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { phaseAt, type Phase } from "./phase";
 
 const subscribe = (cb: () => void) => {
   const id = setInterval(cb, 30_000);
@@ -10,6 +11,12 @@ const minute = () => Math.floor(Date.now() / 60_000) * 60_000;
 
 /** Current time in ms, or null on the server and during hydration (so the markup never depends on the build date). */
 export const useNow = () => useSyncExternalStore(subscribe, minute, () => null);
+
+/** The timeline phase. Server and hydration render `initial` (what the server computed), then the browser clock takes over within a minute, so cached HTML never stays stale. */
+export function usePhase(initial: Phase): Phase {
+  const now = useNow();
+  return now === null ? initial : phaseAt(now);
+}
 
 export type Chapter = { path: string; index: number; total: number; id: string; label: string };
 

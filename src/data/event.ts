@@ -4,7 +4,7 @@
  * Sources: (1) the official poster, (2) the Instagram caption, (3) the Unstop "Stages and Timelines" panel — AUTHORITATIVE for dates,
  * (4) the official Round 1 brief "Behind the Startup: Startup Teardown" (Google Doc shared by E-Club) — AUTHORITATIVE for Round 1 content.
  */
-import { registerUrl, registration, round1Result, rounds } from "./timeline";
+import { registerUrl, registration, round1Result, rounds, unstopPageUrl } from "./timeline";
 
 export const event = {
   name: "Venture Vortex",                       // spelling: VORTEX. Unstop's Round 3 text says "Vertex" — a typo, never copy it.
@@ -22,7 +22,7 @@ export const event = {
   eligibility: "Undergraduate and postgraduate students across India. Working professionals can also participate.",
   fee: "Free",
   registerUrl,
-  unstopPageUrl: "https://unstop.com/competitions/venture-vortex-entrepreneurship-club-nit-warangal-1760873",
+  unstopPageUrl,
   // WhatsApp group: registered teams get the invite DIRECTLY FROM UNSTOP after they register (confirmed 29 Sep 2026) — E-Club does not send it.
   // Never put the actual invite link on this page. It is fine to tell people "you'll get it from Unstop after registering."
   whatsappUrl: null as string | null,

@@ -1,9 +1,9 @@
 import { event } from "@/data/event";
 import { fmtDate, fmtRange } from "@/lib/format";
-import { registerOpen } from "@/lib/register-state";
+import { currentPhase, dayTime } from "@/lib/phase";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Countdown } from "@/components/ui/Countdown";
+import { ActionButton, PhaseActions, PhaseCountdown } from "@/components/ui/PhaseActions";
 import { MaskedText } from "@/components/ui/MaskedText";
 import { Body, H1, H2, H3, Label, Lede } from "@/components/ui/Type";
 import { posterBlur } from "@/data/poster-blur";
@@ -46,7 +46,7 @@ const FAQ = [
  * so every club token below resolves to the Venture Vortex palette. All facts come from data/event.ts and data/startups.ts.
  */
 export function VentureVortexPage() {
-  const open = registerOpen();
+  const phase = currentPhase();
   return (
     <div data-theme="vortex" className="bg-bg text-fg">
       <section data-section="01 — Venture Vortex" aria-labelledby="vv-h" className="relative isolate overflow-hidden pb-20 pt-32 md:pb-28 md:pt-44">
@@ -58,11 +58,9 @@ export function VentureVortexPage() {
             <Body className="mt-6">Tear down one of 50 Indian startups, build a marketing or product strategy, and defend it live on campus.</Body>
             <p className="t-stat tabular mt-8 text-highlight">₹50,000</p>
             <Label className="mt-2">Total prize pool</Label>
-            <div className="mt-8"><Countdown start={open ? event.registration.end : r3.start} end={open ? event.registration.end : r3.end} /></div>
-            <Label className="mt-3">{open ? "Until registration closes, 3 Oct" : "Until the finale"}</Label>
+            <div className="mt-8"><PhaseCountdown initial={phase} className="mb-3" /></div>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              {open && <Button href={event.registerUrl}>Register on Unstop</Button>}
-              <Button href="#rounds" variant={open ? "secondary" : "primary"}>See the rounds</Button>
+              <PhaseActions initial={phase} then={{ label: "See the rounds", href: "#rounds" }} />
             </div>
           </div>
           <picture className="mx-auto block w-full max-w-sm">
@@ -78,7 +76,7 @@ export function VentureVortexPage() {
         <Container>
           <h2 id="facts-h" className="sr-only">Key facts</h2>
           <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[["Registration", `Closes ${fmtDate(event.registration.end)}`], ["Teams", `${event.team.min} to ${event.team.max} members`], ["Open to", "UG, PG and working professionals across India"], ["Entry", event.fee], ["Finale", `On campus, ${range(r3)}`]].map(([k, v]) => (
+            {[["Registration", range(event.registration)], ["Teams", `${event.team.min} to ${event.team.max} members`], ["Open to", "UG, PG and working professionals across India"], ["Entry", event.fee], ["Finale", `On campus, ${range(r3)}`]].map(([k, v]) => (
               <div key={k}><dt><Label>{k}</Label></dt><dd className="t-body mt-2">{v}</dd></div>
             ))}
           </dl>
@@ -93,7 +91,7 @@ export function VentureVortexPage() {
               <li key={r.id} className="rule-draw grid gap-x-8 gap-y-1 py-6 md:grid-cols-[6rem_1fr_16rem]">
                 <Label className="text-accent-text">Round {r.n}</Label>
                 <div><H3>{r.name}</H3><Body className="mt-1">{r.subtitle}</Body></div>
-                <Label className="tabular">{r.n === 1 ? "Submissions " : ""}{range(r)}<br />{r.mode}{r.n === 1 && <><br />Registration {range(event.registration)}<br />Result {fmtDate(event.round1Result)}</>}</Label>
+                <Label className="tabular">{r.n === 1 ? "Submissions " : ""}{range(r)}<br />{r.mode}{r.n === 1 && <><br />Submissions close {dayTime(r.end)}<br />Registration {range(event.registration)}<br />Result {fmtDate(event.round1Result)}</>}</Label>
               </li>
             ))}
           </ol>
@@ -177,7 +175,7 @@ export function VentureVortexPage() {
           </ul>
           <p className="t-ui mt-6 max-w-[62ch] text-muted">Names and logos belong to their owners and imply no endorsement beyond what is stated.</p>
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-            {open && <Button href={event.registerUrl}>Register on Unstop</Button>}
+            <ActionButton initial={phase} />
             <Button href={`mailto:${event.email}`} variant="secondary">{event.email}</Button>
           </div>
         </Container>

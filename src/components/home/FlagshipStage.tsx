@@ -1,15 +1,15 @@
 import { event } from "@/data/event";
 import { fmtRange } from "@/lib/format";
-import { registerOpen } from "@/lib/register-state";
+import { currentPhase } from "@/lib/phase";
 import { Art } from "@/components/ui/Art";
-import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Countdown } from "@/components/ui/Countdown";
+import { PhaseActions } from "@/components/ui/PhaseActions";
 import { Body, H2, H3, Label } from "@/components/ui/Type";
 
 /** Chapter "Flagship", part two: the stage the vortex lands on. Countdown, prize, three rounds, Unstop CTA. */
 export function FlagshipStage() {
-  const open = registerOpen();
+  const phase = currentPhase();
   const [r1, r2, r3] = event.rounds;
   return (
     <div id="flagship-stage" className="relative isolate overflow-hidden py-24 md:py-32">
@@ -27,8 +27,7 @@ export function FlagshipStage() {
             <Body className="mt-6">{event.eligibility} Teams of {event.team.min} to {event.team.max}. {event.fee} to enter.</Body>
             <div className="mt-8"><Countdown start={r3.start} end={r3.end} /></div>
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-              {open && <Button href={event.registerUrl}>Register on Unstop</Button>}
-              <Button href="/venture-vortex" variant={open ? "secondary" : "primary"}>Competition details</Button>
+              <PhaseActions initial={phase} then={{ label: "Competition details", href: "/venture-vortex" }} />
             </div>
           </div>
           <ol className="self-end border-b border-line">

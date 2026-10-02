@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
 import { event } from "@/data/event";
-import { registerOpen } from "@/lib/register-state";
+import { currentPhase } from "@/lib/phase";
 import { organizationLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Hero } from "@/components/home/Hero";
@@ -18,7 +18,7 @@ import { speakers } from "@/data/speakers";
 import { voices } from "@/data/voices";
 import { fmtDate } from "@/lib/format";
 
-export const revalidate = 300; // dates decide the ticker and CTAs at render time; refresh every 5 minutes (the nav and pill correct themselves in the browser)
+export const revalidate = 60; // the phase decides the ticker and CTAs at render time; the browser re-resolves it from its clock (usePhase), this keeps the HTML itself fresh for no-JS visitors and crawlers
 
 export const metadata: Metadata = {
   title: { absolute: site.name },
@@ -31,9 +31,8 @@ const day = (iso: string) => fmtDate(iso).replace(/ 2026$/, "");
 /** Home follows the IIT E-Cell order: hero, ticker, numbers, about, initiatives, reach map, flagship, posters, speakers, voices, backed by, join. */
 export default function Home() {
   const [r1, r2, r3] = event.rounds;
-  const open = registerOpen();
+  const phase = currentPhase();
   const ticker = [
-    open ? `Venture Vortex 2026 registration is live on Unstop, closes ${day(event.registration.end)}` : "Venture Vortex 2026",
     `Round 1 · submissions ${day(r1.start)} to ${day(r1.end)} · result ${day(event.round1Result)} · online`,
     `Round 2 · ${day(r2.start)} to ${day(r2.end)} · online`,
     `Round 3 · ${day(r3.start)} to ${day(r3.end)} · NIT Warangal`,
@@ -54,7 +53,7 @@ export default function Home() {
     <>
       <JsonLd data={organizationLd()} />
       <Hero number={n(c++)} />
-      <Ticker items={ticker} />
+      <Ticker phase={phase} items={ticker} />
       <Numbers number={n(c++)} stats={stats} />
       <About number={n(c++)} />
       <Initiatives number={n(c++)} />

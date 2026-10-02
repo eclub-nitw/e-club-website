@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { registerUrl } from "@/data/timeline";
 import { useChapter, useNow } from "@/lib/hooks";
-import { pillState } from "@/lib/register-state";
+import { phaseAt } from "@/lib/phase";
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -45,7 +45,7 @@ export function Nav() {
   const [hidden, setHidden] = useState(false);
   const here = useChapter(pathname);
   const now = useNow();
-  const open = now !== null && pillState(now)?.kind === "register";
+  const open = now !== null && phaseAt(now) === "registration";
 
   useEffect(() => {
     let last = window.scrollY, raf = 0;

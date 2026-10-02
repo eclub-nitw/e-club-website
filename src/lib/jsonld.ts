@@ -1,5 +1,6 @@
 import { site } from "@/data/site";
 import type { ClubEvent } from "@/data/events";
+import { currentPhase } from "@/lib/phase";
 
 // "<" is escaped so no data value can ever close the <script> tag.
 export const serializeJsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c");
@@ -32,9 +33,10 @@ export const eventLd = (e: ClubEvent) => ({
   description: e.summary,
   startDate: e.dateStart,
   ...(e.dateEnd && { endDate: e.dateEnd }),
+  eventStatus: "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
   location: { "@type": "Place", name: e.venue },
   organizer: { "@type": "Organization", name: site.name, url: site.url },
   url: `${site.url}${e.href ?? `/initiatives/${e.slug}`}`,
-  ...(e.registerUrl && { offers: { "@type": "Offer", url: e.registerUrl } }),
+  ...(e.registerUrl && ["pre", "registration"].includes(currentPhase()) && { offers: { "@type": "Offer", url: e.registerUrl } }),
 });

@@ -9,7 +9,7 @@ const subscribe = (cb: () => void) => {
 const now = () => Math.floor(Date.now() / 60_000) * 60_000;
 
 /** Days / hours / minutes to `start`. Renders a fixed-size placeholder on the server so layout never shifts. */
-export function Countdown({ start, end }: { start: string; end?: string }) {
+export function Countdown({ start, end, label = "Time until the event starts" }: { start: string; end?: string; label?: string }) {
   const t = useSyncExternalStore(subscribe, now, () => null);
   const s = new Date(start).getTime();
   const e = end ? new Date(end).getTime() : s;
@@ -25,7 +25,7 @@ export function Countdown({ start, end }: { start: string; end?: string }) {
   ] as const;
 
   return (
-    <div role="timer" aria-label="Time until the event starts" className="flex gap-6">
+    <div role="timer" aria-label={label} className="flex gap-6">
       {(parts ?? [["–", "days"], ["–", "hrs"], ["–", "min"]] as const).map(([n, label]) => (
         <div key={label} className="min-w-14">
           <p className="t-h3 tabular">{typeof n === "number" ? String(n).padStart(2, "0") : n}</p>

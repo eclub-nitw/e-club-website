@@ -4,7 +4,7 @@ import { breadcrumbLd, eventLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { VentureVortexPage } from "@/features/venture-vortex";
 
-export const revalidate = 300;
+export const revalidate = 60; // same reasoning as the home page
 
 const flagship = events.find((e) => e.href === "/venture-vortex")!;
 

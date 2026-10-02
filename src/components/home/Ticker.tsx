@@ -1,11 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { usePhase } from "@/lib/hooks";
+import { viewOf, type Phase } from "@/lib/phase";
 
 /**
  * Announcement strip. One row, duplicated, translated by a small rAF loop whose speed follows scroll velocity (transform only).
  * Runs only while on screen; the pause button (WCAG 2.2.2) and reduced motion stop it, and reduced motion shows a wrapped static list.
  */
-export function Ticker({ items }: { items: string[] }) {
+export function Ticker({ phase, items: rest }: { phase: Phase; items: string[] }) {
+  const items = [viewOf(usePhase(phase)).ticker, ...rest];
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLUListElement>(null);
   const [paused, setPaused] = useState(false);
