@@ -89,7 +89,8 @@ try {
 } finally { s1.kill(); }
 
 // ---- unconfigured server
-const s2 = await start(3102, {});
+// explicit empty values: a real .env.local must never leak into this test (process env wins over .env files)
+const s2 = await start(3102, { FIREBASE_PROJECT_ID: "", FIREBASE_CLIENT_EMAIL: "", FIREBASE_PRIVATE_KEY: "", CRON_SECRET: "" });
 try {
   const r = await post(3102, good, { "x-forwarded-for": "10.1.1.1" });
   ok(r.status === 503 && (await r.json()).error === "storage_unavailable", "no credentials: 503 so the form falls back to email");

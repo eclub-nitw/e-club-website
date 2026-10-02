@@ -17,7 +17,7 @@ Firestore security rules (`firestore.rules`) deny all client access. Only the se
 2. Project settings > Service accounts > Generate new private key. Keep the JSON file private.
 3. Set three environment variables on the host (see `.env.example`): `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL` (`client_email`), `FIREBASE_PRIVATE_KEY` (`private_key`, one line, `\n` escapes). Also set `NEXT_PUBLIC_SITE_URL`. Redeploy.
 4. Deploy the rules: `firebase deploy --only firestore:rules --project <id>`.
-5. Retention: Firestore > Time-to-live > create a policy on collection group `submissions`, field `expiresAt`. Documents then delete themselves after 12 months.
+5. Retention: handled by the daily purge job (see "Retention" below), not Firestore TTL.
 6. Read messages in the Firestore console (`submissions`). Give access only to the people who answer them.
 
 Do **not** use the unrelated `idle-eras-rebuild-humanity` project that is logged in on the owner's CLI.
@@ -35,8 +35,14 @@ Stored: what the visitor typed (name, email, message, which form), plus timestam
 - Verified live: the real `/api/contact` route stored a `join` submission with name, email, message, kind, `createdAt` and `expiresAt` (+12 months), no IP; the test document was deleted.
 - `.firebaserc` sets the default project to `eclub-nitw`. The Firebase CLI on this laptop is logged in as another account that cannot see this project, so setup used the service account over REST: `node scripts/firebase-setup.mjs` (checks the database, redeploys the rules, tries the TTL policy), `--smoke` (write/delete test, anonymous-read check), `--list` (show stored submissions), `--purge-tests`.
 
-### Two things only a person can do
-1. **TTL policy** (auto-delete after 12 months). The service account is not allowed to create it. In the Firebase console: Firestore Database > Indexes > Single field (or "Time-to-live") > Add TTL policy: collection group `submissions`, timestamp field `expiresAt`. Without it, messages are kept until deleted by hand.
-2. **Production env vars on the host** (Vercel > Project > Settings > Environment Variables, Production + Preview): `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (copy the three lines from `.env.local`, the key stays on one line with `\n`), plus `NEXT_PUBLIC_SITE_URL`. Redeploy. Until then, production forms fall back to the visitor's email app.
+### Retention (12 months): done in the app, not by Firestore TTL
+Firestore's native TTL needs the Blaze (billing) plan; `eclub-nitw` has billing disabled, so `src/app/api/cron/purge/route.ts` does it: `vercel.json` runs it daily at 03:00 UTC, it deletes submissions whose `expiresAt` has passed. It refuses to run without `CRON_SECRET` (16+ characters) and answers 401 to anyone without `Authorization: Bearer $CRON_SECRET` (Vercel adds that header itself when the env var exists). Verified on the real database: an expired test document was deleted, a fresh one kept, no/incorrect auth got 401. If billing is ever enabled you can switch to a native TTL policy (`firestore.indexes.json` field override) and delete the route.
 
-Rotate the key (Firebase console > Project settings > Service accounts) if the JSON file was ever shared or synced anywhere. Delete the downloaded JSON once the env vars are set on the host.
+### Firebase CLI
+The CLI now has access: `firebase deploy --only firestore --project eclub-nitw` deploys `firestore.rules` (and the empty indexes file); `firebase.json` and `.firebaserc` are committed. Scripts: `node scripts/firebase-setup.mjs` (check + redeploy rules), `--smoke`, `--list`, `--purge-tests`, `--seed-expired`.
+
+### The one thing left: production env vars on the host
+Vercel > Project > Settings > Environment Variables (Production and Preview): `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (copy the three lines from `.env.local`, key on one line with `
+`), **`CRON_SECRET`** (copy from `.env.local`), `NEXT_PUBLIC_SITE_URL`. Redeploy. Until then production forms fall back to the visitor's email app and the purge job stays disabled.
+
+Rotate the key (Firebase console > Project settings > Service accounts) if the JSON was ever shared or synced; delete the downloaded JSON once the env vars are on the host.

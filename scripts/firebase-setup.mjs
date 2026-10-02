@@ -1,5 +1,5 @@
 // One-time Firebase setup for the contact backend, using the service account in .env.local (no CLI login needed).
-// Usage: node scripts/firebase-setup.mjs            -> checks the database, deploys firestore.rules, enables the 12-month TTL on submissions.expiresAt
+// Usage: node scripts/firebase-setup.mjs            -> checks the database and deploys firestore.rules
 //        node scripts/firebase-setup.mjs --smoke    -> also writes one test submission through the real API path and deletes it.
 import { createSign } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -41,9 +41,7 @@ if (rs.status === 200) {
   console.log("release cloud.firestore:", brief(rel));
 }
 
-// 3. TTL on submissions.expiresAt
-const ttl = await call(t, "PATCH", `https://firestore.googleapis.com/v1/projects/${pid}/databases/(default)/collectionGroups/submissions/fields/expiresAt?updateMask=ttlConfig`, { ttlConfig: {} });
-console.log("TTL policy on submissions.expiresAt:", brief(ttl));
+// (Firestore native TTL needs the Blaze billing plan; retention is done by /api/cron/purge instead.)
 
 if (process.argv.includes("--smoke")) {
   const dt = await token("https://www.googleapis.com/auth/datastore");
@@ -60,9 +58,17 @@ if (process.argv.includes("--list") || process.argv.includes("--purge-tests")) {
   const dt = await token("https://www.googleapis.com/auth/datastore");
   const l = await call(dt, "GET", `https://firestore.googleapis.com/v1/projects/${pid}/databases/(default)/documents/submissions`);
   for (const d of l.body.documents ?? []) {
-    const f = d.fields, test = /safe to delete/.test(f.message?.stringValue ?? "");
+    const f = d.fields, test = /safe to delete/.test(f.message?.stringValue ?? "") || f.name?.stringValue === "Test Person";
     console.log(`${d.name.split("/").pop()}  kind=${f.kind?.stringValue} name=${f.name?.stringValue} created=${f.createdAt?.timestampValue} expires=${f.expiresAt?.timestampValue} fields=${Object.keys(f).join(",")}${test ? "  [test]" : ""}`);
     if (test && process.argv.includes("--purge-tests")) console.log("  deleted:", (await call(dt, "DELETE", `https://firestore.googleapis.com/v1/${d.name}`)).status);
   }
   if (!(l.body.documents ?? []).length) console.log("no submissions stored");
+}
+
+// --seed-expired: write one expired and one fresh test document (used to verify the retention job on the real database).
+if (process.argv.includes("--seed-expired")) {
+  const dt = await token("https://www.googleapis.com/auth/datastore");
+  const mk = (name, exp) => ({ fields: { kind: { stringValue: "test" }, name: { stringValue: name }, email: { stringValue: "t@example.com" }, message: { stringValue: "retention check, safe to delete" }, createdAt: { timestampValue: new Date().toISOString() }, expiresAt: { timestampValue: exp } } });
+  console.log("seed expired:", brief(await call(dt, "POST", `https://firestore.googleapis.com/v1/projects/${pid}/databases/(default)/documents/submissions`, mk("expired-doc", new Date(Date.now() - 86400000).toISOString()))));
+  console.log("seed fresh:  ", brief(await call(dt, "POST", `https://firestore.googleapis.com/v1/projects/${pid}/databases/(default)/documents/submissions`, mk("fresh-doc", new Date(Date.now() + 86400000 * 300).toISOString()))));
 }

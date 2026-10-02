@@ -4,9 +4,10 @@ import type { ContactData } from "@/lib/contact-schema";
 // Writes one document per submission to Cloud Firestore through its REST API, authenticated as a service account (JWT bearer flow).
 // No SDK, no dependency. Firestore security rules deny every client read and write (firestore.rules); only this server, holding the
 // service account, can write. Nothing about the visitor except what they typed is stored: no IP address, no user agent.
+// Retention is enforced by purgeExpired() (called daily by /api/cron/purge): Firestore's native TTL needs a billing plan this project does not have.
 // Env: FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY (PEM, "\n" escapes allowed).
 const SCOPE = "https://www.googleapis.com/auth/datastore";
-const RETENTION_MS = 365 * 24 * 3600 * 1000; // expiresAt drives a Firestore TTL policy (see docs/BACKEND.md)
+const RETENTION_MS = 365 * 24 * 3600 * 1000; // every document carries its own expiresAt
 
 type Creds = { projectId: string; email: string; key: string };
 const creds = (): Creds | null => {
@@ -53,4 +54,29 @@ export async function saveSubmission(d: ContactData): Promise<void> {
     } }),
   });
   if (!res.ok) { if (res.status === 401) cached = null; throw new Error(`firestore ${res.status}`); }
+}
+
+/** Deletes up to `limit` submissions whose expiresAt has passed (12 months old). Returns how many were deleted. */
+export async function purgeExpired(limit = 200): Promise<number> {
+  const c = creds();
+  if (!c) throw new Error("not configured");
+  const auth = { "content-type": "application/json", authorization: `Bearer ${await accessToken(c)}` };
+  const root = `${FIRESTORE}/v1/projects/${encodeURIComponent(c.projectId)}/databases/(default)/documents`;
+  const q = await fetch(`${root}:runQuery`, {
+    method: "POST", headers: auth, signal: AbortSignal.timeout(15000),
+    body: JSON.stringify({ structuredQuery: {
+      from: [{ collectionId: "submissions" }],
+      where: { fieldFilter: { field: { fieldPath: "expiresAt" }, op: "LESS_THAN", value: { timestampValue: new Date().toISOString() } } },
+      limit,
+    } }),
+  });
+  if (!q.ok) throw new Error(`query ${q.status}`);
+  const rows = (await q.json()) as { document?: { name: string } }[];
+  let deleted = 0;
+  for (const r of rows) {
+    if (!r.document) continue;
+    const d = await fetch(`${FIRESTORE}/v1/${r.document.name}`, { method: "DELETE", headers: auth, signal: AbortSignal.timeout(8000) });
+    if (d.ok) deleted++;
+  }
+  return deleted;
 }
