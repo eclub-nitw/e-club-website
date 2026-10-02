@@ -27,3 +27,16 @@ Stored: what the visitor typed (name, email, message, which form), plus timestam
 
 ## Tests
 `node scripts/test-api.mjs` starts the built site against a mock Google (token endpoint verifying the RS256 JWT + Firestore REST) and checks 25 cases: accepted, document shape, no IP stored, honeypot, validation, type confusion, bad JSON, CSRF, content type, size, 405, caching, rate limit, 503 without credentials, 503 on a storage failure. Needs `npm run build` first.
+
+## Status (2 Oct 2026): connected to `eclub-nitw`
+- Project `eclub-nitw` (number 1078092355263, org nitw.ac.in), Firestore `(default)` in `asia-south1` (Mumbai, native mode) exists.
+- Service account `firebase-adminsdk-fbsvc@eclub-nitw.iam.gserviceaccount.com`; its key is in `.env.local` (gitignored, never committed; the downloaded JSON is also gitignored by `*-firebase-adminsdk-*.json`). Rewrite it any time with `node scripts/write-env-local.mjs <key.json>`.
+- `firestore.rules` (deny all clients) are **deployed** to the project, and an anonymous read returns 403.
+- Verified live: the real `/api/contact` route stored a `join` submission with name, email, message, kind, `createdAt` and `expiresAt` (+12 months), no IP; the test document was deleted.
+- `.firebaserc` sets the default project to `eclub-nitw`. The Firebase CLI on this laptop is logged in as another account that cannot see this project, so setup used the service account over REST: `node scripts/firebase-setup.mjs` (checks the database, redeploys the rules, tries the TTL policy), `--smoke` (write/delete test, anonymous-read check), `--list` (show stored submissions), `--purge-tests`.
+
+### Two things only a person can do
+1. **TTL policy** (auto-delete after 12 months). The service account is not allowed to create it. In the Firebase console: Firestore Database > Indexes > Single field (or "Time-to-live") > Add TTL policy: collection group `submissions`, timestamp field `expiresAt`. Without it, messages are kept until deleted by hand.
+2. **Production env vars on the host** (Vercel > Project > Settings > Environment Variables, Production + Preview): `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (copy the three lines from `.env.local`, the key stays on one line with `\n`), plus `NEXT_PUBLIC_SITE_URL`. Redeploy. Until then, production forms fall back to the visitor's email app.
+
+Rotate the key (Firebase console > Project settings > Service accounts) if the JSON file was ever shared or synced anywhere. Delete the downloaded JSON once the env vars are set on the host.
