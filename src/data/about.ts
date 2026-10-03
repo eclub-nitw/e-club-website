@@ -6,5 +6,5 @@ export const about = {
   verticals: [] as { name: string; description: string }[],
   timeline: [] as { year: string; text: string }[],
   // Public NITW student-welfare page (nitw.ac.in/sw) lists this as the club's faculty mentor; the owner approved showing it on 2 Oct 2026.
-  facultyCoordinator: "Prof. Altaf Q. H. Badar, Department of Electrical Engineering" as string | null,
+  facultyCoordinator: null as string | null, // removed from the site on the owner's request, 3 Oct 2026. Was "Prof. Altaf Q. H. Badar, Department of Electrical Engineering" (public nitw.ac.in/sw listing); set it again to show it on Home, About and Team.
 };
