@@ -6,12 +6,15 @@ import { Footer } from "@/components/ui/Footer";
 import { FloatingPill } from "@/components/ui/FloatingPill";
 import { Nav } from "@/components/ui/Nav";
 import { Vine } from "@/components/ui/Vine";
+import { spotlightIsVisible } from "@/lib/spotlight";
 import "./globals.css";
+
+export const revalidate = 3600; // the nav button and floating pill start from the server clock, then follow the browser clock; this keeps cached HTML from staying stale for long
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.name, template: `%s | ${site.name}` },
-  description: "E-Club NIT Warangal: competitions, pitch sessions and a community for student founders. Flagship: Venture Vortex 2026.",
+  description: `${site.name}, the Entrepreneurship Club of NIT Warangal. ${site.quote.line}`,
   alternates: { canonical: "/" },
   openGraph: { siteName: site.name, locale: "en_IN", type: "website" },
   twitter: { card: "summary_large_image" },
@@ -24,10 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-IN" data-theme="club" className={`${bricolage.variable} ${instrument.variable} ${instrumentSerif.variable} ${jetbrains.variable}`}>
       <body className="grain antialiased">
         <SmoothScroll />
-        <Nav />
+        <Nav spotlightVisible={spotlightIsVisible()} />
         <Vine />
         <main id="main">{children}</main>
-        <FloatingPill />
+        <FloatingPill spotlightVisible={spotlightIsVisible()} />
         <Footer />
       </body>
     </html>

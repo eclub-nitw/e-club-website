@@ -1,13 +1,13 @@
 "use client";
 import { useRef, useState } from "react";
 import type { EventPhoto } from "@/data/event-photos";
-import { FRAME, fileOf, srcSet } from "@/lib/photo-url";
+import { fileOf, srcSet } from "@/lib/photo-url";
 
 export type GalleryGroup = { slug: string; title: string; photos: EventPhoto[] };
 
 /**
- * Gallery grouped by event, with an All / per-event filter (aria-pressed buttons). Photos sit in fixed 3:2 or 4:5 frames, cropped with
- * object-cover around each photo's focal point. A photo opens in a native modal <dialog>: focus moves in and returns to the thumbnail on close,
+ * Gallery grouped by event, with an All / per-event filter (aria-pressed buttons). Every photo sits in the same 3:2 frame (a grid of two columns, three from 768px: six photos fill whole rows at both), cropped with
+ * object-cover around its focal point; the viewer shows the whole picture. A photo opens in a native modal <dialog>: focus moves in and returns to the thumbnail on close,
  * Escape closes, arrow keys step through the visible set, and the counter and caption are always shown. Everything is lazy; the viewer image is
  * rendered only after the first open, so a closed dialog fetches nothing.
  */
@@ -37,10 +37,10 @@ export function Gallery({ groups }: { groups: GalleryGroup[] }) {
       {shown.map((g) => (
         <section key={g.slug} aria-labelledby={`g-${g.slug}`} className="mb-[var(--section-y)] last:mb-0">
           <h2 id={`g-${g.slug}`} className="t-label flex justify-between border-t border-line pt-4 text-muted"><span>{g.title}</span><span className="tabular">{g.photos.length} photographs</span></h2>
-          <ul className="mt-6 columns-2 gap-3 md:columns-3 md:gap-5">
+          <ul className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
             {g.photos.map((p) => (
-              <li key={p.n} className="mb-3 break-inside-avoid md:mb-5">
-                <button type="button" onClick={() => open(g.slug, p.n)} className={`crop group relative block w-full overflow-hidden rounded-[2px] bg-surface ${FRAME[p.ratio]}`} style={{ backgroundImage: `url(${p.blur})`, backgroundSize: "cover" }}>
+              <li key={p.n}>
+                <button type="button" onClick={() => open(g.slug, p.n)} className={`crop group relative block aspect-[3/2] w-full overflow-hidden rounded-[2px] bg-surface`} style={{ backgroundImage: `url(${p.blur})`, backgroundSize: "cover" }}>
                   <picture>
                     <source type="image/avif" srcSet={srcSet(g.slug, p, "avif")} sizes="(min-width: 768px) 33vw, 50vw" />
                     <source type="image/webp" srcSet={srcSet(g.slug, p, "webp")} sizes="(min-width: 768px) 33vw, 50vw" />

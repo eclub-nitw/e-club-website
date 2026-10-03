@@ -18,7 +18,7 @@ export function ClubMark({ size = 28 }: { size?: number }) {
 }
 
 /** Club mark, the NIT Warangal emblem (only while site.showInstituteLogo is on) and the full name. */
-export function BrandLockup({ size = 40 }: { size?: number }) {
+export function BrandLockup({ size = 56 }: { size?: number }) {
   const nitw = site.logos.nitw;
   return (
     <div className="flex items-center gap-4">

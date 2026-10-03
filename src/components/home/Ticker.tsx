@@ -1,14 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { usePhase } from "@/lib/hooks";
+import { usePhase, useSpotlight } from "@/lib/hooks";
 import { viewOf, type Phase } from "@/lib/phase";
 
 /**
- * Announcement strip. One row, duplicated, translated by a small rAF loop whose speed follows scroll velocity (transform only).
+ * Announcement strip: club items first, then (only while the spotlight is promoted) the live phase line and the spotlight items. One row, duplicated, translated by a small rAF loop whose speed follows scroll velocity (transform only).
  * Runs only while on screen; the pause button (WCAG 2.2.2) and reduced motion stop it, and reduced motion shows a wrapped static list.
  */
-export function Ticker({ phase, items: rest }: { phase: Phase; items: string[] }) {
-  const items = [viewOf(usePhase(phase)).ticker, ...rest];
+export function Ticker({ phase, spotlightVisible, club, spotlight }: { phase: Phase; spotlightVisible: boolean; club: string[]; spotlight: string[] }) {
+  const on = useSpotlight(spotlightVisible);
+  const live = viewOf(usePhase(phase)).ticker;
+  const items = on ? [...club, live, ...spotlight.slice(0, 2)] : club; // at most three spotlight items
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLUListElement>(null);
   const [paused, setPaused] = useState(false);

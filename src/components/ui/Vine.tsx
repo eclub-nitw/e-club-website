@@ -22,11 +22,11 @@ export function Vine() {
     const el = root.current;
     if (!el) return;
     const sections = [...document.querySelectorAll<HTMLElement>("main [data-section]")];
-    const flagship = document.getElementById("flagship");
+    const dive = document.getElementById("dive");
     const ios: IntersectionObserver[] = [];
-    if (flagship) {
+    if (dive) {
       const bud = new IntersectionObserver(([e]) => { el.dataset.bud = String(e.isIntersecting); }, { rootMargin: "-30% 0px -30% 0px" });
-      bud.observe(flagship); ios.push(bud);
+      bud.observe(dive); ios.push(bud);
     }
     if (!CSS.supports("animation-timeline: scroll()") && sections.length) {
       el.dataset.step = "";

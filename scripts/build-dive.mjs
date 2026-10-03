@@ -1,10 +1,9 @@
-// Panels for the vortex-expand tunnel: generated art (never photographs of people) and the club's own face-free posters, 768 px WebP.
+// Panels for the vortex-expand tunnel: generated art only (never photographs of people, never posters), 768 px WebP.
 import sharp from "sharp";
 import fs from "node:fs";
 const GEN = { "boardroom-table.png": "boardroom", "cover-talk.png": "talk", "cover-workshop.png": "workshop", "hero-coin-macro.png": "coin", "map-glow-texture.png": "map-glow", "network-city.png": "network",
   "rocket-launch-abstract.png": "rocket", "sapling-macro.png": "sapling", "startup-ecosystem.png": "ecosystem", "trophy-plinth.png": "trophy", "Workshopideas.png": "ideas", "Pitch-stage abstract.png": "stage" };
 const items = Object.entries(GEN).map(([f, s]) => [`raw-media/generated/${f}`, s]);
-items.push(["raw-media/posters/venture_vortex.jpeg", "poster-announcement"], ["raw-media/posters/venture_vortex4.jpeg", "poster-why"]);
 const meta = [];
 for (const [src, slug] of items) {
   const info = await sharp(src).resize({ width: 768, withoutEnlargement: true }).webp({ quality: 70 }).toFile(`public/images/dive/${slug}.webp`);

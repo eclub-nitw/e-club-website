@@ -8,3 +8,8 @@ export const spotlightVisible = (now: number) => now >= at(spotlight.from) && no
 export const spotlightEnded = (now: number) => now >= at(spotlight.until);
 /** Past the sunset: the row leaves the Initiatives list and the page carries an ended banner. */
 export const spotlightHidden = (now: number) => now >= at(spotlight.hideFromListsAfter);
+
+// Server components read the clock through these (the purity lint forbids Date.now() inside a component body).
+export const clockNow = () => Date.now();
+export const spotlightIsVisible = () => spotlightVisible(Date.now());
+export const spotlightIsEnded = () => spotlightEnded(Date.now());

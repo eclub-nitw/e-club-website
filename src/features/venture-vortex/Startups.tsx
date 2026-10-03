@@ -44,15 +44,15 @@ function Disc({ s, size }: { s: Startup; size: string }) {
   );
 }
 
-export function Startups() {
+export function Startups({ num }: { num: string }) {
   const [group, setGroup] = useState<StartupGroup | "All">("All");
   const [picked, setPicked] = useState<Startup | null>(null);
   const placed = useMemo(() => place(), []);
   const active = (g: StartupGroup) => group === "All" || group === g;
 
   return (
-    <section id="startups" aria-labelledby="startups-h" data-section="06 — The 50" className="mx-auto max-w-[1280px] px-5 py-24 md:px-10 md:py-32">
-      <Label className="border-t border-line pt-4">06 — The 50</Label>
+    <section id="startups" aria-labelledby="startups-h" data-section={`${num} — The 50`} className="mx-auto max-w-[1280px] px-5 py-24 md:px-10 md:py-32">
+      <Label className="border-t border-line pt-4">{num} — The 50</Label>
       <H2 id="startups-h" className="mt-6 max-w-[16ch]">Pick one of these fifty.</H2>
       <Body className="mt-4">One startup per team, from AI to agritech. Filter by sector, then tap a name to see the official Round 1 option.</Body>
 

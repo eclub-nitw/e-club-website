@@ -20,7 +20,7 @@ function clientAddress(req: Request): string {
 }
 
 /**
- * POST /api/contact  { type: "join" | "query" | "contact" | "sponsor", name, email, message, company: "" } plus branch, year (join) or organisation, website (sponsor)
+ * POST /api/contact  { type: "join" | "query" | "contact" | "sponsor", name, email, message, company: "" } plus branch, year (join) or organisation, website, role, interest (sponsor)
  * Any other field is refused (400). There is no age field: the 18+ checkbox was removed by the owner (docs/LEGAL-REVIEW-NOTES.md).
  * 200 stored · 400 invalid · 403 wrong origin · 413 too large · 415 wrong type · 429 slow down · 503 storage not configured or down
  * (the form then falls back to the visitor's own email app, so nothing is ever lost silently).

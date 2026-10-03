@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { phaseAt, type Phase } from "./phase";
+import { spotlightVisible } from "./spotlight";
 
 const subscribe = (cb: () => void) => {
   const id = setInterval(cb, 30_000);
@@ -16,6 +17,12 @@ export const useNow = () => useSyncExternalStore(subscribe, minute, () => null);
 export function usePhase(initial: Phase): Phase {
   const now = useNow();
   return now === null ? initial : phaseAt(now);
+}
+
+/** Whether the spotlight is still promoted. Server and hydration render `initial`, then the browser clock decides (so cached HTML cannot keep promoting an ended initiative). */
+export function useSpotlight(initial: boolean): boolean {
+  const now = useNow();
+  return now === null ? initial : spotlightVisible(now);
 }
 
 export type Chapter = { path: string; index: number; total: number; id: string; label: string };
