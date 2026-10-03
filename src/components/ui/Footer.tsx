@@ -2,7 +2,7 @@ import Link from "next/link";
 import { site } from "@/data/site";
 import { legalPages } from "@/lib/legal";
 import { ArrowButton } from "./ArrowButton";
-import { BrandLockup } from "./ClubMark";
+import { BrandLockup, InstituteMark } from "./ClubMark";
 import { Container } from "./Container";
 import { InstagramIcon, LinkedInIcon, MailIcon } from "./ContactIcons";
 import { Label } from "./Type";
@@ -45,7 +45,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="t-ui mt-14 flex flex-col gap-4 border-t border-line pt-6 text-muted md:flex-row md:items-center md:justify-between">
+        {site.showInstituteLogo && <div className="mt-14 flex justify-end border-t border-line pt-6"><InstituteMark /></div>}
+
+        <div className="t-ui mt-6 flex flex-col gap-4 border-t border-line pt-6 text-muted md:flex-row md:items-center md:justify-between">
           <nav aria-label="Legal">
             <ul className="flex flex-wrap gap-x-5">
               {Object.entries(legalPages).map(([slug, p]) => <li key={slug}><Link href={`/${slug}`} className="inline-flex min-h-11 items-center underline-offset-4 hover:text-club-paper hover:underline">{p.title}</Link></li>)}

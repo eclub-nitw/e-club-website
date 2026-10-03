@@ -1,7 +1,7 @@
 > **DRAFT TEMPLATE — get review before publishing.**
 
 # Disclaimer
-Last updated: [[DATE]]
+Last updated: 3 October 2026
 
 The information on this site is provided in good faith by student volunteers of the E-Club, NIT Warangal, and may contain errors or be out of date. Always confirm event details on the official registration platform or with e_club@nitw.ac.in.
 
