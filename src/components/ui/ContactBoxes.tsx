@@ -75,8 +75,8 @@ function Input({ api, uid, name, label, kind = "text", autoComplete, required = 
 function Message({ api, uid }: { api: BoxApi; uid: string }) {
   const err = api.errors.message;
   return (
-    <div className="relative">
-      <textarea id={`${uid}-message`} name="message" rows={5} maxLength={LIMITS.message} placeholder=" " disabled={api.busy} aria-invalid={!!err} aria-describedby={err ? `${uid}-message-e` : undefined} className={`${input} min-h-40 resize-y`} />
+    <div className="relative flex min-h-40 flex-1 flex-col">
+      <textarea id={`${uid}-message`} name="message" rows={5} maxLength={LIMITS.message} placeholder=" " disabled={api.busy} aria-invalid={!!err} aria-describedby={err ? `${uid}-message-e` : undefined} className={`${input} min-h-40 flex-1 resize-none`} />
       <label htmlFor={`${uid}-message`} className={floating}>Your message</label>
       {err && <p id={`${uid}-message-e`} className="t-ui mt-2 text-accent-text">{err}</p>}
     </div>
@@ -124,11 +124,11 @@ export function ContactBoxA({ to }: { to: string }) {
   }, []);
 
   return (
-    <section id="contact" aria-labelledby={`${uid}-h`} className="tone-paper scroll-mt-28 rounded-[2px] bg-bg p-6 text-fg md:p-8">
+    <section id="contact" aria-labelledby={`${uid}-h`} className="tone-paper !flex scroll-mt-28 flex-col rounded-[2px] border-t-4 border-transparent bg-bg p-6 text-fg md:p-8">
       <span id="join" className="scroll-mt-28" />
       <Label>A — Club</Label>
       <H2 id={`${uid}-h`} className="mt-3">Contact and queries</H2>
-      <form onSubmit={api.submit} noValidate className="mt-6 grid gap-5">
+      <form onSubmit={api.submit} noValidate className="mt-6 flex flex-1 flex-col gap-5">
         {api.errors._ && <p role="alert" className="t-ui text-accent-text">{api.errors._}</p>}
         <fieldset disabled={api.busy} className="m-0 border-0 p-0">
           <legend className="t-label mb-2 text-muted">What is this about?</legend>
@@ -158,11 +158,11 @@ export function ContactBoxB({ to }: { to: string }) {
   }));
   const err = api.errors.interest;
   return (
-    <section id="sponsor" aria-labelledby={`${uid}-h`} className="scroll-mt-28 rounded-[2px] border-t-4 border-accent bg-surface p-6 text-fg md:p-8">
+    <section id="sponsor" aria-labelledby={`${uid}-h`} className="flex scroll-mt-28 flex-col rounded-[2px] border-t-4 border-accent bg-surface p-6 text-fg md:p-8">
       <Label>B — Partners</Label>
       <H2 id={`${uid}-h`} className="mt-3">Sponsorship and partnership</H2>
       {site.brochureUrl && <p className="mt-3"><a className="text-link underline underline-offset-4" href={site.brochureUrl} target="_blank" rel="noopener noreferrer">Sponsorship brochure<span className="sr-only"> (opens in a new tab)</span></a></p>}
-      <form onSubmit={api.submit} noValidate className="mt-6 grid gap-5">
+      <form onSubmit={api.submit} noValidate className="mt-6 flex flex-1 flex-col gap-5">
         {api.errors._ && <p role="alert" className="t-ui text-accent-text">{api.errors._}</p>}
         <div className="grid gap-5 sm:grid-cols-2"><Input api={api} uid={uid} name="name" label="Your name" autoComplete="name" required /><Input api={api} uid={uid} name="role" label="Your role" autoComplete="organization-title" /></div>
         <div className="grid gap-5 sm:grid-cols-2"><Input api={api} uid={uid} name="organisation" label="Organisation" autoComplete="organization" required /><Input api={api} uid={uid} name="website" label="Website" kind="url" autoComplete="url" /></div>

@@ -31,7 +31,7 @@ export default function ContactPage() {
           </div>
 
           <Label className="mb-6 mt-[var(--section-y)] border-t border-line pt-4">03 — Write to us</Label>
-          <div className="grid items-start gap-8 lg:grid-cols-2">
+          <div className="grid items-stretch gap-8 lg:grid-cols-2">
             <ContactBoxA to={site.email} />
             <ContactBoxB to={site.email} />
           </div>
