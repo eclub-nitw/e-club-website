@@ -1,8 +1,8 @@
 // V5 functional QA. Usage: node scripts/qa-v5.mjs [baseUrl]   (production server). Exits 1 on any FAIL.
 // Routes: status, single h1, metadata, console errors, internal links, no horizontal overflow at 360.
-// Home: 9-12 chapters, counter, at most two WebGL canvases, reach map timeline (V7), vine, poster wall, nav hide/show, no cursor elements.
-// Policy (V7: event photographs only on /gallery, event pages and Home cover rows), no phone numbers or WhatsApp links anywhere, nav = seven tabs + Register,
-// floating pill wording by date (fake clock), pill hidden on /venture-vortex, reduced motion = poster only, forms, keyboard.
+// Home (V8): 5-10 chapters, counter, at most two WebGL canvases, reach map timeline inside the spotlight block, vine, no poster wall (it lives on /venture-vortex), nav hide/show, no cursor elements.
+// Policy (V7: event photographs only on /gallery, event pages and Home cover rows), no phone numbers or WhatsApp links anywhere, nav = seven tabs + the spotlight button (V8),
+// floating pill wording by date (fake clock) on Home, absent on About and /venture-vortex, reduced motion = poster only, forms, keyboard.
 import { chromium } from "@playwright/test";
 
 const base = (process.argv[2] ?? "http://localhost:3100").replace(/\/$/, "");
@@ -49,7 +49,7 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
   const p = await c.newPage();
   await p.goto(base + "/", { waitUntil: "load" });
   const n = await p.evaluate(() => document.querySelectorAll("main [data-section]").length);
-  ok(n >= 9 && n <= 12, "Home has 9 to 12 numbered chapters", `n=${n}`);
+  ok(n >= 5 && n <= 10, "Home has 5 to 10 numbered chapters", `n=${n}`);
   await p.waitForSelector("#hero[data-live]", { timeout: 20000 }).then(() => ok(true, "live Rising Ledger mounted and the poster handed over")).catch(() => ok(false, "live Rising Ledger mounted"));
   let maxCanvas = 0;
   { const H = await p.evaluate(() => document.documentElement.scrollHeight); for (let y = 0; y < H; y += 450) { await p.evaluate((v) => window.scrollTo(0, v), y); await p.waitForTimeout(260); maxCanvas = Math.max(maxCanvas, await p.evaluate(() => document.querySelectorAll("canvas").length)); } }
@@ -65,24 +65,24 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
   ok(hidden === "true" && shown === "false", "nav hides on scroll down, returns on scroll up", `${hidden}/${shown}`);
 
   // reach map (V7): the timeline itself is tested on a fresh page below; here only Replay
-  await p.evaluate(() => document.getElementById("reach").scrollIntoView()); await p.waitForTimeout(800);
-  await p.locator("#reach button:has-text('Replay')").click(); await p.waitForTimeout(300);
-  ok(await p.evaluate(() => getComputedStyle(document.querySelector("#reach .reach-pin")).opacity === "0" || document.querySelector("#reach .reach").dataset.play === "run"), "map: Replay restarts the sequence");
-  const mapText = await p.evaluate(() => document.querySelector("#reach").textContent);
+  await p.evaluate(() => document.querySelector("#spotlight .reach").scrollIntoView()); await p.waitForTimeout(800);
+  await p.locator("#spotlight button:has-text('Replay')").click(); await p.waitForTimeout(300);
+  ok(await p.evaluate(() => getComputedStyle(document.querySelector("#spotlight .reach-pin")).opacity === "0" || document.querySelector("#spotlight .reach").dataset.play === "run"), "map: Replay restarts the sequence");
+  const mapText = await p.evaluate(() => document.querySelector("#spotlight .reach").textContent);
   ok(/24 Sept? .*9 Oct/.test(mapText) && /11.18 Oct/.test(mapText) && /30.31 Oct/.test(mapText) && /Warangal/.test(mapText), "map: ledger carries the event.ts dates");
-  const mapBox = await p.evaluate(() => { const r = document.querySelector("#reach [data-content]").getBoundingClientRect(); const c = document.querySelector("#reach .reach").getBoundingClientRect(); return { w: r.width, cw: c.width }; });
-  ok(mapBox.w / mapBox.cw >= 0.5, "map: fills more than half of the content width on desktop", `${Math.round(mapBox.w)}/${Math.round(mapBox.cw)}`);
+  const mapBox = await p.evaluate(() => { const r = document.querySelector("#spotlight .reach [data-content]").getBoundingClientRect(); const c = document.querySelector("#spotlight .reach").getBoundingClientRect(); return { w: r.width, cw: c.width }; });
+  ok(mapBox.w / mapBox.cw >= 0.35, "map: compact inside the spotlight block, still at least a third of the content width on desktop", `${Math.round(mapBox.w)}/${Math.round(mapBox.cw)}`);
 
-  // vine (V7): fixed at the top-left corner on wide screens, bud swells at the flagship chapter
+  // vine (V7): fixed at the top-left corner on wide screens, bud swells at the dive chapter
   await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(500);
   const vine0 = await p.evaluate(() => { const v = document.querySelector(".vine"); const r = v?.getBoundingClientRect(); return v ? { display: getComputedStyle(v).display, left: r.left, top: r.top, pe: getComputedStyle(v).pointerEvents, aria: v.getAttribute("aria-hidden") } : null; });
-  const fy = await p.evaluate(() => document.getElementById("flagship").getBoundingClientRect().top + scrollY + 400);
+  const fy = await p.evaluate(() => document.getElementById("dive").getBoundingClientRect().top + scrollY + 400);
   await p.evaluate((y) => window.scrollTo(0, y), fy); await p.waitForTimeout(900);
   const bud = await p.evaluate(() => document.querySelector(".vine").dataset.bud);
   ok(vine0 && vine0.display !== "none" && vine0.left === 0 && vine0.top === 0 && vine0.pe === "none" && vine0.aria === "true" && bud === "true" && (await p.locator(".vtree").count()) === 0, "vine: hangs from the top-left corner, decorative, bud swells at the flagship chapter; the sapling rail is gone", JSON.stringify({ vine0, bud }));
   ok((await p.evaluate(() => document.querySelectorAll("[data-cursor], .cursor-label").length)) === 0, "no custom cursor elements");
   const posters = await p.evaluate(() => document.querySelectorAll("#posters img").length);
-  ok(posters >= 1, "poster wall shows the club's posters", `n=${posters}`);
+  ok(posters === 0, "Home has no poster wall (the four posters live on /venture-vortex)", `n=${posters}`);
   await c.close();
 }
 
@@ -90,11 +90,11 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
 {
   const c = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const p = await c.newPage(); await p.goto(base + "/", { waitUntil: "load" }); await p.waitForTimeout(1200);
-  const before = await p.evaluate(() => document.querySelector("#reach .reach").dataset.play);
-  await p.evaluate(() => { document.getElementById("reach").scrollIntoView(); }); await p.waitForTimeout(700);
-  const during = await p.evaluate(() => ({ play: document.querySelector("#reach .reach").dataset.play, pin: getComputedStyle(document.querySelector("#reach .reach-pin")).opacity }));
+  const before = await p.evaluate(() => document.querySelector("#spotlight .reach").dataset.play);
+  await p.evaluate(() => { document.querySelector("#spotlight .reach").scrollIntoView(); }); await p.waitForTimeout(700);
+  const during = await p.evaluate(() => ({ play: document.querySelector("#spotlight .reach").dataset.play, pin: getComputedStyle(document.querySelector("#spotlight .reach-pin")).opacity }));
   await p.waitForTimeout(4600);
-  const after = await p.evaluate(() => ({ pin: getComputedStyle(document.querySelector("#reach .reach-pin")).opacity, tracks: document.querySelectorAll("#reach .track").length }));
+  const after = await p.evaluate(() => ({ pin: getComputedStyle(document.querySelector("#spotlight .reach-pin")).opacity, tracks: document.querySelectorAll("#spotlight .track").length }));
   ok(before === "idle" && during.play === "run" && during.pin === "0" && after.pin === "1" && after.tracks === 0, "map: idle until seen, plays once on enter, Warangal pin lands at the end, no pinned track", JSON.stringify({ before, during, after }));
   await c.close();
 }
@@ -103,7 +103,7 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
 {
   const c = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
   const p = await c.newPage(); await p.goto(base + "/", { waitUntil: "load" }); await p.waitForTimeout(3500);
-  const s = await p.evaluate(() => ({ canvas: document.querySelectorAll("canvas").length, live: document.querySelector("#hero")?.hasAttribute("data-live"), play: document.querySelector("#reach .reach").dataset.play, pin: getComputedStyle(document.querySelector("#reach .reach-pin")).opacity, replay: document.querySelector("#reach .reach button").hidden }));
+  const s = await p.evaluate(() => ({ canvas: document.querySelectorAll("canvas").length, live: document.querySelector("#hero")?.hasAttribute("data-live"), play: document.querySelector("#spotlight .reach").dataset.play, pin: getComputedStyle(document.querySelector("#spotlight .reach-pin")).opacity, replay: document.querySelector("#spotlight .reach button").hidden }));
   ok(s.canvas === 0 && !s.live, "reduced motion: poster only, no canvas", JSON.stringify(s));
   ok(s.play === "done" && s.pin === "1" && s.replay, "reduced motion: map shows its final state, no Replay button", JSON.stringify(s));
   await c.close();
@@ -114,15 +114,17 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
   const c = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const p = await c.newPage(); await p.goto(base + "/about", { waitUntil: "load" }); await p.waitForTimeout(800);
   const labels = await p.evaluate(() => [...document.querySelectorAll('nav[aria-label="Primary"] a')].map((a) => a.textContent.trim().replace(/\s+/g, " ").replace(/ on Unstop.*/, "")).filter(Boolean));
-  ok(labels.slice(1).join("|") === "Home|About|Initiatives|Team|Sponsors|Gallery|Contact|Register", "nav items are the seven tabs plus the Register pill", labels.join("|"));
+  ok(labels.slice(1).join("|") === "Home|About|Initiatives|Team|Sponsors|Gallery|Contact|Venture Vortex", "nav items are the seven tabs plus the spotlight button", labels.join("|"));
   await c.close();
 }
 // ---- floating pill follows the Unstop timeline (fake clock) and hides on /venture-vortex
 for (const [iso, want] of [["2026-10-02T12:00:00+05:30", /Register on Unstop.*left to register/], ["2026-10-04T12:00:00+05:30", /Registration closed/], ["2026-10-10T12:00:00+05:30", /Round 1 closed/], ["2026-10-14T12:00:00+05:30", /Round 2 in progress/], ["2026-10-25T12:00:00+05:30", /Finale on campus, 30/], ["2026-10-30T12:00:00+05:30", /Finale on campus$/], ["2026-11-02T12:00:00+05:30", null]]) {
   const c = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const p = await c.newPage(); await p.clock.setFixedTime(new Date(iso)); await p.goto(base + "/about", { waitUntil: "load" }); await p.waitForTimeout(900);
+  const p = await c.newPage(); await p.clock.setFixedTime(new Date(iso)); await p.goto(base + "/", { waitUntil: "load" }); await p.waitForTimeout(900);
   const t = await p.evaluate(() => document.querySelector(".pill-in")?.textContent.trim().replace(/\s+/g, " ") ?? null);
-  ok(want ? want.test(t ?? "") : t === null, `pill on ${iso.slice(0, 10)}`, String(t));
+  ok(want ? want.test(t ?? "") : t === null, `pill on Home ${iso.slice(0, 10)}`, String(t));
+  await p.goto(base + "/about", { waitUntil: "load" }); await p.waitForTimeout(500);
+  ok((await p.locator(".pill-in").count()) === 0, `no pill on /about ${iso.slice(0, 10)}`);
   await c.close();
 }
 {
@@ -155,10 +157,10 @@ for (const [iso, want] of [["2026-10-02T12:00:00+05:30", /Register on Unstop.*le
   ok(await p.evaluate(() => !!document.querySelector("dialog.menu[open]")), "mobile menu opens");
   await p.keyboard.press("Escape"); await p.waitForTimeout(300);
   ok(await p.evaluate(() => !document.querySelector("dialog.menu[open]")), "Escape closes the menu");
-  const F = p.locator("form");
-  ok((await p.locator('[role="tab"]').count()) === 4 && (await F.locator('input[type="checkbox"]').count()) === 0, "contact: four tabs, and no age checkbox");
+  const F = p.locator("#contact form");
+  ok((await p.locator("main form").count()) === 2 && (await p.locator('[role="tab"]').count()) === 0 && (await p.locator('input[type="checkbox"]').count()) === 0, "contact: two separate boxes, no tabs, no age checkbox");
   await F.locator('button[type="submit"]').click(); await p.waitForTimeout(400);
-  const inv = await p.evaluate(() => document.querySelectorAll("form [aria-invalid=true]").length);
+  const inv = await p.evaluate(() => document.querySelectorAll("#contact form [aria-invalid=true]").length);
   ok(inv >= 3 && (await p.locator('.toast-in[role="alert"]').count()) === 1, "form: empty submit shows inline errors and an alert toast", `invalid=${inv}`);
   await F.locator('input[name="name"]').fill("Test Person"); await F.locator('input[name="email"]').fill("test@example.com"); await F.locator('textarea[name="message"]').fill("Hello, a question about the club.");
   await F.locator('input[name="company"]').fill("bot", { force: true }).catch(() => {});

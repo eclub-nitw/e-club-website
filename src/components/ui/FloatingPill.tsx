@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { registration } from "@/data/timeline";
-import { useNow } from "@/lib/hooks";
+import { useNow, useSpotlight } from "@/lib/hooks";
 import { phaseAt, viewOf } from "@/lib/phase";
 
 const left = (ms: number) => {
@@ -11,10 +11,14 @@ const left = (ms: number) => {
 };
 
 /** Bottom-right status pill whose wording follows today's date against the Unstop timeline (lib/register-state.ts). Hidden on the Venture Vortex page and after the finale. */
-export function FloatingPill() {
+// Only where the spotlight is the subject or a natural neighbour: Home, Initiatives and its own page. Never on About, Team, Sponsors, Gallery or Contact.
+const PILL_ROUTES = ["/", "/initiatives", "/venture-vortex"];
+
+export function FloatingPill({ spotlightVisible }: { spotlightVisible: boolean }) {
   const now = useNow();
   const pathname = usePathname();
-  if (now === null || pathname.startsWith("/venture-vortex")) return null;
+  const spot = useSpotlight(spotlightVisible);
+  if (now === null || !spot || !PILL_ROUTES.includes(pathname) || pathname.startsWith("/venture-vortex")) return null;
   const s = viewOf(phaseAt(now)).pill;
   if (!s) return null;
   const cls = "pill-in nav-surface fixed bottom-4 right-4 z-40 flex min-h-11 max-w-[calc(100vw-2rem)] items-center gap-3 rounded-full px-4 py-2 text-fg";

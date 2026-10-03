@@ -1,3 +1,4 @@
+import { spotlight } from "../data/spotlight";
 import { registerUrl, registration, round1Result, rounds, unstopPageUrl } from "../data/timeline";
 
 // The one place that decides what every date-driven surface says (pill, nav, hero CTA, ticker, countdown, Venture Vortex page).
@@ -28,7 +29,8 @@ export type Link = { label: string; href: string };
 export type PhaseView = {
   pill: (Link & { tone: "register" | "info" }) | null; // floating pill; null = hidden
   action: Link | null;                                  // external call to action (Unstop); null = nothing to act on
-  hero: Link;                                           // hero primary button when there is no action
+  status: string | null;                                // ledger-row status word (Initiatives); null = none
+  chip: Link;                                           // the small spotlight chip under the Home hero buttons
   ticker: string;                                       // first ticker item
   countdown: { label: string; start: string; end: string };
 };
@@ -37,32 +39,33 @@ const vortex = "/venture-vortex";
 const unstopPage = unstopPageUrl;
 
 export function viewOf(phase: Phase): PhaseView {
-  const hero = { label: "Venture Vortex 2026", href: vortex };
+  const chip = (text: string): Link => ({ label: text, href: vortex });
+  const now = (text: string) => chip(`Now: ${spotlight.name} · ${text}`);
   const finale = { start: r3.start, end: r3.end };
   switch (phase) {
     case "pre":
-      return { pill: { tone: "info", label: `Registration opens ${day(registration.start)}`, href: vortex }, action: null, hero,
-        ticker: `Venture Vortex 2026 · registration opens ${day(registration.start)}`, countdown: { label: "Registration opens", start: registration.start, end: registration.start } };
+      return { pill: { tone: "info", label: `Registration opens ${day(registration.start)}`, href: vortex }, action: null, status: "Soon", chip: chip(`Next: ${spotlight.name} · registration opens ${day(registration.start)}`),
+        ticker: `${spotlight.name} · registration opens ${day(registration.start)}`, countdown: { label: "Registration opens", start: registration.start, end: registration.start } };
     case "registration":
-      return { pill: { tone: "register", label: "Register on Unstop", href: registerUrl }, action: { label: "Register on Unstop", href: registerUrl }, hero,
-        ticker: `Venture Vortex 2026 registration is live on Unstop, closes ${day(registration.end)}`, countdown: { label: `Registration closes ${day(registration.end)}`, start: registration.end, end: registration.end } };
+      return { pill: { tone: "register", label: "Register on Unstop", href: registerUrl }, action: { label: "Register on Unstop", href: registerUrl }, status: "Open", chip: now(`registration closes ${day(registration.end)}`),
+        ticker: `${spotlight.name} registration is live on Unstop, closes ${day(registration.end)}`, countdown: { label: `Registration closes ${day(registration.end)}`, start: registration.end, end: registration.end } };
     case "submissions":
-      return { pill: { tone: "info", label: `Registration closed · Submissions open until ${dayTime(r1.end)}`, href: unstopPage }, action: { label: "Round 1 submissions on Unstop", href: unstopPage }, hero,
+      return { pill: { tone: "info", label: `Registration closed · Submissions open until ${dayTime(r1.end)}`, href: unstopPage }, action: { label: "Round 1 submissions on Unstop", href: unstopPage }, status: "Running", chip: now(`Round 1 submissions close ${dayTime(r1.end)}`),
         ticker: `Registration closed · Round 1 submissions open until ${dayTime(r1.end)}`, countdown: { label: `Round 1 submissions close ${dayTime(r1.end)}`, start: r1.end, end: r1.end } };
     case "pending":
-      return { pill: { tone: "info", label: `Round 1 closed · Round 2 opens ${day(r2.start)}`, href: vortex }, action: null, hero,
+      return { pill: { tone: "info", label: `Round 1 closed · Round 2 opens ${day(r2.start)}`, href: vortex }, action: null, status: "Running", chip: now(`Round 2 opens ${day(r2.start)}`),
         ticker: `Round 1 closed · result ${day(round1Result)} · Round 2 opens ${day(r2.start)}`, countdown: { label: `Round 2 opens ${day(r2.start)}`, start: r2.start, end: r2.start } };
     case "round2":
-      return { pill: { tone: "info", label: "Round 2 in progress", href: vortex }, action: null, hero,
+      return { pill: { tone: "info", label: "Round 2 in progress", href: vortex }, action: null, status: "Running", chip: now("Round 2 in progress"),
         ticker: `Round 2 in progress · closes ${dayTime(r2.end)}`, countdown: { label: `Round 2 closes ${dayTime(r2.end)}`, start: r2.end, end: r2.end } };
     case "between":
-      return { pill: { tone: "info", label: `Finale on campus, ${days(r3.start, r3.end)}`, href: vortex }, action: null, hero,
+      return { pill: { tone: "info", label: `Finale on campus, ${days(r3.start, r3.end)}`, href: vortex }, action: null, status: "Running", chip: now(`finale on campus, ${days(r3.start, r3.end)}`),
         ticker: `Round 2 closed · finale on campus, ${days(r3.start, r3.end)}`, countdown: { label: `Finale on campus · ${days(r3.start, r3.end)}`, ...finale } };
     case "round3":
-      return { pill: { tone: "info", label: "Finale on campus", href: vortex }, action: null, hero,
+      return { pill: { tone: "info", label: "Finale on campus", href: vortex }, action: null, status: "Running", chip: now("finale on campus"),
         ticker: "Finale on campus at NIT Warangal", countdown: { label: "Finale on campus", ...finale } };
     case "finished":
-      return { pill: null, action: null, hero, ticker: "Venture Vortex 2026 has concluded", countdown: { label: "Venture Vortex 2026", ...finale } };
+      return { pill: null, action: null, status: null, chip: chip(`${spotlight.name} has concluded`), ticker: `${spotlight.name} has concluded`, countdown: { label: spotlight.name, ...finale } };
   }
 }
 

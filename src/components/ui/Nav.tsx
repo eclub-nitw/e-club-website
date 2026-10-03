@@ -2,9 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { registerUrl } from "@/data/timeline";
-import { useChapter, useNow } from "@/lib/hooks";
-import { phaseAt } from "@/lib/phase";
+import { spotlight } from "@/data/spotlight";
+import { useChapter, useSpotlight } from "@/lib/hooks";
 import { ClubMark } from "./ClubMark";
 
 export const NAV_LINKS = [
@@ -19,17 +18,10 @@ export const NAV_LINKS = [
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** Register goes to Unstop while Round 1 is open; afterwards the pill points at the competition page. */
-function Register({ open, cls, onClick }: { open: boolean; cls: string; onClick?: () => void }) {
-  return open
-    ? <a href={registerUrl} target="_blank" rel="noopener noreferrer" onClick={onClick} className={cls}>Register<span className="sr-only"> on Unstop (opens in a new tab)</span></a>
-    : <Link href="/venture-vortex" onClick={onClick} className={cls}>Venture Vortex</Link>;
-}
-
 function Wordmark() {
   return (
     <Link href="/" className="t-wordmark inline-flex min-h-11 shrink-0 items-center gap-2.5 whitespace-nowrap">
-      <ClubMark size={22} />
+      <ClubMark size={30} />
       <span>E-Club NITW</span>
       <span className="sr-only">, home</span>
     </Link>
@@ -40,13 +32,12 @@ function Wordmark() {
  * One floating bar. Surface is ink at 90% with a blur, so nothing underneath is legible. It hides on scroll down and returns on
  * scroll up (and whenever focus is inside it). The counter reads the page's numbered chapters ("04 / 09"); a 2px rail shows progress.
  */
-export function Nav() {
+export function Nav({ spotlightVisible }: { spotlightVisible: boolean }) {
   const pathname = usePathname();
   const drawer = useRef<HTMLDialogElement>(null);
   const [hidden, setHidden] = useState(false);
   const here = useChapter(pathname);
-  const now = useNow();
-  const open = now !== null && phaseAt(now) === "registration";
+  const spot = useSpotlight(spotlightVisible);
 
   useEffect(() => {
     let last = window.scrollY, raf = 0;
@@ -83,7 +74,7 @@ export function Nav() {
             </p>
           )}
           <ul className="ml-auto hidden items-center lg:flex">{NAV_LINKS.map((l) => <li key={l.href}><Link href={l.href} className={linkCls(l.href)} aria-current={current(l.href) ? "page" : undefined}>{l.label}</Link></li>)}</ul>
-          <Register open={open} cls={`${flagCls} max-md:hidden`} />
+          {spot && <Link href={spotlight.href} className={`${flagCls} max-md:hidden`}>{spotlight.navLabel}</Link>}
           <button type="button" onClick={openMenu} aria-haspopup="dialog" className="ml-auto inline-flex min-h-11 min-w-11 items-center justify-center rounded-full text-fg lg:hidden">
             <span className="sr-only">Open menu</span>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 6h14M3 14h14" stroke="currentColor" strokeWidth="1.5" /></svg>
@@ -113,7 +104,7 @@ export function Nav() {
               ))}
             </ul>
           </nav>
-          <div className="py-6"><Register open={open} cls={`${flagCls} w-full justify-center`} onClick={() => drawer.current?.close()} /></div>
+          {spot && <div className="py-6"><Link href={spotlight.href} onClick={closeMenu} className={`${flagCls} w-full justify-center`}>{spotlight.navLabel}</Link></div>}
         </div>
       </dialog>
     </>

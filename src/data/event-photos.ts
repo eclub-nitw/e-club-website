@@ -138,7 +138,7 @@ export const eventPhotos: Record<"valuation-wars" | "pitcher-perfect" | "the-pit
    "h": 720,
    "ratio": "3:2",
    "focal": "38% 50%",
-   "alt": "A student presents in front of a projected screen while seated classmates look on.",
+   "alt": "A student presents in front of a projected screen while seated classmates look on; a dog lies on the floor at the right.",
    "blur": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAADwAwCdASoYAAsAPu1iqU2ppaOiMAgBMB2JQBOgMXXPa4NOhY4RxgpgAP5kdqIgzevfRuSyQE0p076qvA7t6RdSF659YUIGQaKd8azplSwKiwSnjRNGUX7qpZDZdtO5pUaPuV+JZ0BRQl5HENfjU83nJf6S3e9THl2FKJflfoSwV8PJA+EGqR0Ej/5waiMSDyV8EzFMoN5Jq/dGuAA="
   },
   {
@@ -165,7 +165,7 @@ export const eventPhotos: Record<"valuation-wars" | "pitcher-perfect" | "the-pit
    "h": 720,
    "ratio": "3:2",
    "focal": "38% 50%",
-   "alt": "A student stands at the lectern, back partly to the camera, facing students seated along the windows.",
+   "alt": "A student stands beside the lectern, back partly to the camera, facing students seated along the windows; a dog lies on the floor.",
    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAQBACdASoYAAsAPu1iqU2ppaOiMAgBMB2JYwDCgCbfvmqS+G4p6yoMAAD4YlcP6dXFoVnW1R8fPEgno8DQi2uhwq/TwCi2KRoGvyX9TuO+wxf87UCySPg/bKFSPBRlc3ZzoNwZB/nfzi27ecPz0ihZ81FxuWpJ9fcuV7CSg8GdBVdxvAHKn3knhZjFrSVeFV+4nitFCT2J4AAA"
   }
  ]

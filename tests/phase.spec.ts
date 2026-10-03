@@ -32,7 +32,7 @@ test("the 3 Oct cut-off is the same instant in UTC (18:29:59 on 3 Oct)", () => {
 test("after registration closes no label, pill or CTA says Register", () => {
   for (const p of ["submissions", "pending", "round2", "between", "round3", "finished"] as Phase[]) {
     const v = viewOf(p);
-    const text = [v.pill?.label, v.action?.label, v.hero.label, v.ticker, v.countdown.label].filter(Boolean).join(" | ");
+    const text = [v.pill?.label, v.action?.label, v.chip.label, v.ticker, v.countdown.label].filter(Boolean).join(" | ");
     expect(text, p).not.toMatch(/register on|registration is live|register now/i);
   }
 });

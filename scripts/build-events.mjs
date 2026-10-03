@@ -26,10 +26,10 @@ const SETS = {
   "the-pitch-league": { dir: "The pitch league", files: [
     ["WhatsApp Image 2026-10-02 at 22.13.07.jpeg", "3:2", "22% 50%", "Two students shown in profile, one gesturing toward something out of frame, in front of a whiteboard and a window."],
     ["WhatsApp Image 2026-10-02 at 22.13.41.jpeg", "3:2", "45% 50%", "Two presenters stand beside a projector screen in a classroom while seated students watch."],
-    ["WhatsApp Image 2026-10-02 at 22.13.42.jpeg", "3:2", "38% 50%", "A student presents in front of a projected screen while seated classmates look on."],
+    ["WhatsApp Image 2026-10-02 at 22.13.42.jpeg", "3:2", "38% 50%", "A student presents in front of a projected screen while seated classmates look on; a dog lies on the floor at the right."],
     ["WhatsApp Image 2026-10-02 at 22.13.48.jpeg", "3:2", "22% 50%", "A student in a brown sweater gestures as he presents to students seated by the windows."],
     ["WhatsApp Image 2026-10-02 at 22.13.49.jpeg", "3:2", "40% 50%", "A student speaks in front of a chalkboard that reads The Pitch League, a projected slide beside it."],
-    ["WhatsAppImage 2026-10-02 at 22.13.48.jpeg", "3:2", "38% 50%", "A student stands at the lectern, back partly to the camera, facing students seated along the windows."],
+    ["WhatsAppImage 2026-10-02 at 22.13.48.jpeg", "3:2", "38% 50%", "A student stands beside the lectern, back partly to the camera, facing students seated along the windows; a dog lies on the floor."],
   ] },
 };
 

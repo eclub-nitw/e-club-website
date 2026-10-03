@@ -15,7 +15,6 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { H3, Label } from "@/components/ui/Type";
 import { VideoEmbed } from "@/components/ui/VideoEmbed";
-import { TYPE_LABEL } from "@/components/ui/EventRow";
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -48,7 +47,6 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const posters = shownPosters(e.slug);
   const related = events.filter((o) => o.slug !== e.slug && o.type === e.type).slice(0, 3);
   const facts: [string, string][] = [
-    ["Type", TYPE_LABEL[e.type]],
     ["Status", isUpcoming(e) ? "Upcoming" : "Held"],
     ...(e.dateStart ? [["Date", fmtRange(e.dateStart, e.dateEnd ?? undefined)] as [string, string]] : []),
     ...(e.venue ? [["Venue", e.venue] as [string, string]] : []),
@@ -59,7 +57,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
     <>
       <JsonLd data={eventLd(e)} />
       <JsonLd data={breadcrumbLd(trail)} />
-      <PageHeader number={TYPE_LABEL[e.type]} label={e.dateStart ? fmtRange(e.dateStart, e.dateEnd ?? undefined) : e.status === "past" ? "Past event" : "Upcoming"} title={e.title} lede={e.summary ?? undefined} art={e.type === "flagship" ? "vortex" : "pitch-stage"}>
+      <PageHeader number="01" label={e.dateStart ? fmtRange(e.dateStart, e.dateEnd ?? undefined) : e.status === "past" ? "Past event" : "Upcoming"} title={e.title} lede={e.summary ?? undefined} art={e.type === "flagship" ? "vortex" : "pitch-stage"}>
         <Breadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Initiatives", path: "/initiatives" }, { name: e.title }]} />
       </PageHeader>
 

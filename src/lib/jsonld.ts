@@ -36,7 +36,7 @@ export const eventLd = (e: ClubEvent) => e.dateStart && e.venue ? ({
   ...(e.summary && { description: e.summary }),
   startDate: e.dateStart,
   ...(e.dateEnd && { endDate: e.dateEnd }),
-  eventStatus: "https://schema.org/EventScheduled",
+  eventStatus: new Date((e.dateEnd ?? e.dateStart)!).getTime() < Date.now() ? "https://schema.org/EventCompleted" : "https://schema.org/EventScheduled",
   eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
   location: { "@type": "Place", name: e.venue },
   organizer: { "@type": "Organization", name: site.name, url: site.url },

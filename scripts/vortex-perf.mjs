@@ -29,7 +29,7 @@ for (const rate of RATES) {
   await p.goto(base + "/", { waitUntil: "load" });
   if (CSS) await p.addStyleTag({ content: CSS });
   await p.waitForTimeout(6000); // let the idle warm-up and texture uploads finish, as a visitor would have
-  await p.evaluate(() => document.getElementById("flagship").scrollIntoView());
+  await p.evaluate(() => document.getElementById("dive").scrollIntoView());
   await p.waitForTimeout(800);
   await cdp.send("Emulation.setCPUThrottlingRate", { rate });
   const bcdp = await browser.newBrowserCDPSession();
@@ -37,7 +37,7 @@ for (const rate of RATES) {
   const g0 = await gpuCpu(), t0 = Date.now();
   const r = await p.evaluate(async (__IDLE__) => {
     const st = window.__perf; st.on = true; st.draws = 0; st.texBytes = 0; st.long = 0;
-    const el = document.getElementById("flagship"); const track = el.querySelector(".track");
+    const el = document.getElementById("dive"); const track = el.querySelector(".track");
     const top = track.getBoundingClientRect().top + scrollY, span = track.offsetHeight - innerHeight;
     const ms = 10000, t0 = performance.now(); const idle = __IDLE__; let last = t0; const dts = [];
     await new Promise((res) => { const tick = (n) => { dts.push(n - last); last = n; const k = Math.min(1, (n - t0) / ms); window.scrollTo(0, idle ? top + span * 0.5 : top + span * k); if (k < 1) requestAnimationFrame(tick); else res(); }; requestAnimationFrame(tick); });

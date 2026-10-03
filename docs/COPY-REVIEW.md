@@ -65,3 +65,23 @@ New or changed public wording, all CONFIRM unless it comes from `src/data/event.
 | Contact tab notes ("Tell us your branch and year", "About an event or the club", "Anything else", "Sponsors and collaborators") | `/contact` | Ours | CONFIRM |
 | "No club-wide sponsor or partner is listed yet." | `/sponsors` | State of the data | Verified |
 | Form notice "Forms here are for people aged 18 and over. Under 18? Email us instead." | `site.forms.noticeLine`, hidden | Owner brief | Hidden until legal review |
+
+## V8 additions: new public sentences, all CONFIRM unless stated
+| # | Public text | Where | Source | Status |
+|---|---|---|---|---|
+| 26 | Hero: label "Entrepreneurship Club · Warangal, Telangana"; official line "Think. Connect. Create. Lead." as the large supporting line; buttons "Explore initiatives" and "Get in touch" | `Hero.tsx` | Owner's brief (3 Oct) for the line and buttons | Verified (owner-supplied) |
+| 27 | Hero chip: "Now: Venture Vortex 2026 · registration closes 3 Oct" (and one wording per phase, "Next: ... registration opens 22 Sep", "... has concluded") | `lib/phase.ts` `chip` | Dates from `timeline.ts` | Verified facts, CONFIRM wording |
+| 28 | Home About: "At a glance" and its four labels (Institute, Faculty mentor, Reach us, Follow) | `About.tsx`, `copy.about.glance` | Facts from `site.ts`, `about.ts` | CONFIRM labels |
+| 29 | "From the floor / One photograph from each event we have run." | `copy.fromTheFloor` | Ours | CONFIRM |
+| 30 | The dive: heading "Think. Connect. Create. Lead." and four captions: **Think.** Start with the question. **Connect.** Meet the people who can answer it. **Create.** Build the thing. **Lead.** Carry it forward. | `copy.dive`, `dive-groups.ts` | Draft from the V8 brief, an editorial reading of the line, not a claim about activities | CONFIRM |
+| 31 | About: the same four lines as large ledger rows, with "How we read it. The club's four words, one line each. This is how we read our own line, not a rule." | `about/page.tsx` | same | CONFIRM |
+| 32 | About manifesto: "Entrepreneurship Club is the student community at NIT Warangal for people who build or want to." | `about.manifesto` | The owner's own sentence (V7 brief); the second sentence about one competition was removed in V8 | Verified (owner-supplied) |
+| 33 | About: "What we run. The competitions and pitch sessions we run, with their status, are on the Initiatives page." | `about/page.tsx` | Ours | CONFIRM |
+| 34 | Spotlight block: "This season's spotlight", "Now open", the event-partners and "Campus to India" sub-headings | `copy.spotlight` | The tagline is the poster's; the rest ours | CONFIRM |
+| 35 | Initiatives: "Competitions and pitch sessions, run by students." (lede); empty states "Nothing is scheduled right now. Follow us on Instagram or LinkedIn for the next one." and "No past initiatives are listed yet."; tab names All / Upcoming / Past | `initiatives/page.tsx`, `EventLedger.tsx` | Ours | CONFIRM |
+| 36 | Contact: "Two boxes: one for the club, one for sponsors and partners.", box headings "Contact and queries" and "Sponsorship and partnership", reasons "Ask a question / Join the club / Say hello", interests "Sponsor an event / Partner on an initiative / Media / Other" | `contact/page.tsx`, `ContactBoxes.tsx` | Names and choices from the V8 brief | Verified (owner-supplied) |
+| 37 | Venture Vortex ended banner: "Venture Vortex 2026 has ended. This page stays as a record." | `features/venture-vortex` | Ours | CONFIRM |
+| 38 | Meta description (Home and default): "E-Club NIT Warangal, the Entrepreneurship Club of NIT Warangal. Think. Connect. Create. Lead." | `app/page.tsx`, `layout.tsx` | The V8 brief | Verified |
+| 39 | Gallery and event-page alt texts for 18 photographs (re-checked against each image in V8; two now mention a dog on the floor) | `scripts/build-events.mjs` | Written from looking at each image | CONFIRM |
+
+Retired in V8 (no longer public): "Venture Vortex in numbers" band, "Backed by" title, "Event posters" section on Home, the four-word motto mapped to Rounds 1 to 3 on About (a V7 error), the Home quote band, "Four steps through Venture Vortex" and its FAQ on Initiatives, rows 3, 4, 7, 8, 9, 14 of the V5 table.

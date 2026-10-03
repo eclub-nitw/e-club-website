@@ -1,12 +1,14 @@
-// Validation shared by the form (instant feedback) and the API route (the check that counts). Pure functions, no dependencies.
+// Validation shared by the forms (instant feedback) and the API route (the check that counts). Pure functions, no dependencies.
+// Contact box A sends query, join or contact; the sponsorship box sends sponsor.
 export const TYPES = ["join", "query", "contact", "sponsor"] as const;
 export type Type = (typeof TYPES)[number];
-export type Field = "name" | "email" | "message" | "branch" | "year" | "organisation" | "website" | "_";
-export type ContactData = { type: Type; name: string; email: string; message: string; branch?: string; year?: string; organisation?: string; website?: string };
-export const LIMITS = { name: 80, email: 254, message: 2000, branch: 60, year: 20, organisation: 120, website: 200 } as const;
+export const INTERESTS = ["Sponsor an event", "Partner on an initiative", "Media", "Other"] as const;
+export type Field = "name" | "email" | "message" | "branch" | "year" | "organisation" | "website" | "role" | "interest" | "_";
+export type ContactData = { type: Type; name: string; email: string; message: string; branch?: string; year?: string; organisation?: string; website?: string; role?: string; interest?: string };
+export const LIMITS = { name: 80, email: 254, message: 2000, branch: 60, year: 20, organisation: 120, website: 200, role: 80, interest: 40 } as const;
 
 /** The only fields each type may carry, on top of name, email and message. Anything else in a request is refused, not ignored. */
-export const EXTRA: Record<Type, readonly Field[]> = { join: ["branch", "year"], query: [], contact: [], sponsor: ["organisation", "website"] };
+export const EXTRA: Record<Type, readonly Field[]> = { join: ["branch", "year"], query: [], contact: [], sponsor: ["organisation", "website", "role", "interest"] };
 const COMMON = ["type", "name", "email", "message", "company"]; // company is the honeypot
 
 // Control characters other than tab and newline have no place in a name or a message.
@@ -38,8 +40,9 @@ export function validateContact(v: Record<string, unknown>): Result {
     const val = clean(v[f], LIMITS[f as keyof typeof LIMITS]);
     if (val.length > LIMITS[f as keyof typeof LIMITS]) errors[f] = `Keep this under ${LIMITS[f as keyof typeof LIMITS]} characters.`;
     else if (f === "organisation" && val.length < 2) errors.organisation = "Tell us which organisation you write for.";
+    else if (f === "interest" && !(INTERESTS as readonly string[]).includes(val)) errors.interest = "Choose what you have in mind.";
     else if (f === "website" && val && !isUrl(val)) errors.website = "Enter a full address starting with https://";
-    else if (val) data[f as "branch" | "year" | "organisation" | "website"] = val;
+    else if (val) data[f as "branch" | "year" | "organisation" | "website" | "role" | "interest"] = val;
   }
   return Object.keys(errors).length ? { ok: false, errors } : { ok: true, data };
 }

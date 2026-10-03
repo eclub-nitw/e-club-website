@@ -36,9 +36,9 @@ export const events: ClubEvent[] = [
     href: "/venture-vortex",
     photos: [], photoConsent: null,
   },
-  { slug: "valuation-wars", title: "Valuation Wars", plain: "Valuation Wars", type: "other", status: "past", dateStart: null, venue: null, summary: null, photos: eventPhotos["valuation-wars"], photoConsent: null },
-  { slug: "pitcher-perfect", title: "Pitch’er Perfect", plain: "Pitch'er Perfect", type: "other", status: "past", dateStart: null, venue: null, summary: null, photos: eventPhotos["pitcher-perfect"], photoConsent: null },
-  { slug: "the-pitch-league", title: "The Pitch League", plain: "The Pitch League", type: "other", status: "past", dateStart: null, venue: null, summary: null, photos: eventPhotos["the-pitch-league"], photoConsent: null },
+  { slug: "valuation-wars", title: "Valuation Wars", plain: "Valuation Wars", type: "other", status: "past", dateStart: null, venue: null, summary: null, photos: eventPhotos["valuation-wars"], photoConsent: "Club owner (Abdul Wahid) confirmed consent of the people shown, 3 Oct 2026 launch brief" },
+  { slug: "pitcher-perfect", title: "Pitch’er Perfect", plain: "Pitch'er Perfect", type: "other", status: "past", dateStart: null, venue: null, summary: null, photos: eventPhotos["pitcher-perfect"], photoConsent: "Club owner (Abdul Wahid) confirmed consent of the people shown, 3 Oct 2026 launch brief" },
+  { slug: "the-pitch-league", title: "The Pitch League", plain: "The Pitch League", type: "other", status: "past", dateStart: null, venue: null, summary: null, photos: eventPhotos["the-pitch-league"], photoConsent: "Club owner (Abdul Wahid) confirmed consent of the people shown, 3 Oct 2026 launch brief" },
 ];
 
 /** Photos that may be shown: the event's set, only when consent is recorded. */

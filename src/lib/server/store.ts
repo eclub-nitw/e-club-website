@@ -52,6 +52,7 @@ export async function saveSubmission(d: ContactData): Promise<void> {
       type: { stringValue: d.type }, name: { stringValue: d.name }, email: { stringValue: d.email }, message: { stringValue: d.message },
       ...(d.branch && { branch: { stringValue: d.branch } }), ...(d.year && { year: { stringValue: d.year } }),
       ...(d.organisation && { organisation: { stringValue: d.organisation } }), ...(d.website && { website: { stringValue: d.website } }),
+      ...(d.role && { role: { stringValue: d.role } }), ...(d.interest && { interest: { stringValue: d.interest } }),
       createdAt: { timestampValue: now.toISOString() }, expiresAt: { timestampValue: new Date(now.getTime() + RETENTION_MS).toISOString() },
     } }),
   });
