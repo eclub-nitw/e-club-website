@@ -1,0 +1,68 @@
+FAIL  / @360  overlaps=16
+FAIL  / @768  overlaps=16
+FAIL  / @1024  overlaps=1
+FAIL  / @1440  overlaps=1
+FAIL  / @1920  overlaps=2
+PASS  /about @360  overlaps=0
+PASS  /about @768  overlaps=0
+PASS  /about @1024  overlaps=0
+PASS  /about @1440  overlaps=0
+PASS  /about @1920  overlaps=0
+PASS  /initiatives @360  overlaps=0
+PASS  /initiatives @768  overlaps=0
+PASS  /initiatives @1024  overlaps=0
+PASS  /initiatives @1440  overlaps=0
+PASS  /initiatives @1920  overlaps=0
+PASS  /venture-vortex @360  overlaps=0
+PASS  /venture-vortex @768  overlaps=0
+PASS  /venture-vortex @1024  overlaps=0
+PASS  /venture-vortex @1440  overlaps=0
+PASS  /venture-vortex @1920  overlaps=0
+PASS  /team @360  overlaps=0
+PASS  /team @768  overlaps=0
+PASS  /team @1024  overlaps=0
+PASS  /team @1440  overlaps=0
+PASS  /team @1920  overlaps=0
+PASS  /sponsors @360  overlaps=0
+PASS  /sponsors @768  overlaps=0
+PASS  /sponsors @1024  overlaps=0
+PASS  /sponsors @1440  overlaps=0
+PASS  /sponsors @1920  overlaps=0
+PASS  /gallery @360  overlaps=0
+PASS  /gallery @768  overlaps=0
+PASS  /gallery @1024  overlaps=0
+PASS  /gallery @1440  overlaps=0
+PASS  /gallery @1920  overlaps=0
+PASS  /contact @360  overlaps=0
+PASS  /contact @768  overlaps=0
+PASS  /contact @1024  overlaps=0
+PASS  /contact @1440  overlaps=0
+PASS  /contact @1920  overlaps=0
+
+/ @360
+  section#hero.bg-bg :: "Entrepreneurship Club" (li) x "<img>" (img.cover-poster) 171x10px @y=127
+  section#hero.bg-bg :: "Warangal, Telangana" (li) x "<img>" (img.cover-poster) 155x10px @y=146
+  section#hero.bg-bg :: "E-Club" (span.w-heavy) x "<img>" (img.cover-poster) 95x30px @y=239
+  section#hero.bg-bg :: "NIT Warangal" (span.w-light) x "<img>" (img.cover-poster) 183x30px @y=239
+  section#hero.bg-bg :: "Bring the idea. We bring the" (p.t-lede) x "<img>" (img.cover-poster) 162x18px @y=299
+  section#hero.bg-bg :: "Bring the idea. We bring the" (p.t-lede) x "<img>" (img.cover-poster) 94x18px @y=322
+
+/ @768
+  section#hero.bg-bg :: "Entrepreneurship Club" (li) x "<img>" (img.cover-poster) 186x11px @y=159
+  section#hero.bg-bg :: "Warangal, Telangana" (li) x "<img>" (img.cover-poster) 169x11px @y=159
+  section#hero.bg-bg :: "E-Club" (span.w-heavy) x "<img>" (img.cover-poster) 95x30px @y=265
+  section#hero.bg-bg :: "NIT Warangal" (span.w-light) x "<img>" (img.cover-poster) 183x30px @y=265
+  section#hero.bg-bg :: "Bring the idea. We bring the" (p.t-lede) x "<img>" (img.cover-poster) 162x18px @y=325
+  section#hero.bg-bg :: "Bring the idea. We bring the" (p.t-lede) x "<img>" (img.cover-poster) 94x18px @y=348
+
+/ @1024
+  div.ticker :: "Round 1 · submissions 24 Sep" (span.t-label) x "Pause" (button.ticker-toggle) 44x11px @y=918
+
+/ @1440
+  div.ticker :: "Round 2 · 11 Oct to 18 Oct ·" (span.t-label) x "Pause" (button.ticker-toggle) 44x11px @y=918
+
+/ @1920
+  div.ticker :: "Round 3 · 30 Oct to 31 Oct ·" (span.t-label) x "Pause" (button.ticker-toggle) 44x11px @y=918
+  section#numbers.relative :: "50,000" (dt.t-stat) x "Prize pool" (p.t-h3) 10x22px @y=1498
+
+5 route/width combinations with overlaps
