@@ -18,7 +18,8 @@ const LINK = "t-body underline decoration-line decoration-2 underline-offset-4 h
 export function About({ number }: { number: string }) {
   const nitw = site.logos.nitw, eclub = site.logos.eclub;
   return (
-    <Section id="about" number={number} title="About" heading={copy.about.title} line={copy.about.line} tone="paper">
+    <Section id="about" number={number} title="About" heading={copy.about.title} line={copy.about.line} tone="paper" className="isolate overflow-hidden">
+      <p aria-hidden="true" data-word="WHO" className="t-ghost absolute -right-[0.04em] top-4 -z-10 text-club-ink" />
       <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-stretch lg:gap-[clamp(40px,6vw,96px)]">
         <div className="flex flex-col gap-8">
           <p className="t-lede-xl max-w-[24ch]"><MaskedText text={copy.about.lede} /></p>
