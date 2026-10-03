@@ -39,7 +39,7 @@ try {
         const n = w.currentNode; if (!n.textContent.trim()) continue;
         const el = n.parentElement; if (!el || el.closest("script,style,noscript,.sr-only")) continue;
         const c = getComputedStyle(el); if (c.display === "none" || c.visibility === "hidden") continue;
-        const size = parseFloat(c.fontSize), cls = el.className?.toString() ?? "";
+        const size = parseFloat(c.fontSize), cls = (el.closest(".t-impact, .t-impact-s, .t-stat") ?? el).className?.toString() ?? ""; // words inside a mask span take the cap of the voice they sit in
         const cap = /\bt-impact\b/.test(cls) ? 144 : /\bt-stat\b|\bt-impact-s\b/.test(cls) ? 80 : 60;
         if (size > best.size) best = { size, text: n.textContent.trim().slice(0, 30), cls: cls.slice(0, 30) };
         if (size > cap + 0.5) over.push(`${size}px ${cls.slice(0, 24)} "${n.textContent.trim().slice(0, 20)}"`);
