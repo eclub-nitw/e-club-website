@@ -7,7 +7,9 @@ const cases: [string, Phase][] = [
   ["2026-09-21T23:59:00+05:30", "pre"],
   ["2026-09-22T00:00:00+05:30", "registration"],
   ["2026-10-03T23:59:00+05:30", "registration"],
-  ["2026-10-04T00:00:00+05:30", "submissions"],
+  ["2026-10-04T00:00:00+05:30", "registration"],
+  ["2026-10-08T23:59:00+05:30", "registration"],
+  ["2026-10-09T00:00:00+05:30", "submissions"],
   ["2026-10-09T07:59:00+05:30", "submissions"],
   ["2026-10-09T08:00:00+05:30", "pending"],
   ["2026-10-10T12:00:00+05:30", "pending"],
@@ -24,9 +26,9 @@ const cases: [string, Phase][] = [
 
 for (const [iso, phase] of cases) test(`${iso} is ${phase}`, () => expect(phaseAt(t(iso))).toBe(phase));
 
-test("the 3 Oct cut-off is the same instant in UTC (18:29:59 on 3 Oct)", () => {
-  expect(phaseAt(t("2026-10-03T18:29:00Z"))).toBe("registration");
-  expect(phaseAt(t("2026-10-03T18:30:00Z"))).toBe("submissions");
+test("the 8 Oct cut-off is the same instant in UTC (18:29:59 on 8 Oct)", () => {
+  expect(phaseAt(t("2026-10-08T18:29:00Z"))).toBe("registration");
+  expect(phaseAt(t("2026-10-08T18:30:00Z"))).toBe("submissions");
 });
 
 test("after registration closes no label, pill or CTA says Register", () => {

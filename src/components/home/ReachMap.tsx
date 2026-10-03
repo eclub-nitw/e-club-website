@@ -1,4 +1,4 @@
-import { rounds } from "@/data/timeline";
+import { registration, rounds } from "@/data/timeline";
 import { indiaMap, projectLatLon } from "@/data/india-map";
 import { home, reach } from "@/data/reach";
 import { fmtRange } from "@/lib/format";
@@ -11,7 +11,7 @@ const range = (r: { start: string; end: string }) => fmtRange(r.start, r.end).re
 // Row 0 is the eligibility; 1 to 3 are the rounds, lit in sequence by the player. All from data/event.ts and data/timeline.ts.
 const ROWS = [
   { key: "Open across India", title: "UG, PG and working professionals", sub: "Any college, any city" },
-  { key: "Round 1 · Online", title: range(r1), sub: `${r1.name} · registration to 3 Oct` },
+  { key: "Round 1 · Online", title: range(r1), sub: `${r1.name} · registration to ${range({ start: registration.end, end: registration.end })}` },
   { key: "Round 2 · Online", title: range(r2), sub: r2.name },
   { key: "Round 3 · Warangal campus", title: range(r3), sub: r3.name },
 ] as const;
