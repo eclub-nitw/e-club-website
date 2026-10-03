@@ -1,0 +1,48 @@
+=== /
+run 3 [bench 2223]: perf 91 a11y 100 seo 100 bp 100 LCP 3.41s FCP 1.22s TBT 76ms CLS 0.000 416KiB 
+(1 slow-machine runs rejected)
+MEDIAN of 3: perf 91 a11y 100 seo 100 bp 100 LCP 3.41s FCP 1.22s TBT 76ms CLS 0.000 416KiB
+(node:49176) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+=== /about
+run 3 [bench 2341]: perf 95 a11y 100 seo 100 bp 100 LCP 2.87s FCP 0.92s TBT 106ms CLS 0.000 315KiB 
+(0 slow-machine runs rejected)
+MEDIAN of 3: perf 94 a11y 100 seo 100 bp 100 LCP 2.89s FCP 0.92s TBT 117ms CLS 0.000 315KiB
+(node:23732) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+=== /initiatives
+run 3 [bench 2280]: perf 93 a11y 100 seo 100 bp 100 LCP 3.14s FCP 1.07s TBT 76ms CLS 0.000 399KiB 
+(0 slow-machine runs rejected)
+MEDIAN of 3: perf 93 a11y 100 seo 100 bp 100 LCP 3.12s FCP 1.07s TBT 66ms CLS 0.000 399KiB
+(node:49656) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+=== /initiatives/valuation-wars
+run 3 [bench 2202]: perf 95 a11y 100 seo 100 bp 100 LCP 2.86s FCP 0.92s TBT 57ms CLS 0.000 349KiB 
+(0 slow-machine runs rejected)
+MEDIAN of 3: perf 95 a11y 100 seo 100 bp 100 LCP 2.88s FCP 0.92s TBT 82ms CLS 0.000 349KiB
+(node:37332) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+=== /gallery
+run 3 [bench 2238]: perf 95 a11y 100 seo 100 bp 100 LCP 2.88s FCP 0.91s TBT 69ms CLS 0.000 384KiB 
+(0 slow-machine runs rejected)
+MEDIAN of 3: perf 95 a11y 100 seo 100 bp 100 LCP 2.89s FCP 0.92s TBT 73ms CLS 0.000 384KiB
+(node:32848) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+=== /contact
+run 3 [bench 2201]: perf 96 a11y 100 seo 100 bp 100 LCP 2.73s FCP 0.92s TBT 86ms CLS 0.000 324KiB 
+(0 slow-machine runs rejected)
+MEDIAN of 3: perf 96 a11y 100 seo 100 bp 100 LCP 2.86s FCP 0.92s TBT 86ms CLS 0.000 324KiB
+(node:6040) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+=== /sponsors
+  rejected (machine too slow: benchmark 1639 < 1800)
+  rejected (machine too slow: benchmark 1764 < 1800)
+  rejected (machine too slow: benchmark 1657 < 1800)
+(12 slow-machine runs rejected)
+NO VALID RUNS: machine too slow, close heavy programs and retry
+=== /venture-vortex
+  rejected (machine too slow: benchmark 1623 < 1800)
+  rejected (machine too slow: benchmark 1679 < 1800)
+  rejected (machine too slow: benchmark 1601 < 1800)
+(12 slow-machine runs rejected)
+NO VALID RUNS: machine too slow, close heavy programs and retry

@@ -1,0 +1,15 @@
+=== /sponsors
+run 1 [bench 1634]: perf 94 a11y 100 seo 100 bp 100 LCP 2.92s FCP 0.92s TBT 101ms CLS 0.000 329KiB 
+run 2 [bench 1698]: perf 94 a11y 100 seo 100 bp 100 LCP 2.94s FCP 0.92s TBT 105ms CLS 0.000 329KiB 
+run 3 [bench 1667]: perf 95 a11y 100 seo 100 bp 100 LCP 2.90s FCP 0.92s TBT 90ms CLS 0.000 329KiB 
+MEDIAN of 3: perf 94 a11y 100 seo 100 bp 100 LCP 2.92s FCP 0.92s TBT 101ms CLS 0.000 329KiB
+=== /venture-vortex
+run 1 [bench 1717]: perf 87 a11y 100 seo 100 bp 100 LCP 3.30s FCP 1.07s TBT 262ms CLS 0.000 360KiB 
+run 2 [bench 1632]: perf 92 a11y 100 seo 100 bp 100 LCP 3.19s FCP 1.07s TBT 130ms CLS 0.000 360KiB 
+run 3 [bench 1750]: perf 91 a11y 100 seo 100 bp 100 LCP 3.24s FCP 1.07s TBT 169ms CLS 0.000 360KiB 
+MEDIAN of 3: perf 91 a11y 100 seo 100 bp 100 LCP 3.24s FCP 1.07s TBT 169ms CLS 0.000 360KiB
+=== /
+run 1 [bench 1724]: perf 89 a11y 100 seo 100 bp 100 LCP 3.45s FCP 1.22s TBT 158ms CLS 0.000 416KiB 
+run 2 [bench 1628]: perf 90 a11y 100 seo 100 bp 100 LCP 3.45s FCP 1.22s TBT 116ms CLS 0.000 416KiB 
+run 3 [bench 2248]: perf 92 a11y 100 seo 100 bp 100 LCP 3.40s FCP 1.22s TBT 53ms CLS 0.000 416KiB 
+MEDIAN of 3: perf 90 a11y 100 seo 100 bp 100 LCP 3.45s FCP 1.22s TBT 116ms CLS 0.000 416KiB

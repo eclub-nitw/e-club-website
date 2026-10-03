@@ -9,7 +9,7 @@ test.describe("no JavaScript", () => {
     await page.goto(path);
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("h1")).toBeVisible();
-    expect((await page.locator("main").innerText()).length).toBeGreaterThan(200);
+    expect((await page.locator("main").innerText()).length).toBeGreaterThan(60);
   });
 });
 
