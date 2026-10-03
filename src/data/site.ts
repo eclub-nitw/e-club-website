@@ -15,7 +15,7 @@ export const site = {
   showInstituteLogo: false,
   logos: {
     nitw: { src: "/images/brand/nitw-logo.webp", w: 640, h: 720, alt: "NIT Warangal logo" },
-    eclub: null as { src: string; w: number; h: number; alt: string } | null, // TODO(owner): the official E-Club logo file is not in the repo; add it to public/images/brand and set this
+    eclub: { src: "/images/brand/eclub-logo.webp", w: 297, h: 298, alt: "E-Club NIT Warangal logo" }, // owner file raw-media/logos/eclub-logo.jpeg (585x427 JPEG, white field removed by scripts/build-logos.mjs). TODO(owner): a PNG/SVG at 800px+ would be sharper
   },
   // Shown on /contact only with an address read from nitw.ac.in. The site is script-rendered and could not be read in the V7 run, so this stays null.
   // TODO(owner or next run): { text: "NIT Warangal, Telangana", source: "<the nitw.ac.in page that prints it>" }
