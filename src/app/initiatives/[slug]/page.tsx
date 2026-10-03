@@ -59,7 +59,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
     <>
       <JsonLd data={eventLd(e)} />
       <JsonLd data={breadcrumbLd(trail)} />
-      <PageHeader number={TYPE_LABEL[e.type]} label={e.dateStart ? fmtRange(e.dateStart, e.dateEnd ?? undefined) : "Event"} title={e.title} lede={e.summary ?? undefined} art={e.type === "flagship" ? "vortex" : "pitch-stage"}>
+      <PageHeader number={TYPE_LABEL[e.type]} label={e.dateStart ? fmtRange(e.dateStart, e.dateEnd ?? undefined) : e.status === "past" ? "Past event" : "Upcoming"} title={e.title} lede={e.summary ?? undefined} art={e.type === "flagship" ? "vortex" : "pitch-stage"}>
         <Breadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Initiatives", path: "/initiatives" }, { name: e.title }]} />
       </PageHeader>
 

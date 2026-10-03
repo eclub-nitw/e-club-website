@@ -26,7 +26,18 @@ Paste text as-is under each heading, or paste screenshots into chat. Leave a hea
 | Quote (exact words) | Name | Role | Written permission to publish (date) |
 |---|---|---|---|
 
-## 6. Confirmations needed (from V6)
+## 6. V7 additions
+- Valuation Wars: Date(s):  | Venue:  | One-line format:  | Speakers/judges the club may name: 
+- Pitch’er Perfect: Date(s):  | Venue:  | One-line format:  | Speakers/judges the club may name: 
+- The Pitch League: Date(s):  | Venue:  | One-line format:  | Speakers/judges the club may name: 
+- Consent statement for the people visible in the 18 event photographs (who confirmed, when, how): 
+- Written permission from NIT Warangal to show its name and emblem (who, when): 
+- Official E-Club logo file (path or attach): 
+- Postal address printed on nitw.ac.in and the page it is on: 
+- What happens after someone writes to the club (steps, who replies, how fast): 
+- Approve or replace the form notice "Forms here are for people aged 18 and over. Under 18? Email us instead.": 
+
+## 7. Confirmations needed (from V6)
 - Partner spelling: poster and mastersunion.org both read "Masters' Union". Site now uses that. OK? 
 - Registration cut-off time on 3 Oct (poster gives the date only; site treats it as 23:59:59 IST): 
 - Postal code for the NIT Warangal venue (currently 506004): 

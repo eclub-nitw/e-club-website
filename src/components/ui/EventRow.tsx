@@ -27,7 +27,7 @@ export function EventRow({ event, index, upcoming }: { event: ClubEvent; index: 
       </span>
       <Label>{TYPE_LABEL[event.type]}{event.dateStart && ` · ${fmtRange(event.dateStart, event.dateEnd ?? undefined)}`}</Label>
       {hasCover && (
-        <span aria-hidden="true" className="relative block w-full max-w-[13rem] transition-transform duration-[250ms] ease-[var(--ease-out-expo)] group-hover:-translate-y-1 group-focus-visible:-translate-y-1 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
+        <span aria-hidden="true" data-content className="relative block w-full max-w-[13rem] transition-transform duration-[250ms] ease-[var(--ease-out-expo)] group-hover:-translate-y-1 group-focus-visible:-translate-y-1 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
           {photo
             ? <EventPhoto slug={event.slug} photo={{ ...photo, ratio: "3:2" }} sizes="13rem" />
             : <span className="relative block aspect-[3/2] overflow-hidden rounded-[2px] bg-surface"><Art name="vortex" sizes="13rem" className="absolute inset-0 size-full object-cover" /></span>}

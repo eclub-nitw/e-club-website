@@ -41,7 +41,8 @@ test("contact form: empty submit shows field errors and focuses the first", asyn
   await page.goto("/contact");
   await form(page).getByRole("button", { name: /send message/i }).click();
   await expect(page.getByText("Tell us your name.")).toBeVisible();
-  await expect(page.getByText("Please confirm you are 18 or older.")).toBeVisible();
+  await expect(page.getByText("Enter an email address we can reply to.")).toBeVisible();
+  await expect(page.getByLabel(/18 or older/i)).toHaveCount(0); // the age checkbox was removed (owner decision, V7)
 });
 
 test("contact form: success, double-submit guard and storage-failure fallback", async ({ page }) => {
@@ -51,7 +52,6 @@ test("contact form: success, double-submit guard and storage-failure fallback", 
   await form(page).getByLabel("Your name").fill("Ünïcode Tëst ✓ 名前");
   await form(page).getByLabel(/email/i).first().fill("test@example.com");
   await form(page).getByLabel("Your message").fill("Long message ".repeat(20));
-  await form(page).getByLabel("I am 18 or older.").check();
   const send = form(page).getByRole("button", { name: /send message/i });
   await send.dblclick();
   await expect(page.getByText(/we have your message/i)).toBeVisible();
@@ -63,7 +63,6 @@ test("contact form: success, double-submit guard and storage-failure fallback", 
   await form(page).getByLabel("Your name").fill("Fallback Person");
   await form(page).getByLabel(/email/i).first().fill("test@example.com");
   await form(page).getByLabel("Your message").fill("Please reach me by email instead.");
-  await form(page).getByLabel("I am 18 or older.").check();
   await form(page).getByRole("button", { name: /send message/i }).click();
   await expect(page.getByText(/email app should have opened/i)).toBeVisible();
 });

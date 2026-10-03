@@ -17,11 +17,11 @@ export function EventPhotos({ slug, title, photos }: { slug: string; title: stri
   return (
     <div>
       <figure>
-        <div className="relative aspect-[3/2] w-full overflow-hidden rounded-[2px] bg-club-ink" style={{ backgroundImage: `url(${cur.blur})`, backgroundSize: "cover" }}>
+        <div className="relative mx-auto w-full overflow-hidden rounded-[2px] bg-club-ink" style={{ aspectRatio: `${cur.w} / ${cur.h}`, maxWidth: cur.ratio === "4:5" ? "min(100%, 34rem)" : "100%" }}>
           <picture key={cur.n}>
             <source type="image/avif" srcSet={srcSet(slug, cur, "avif")} sizes="(min-width: 1024px) 60rem, 94vw" />
             <source type="image/webp" srcSet={srcSet(slug, cur, "webp")} sizes="(min-width: 1024px) 60rem, 94vw" />
-            <img src={fileOf(slug, cur.n, 960, "webp")} alt={cur.alt} width={cur.w} height={cur.h} loading="lazy" decoding="async" className="absolute inset-0 size-full object-contain" />
+            <img src={fileOf(slug, cur.n, 960, "webp")} alt={cur.alt} width={cur.w} height={cur.h} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover" />
           </picture>
         </div>
         <figcaption className="t-label mt-3 flex justify-between text-muted"><span>{title}</span><span className="tabular" aria-live="polite">{i + 1} / {photos.length}</span></figcaption>

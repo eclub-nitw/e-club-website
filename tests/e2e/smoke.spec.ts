@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 // Every route in every engine and width: one h1, no horizontal scroll, no console errors, no failed same-origin requests, skip link first in tab order.
-const routes = ["/", "/about", "/initiatives", "/initiatives/venture-vortex-2026", "/venture-vortex", "/team", "/sponsors", "/gallery", "/contact", "/privacy", "/terms", "/states"];
+const routes = ["/", "/about", "/initiatives", "/initiatives/valuation-wars", "/initiatives/pitcher-perfect", "/initiatives/the-pitch-league", "/venture-vortex", "/team", "/sponsors", "/gallery", "/contact", "/privacy", "/terms", "/states"];
 
 for (const path of routes) {
   test(`smoke ${path}`, async ({ page, browserName }) => {
