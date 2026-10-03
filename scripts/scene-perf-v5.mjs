@@ -31,7 +31,7 @@ for (const throttle of [1, 4]) {
   if (throttle > 1) await cdp.send("Emulation.setCPUThrottlingRate", { rate: throttle });
   const hero = await measure(p, 4000);
   const map = await scrub(p, "#reach .track", 4000);
-  const dive = await scrub(p, "#flagship .dive-live .track", 6000);
+  const dive = await scrub(p, "#dive .dive-live .track", 6000);
   await p.evaluate(() => { window.__lt.length = 0; });
   const H = await p.evaluate(() => document.documentElement.scrollHeight);
   for (let y = 0; y < H; y += 300) { await p.evaluate((v) => window.scrollTo(0, v), y); await p.waitForTimeout(60); }

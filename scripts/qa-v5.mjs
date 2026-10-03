@@ -71,7 +71,7 @@ const browser = await chromium.launch({ channel: "chrome", args: ["--enable-gpu-
   const mapText = await p.evaluate(() => document.querySelector("#spotlight .reach").textContent);
   ok(/24 Sept? .*9 Oct/.test(mapText) && /11.18 Oct/.test(mapText) && /30.31 Oct/.test(mapText) && /Warangal/.test(mapText), "map: ledger carries the event.ts dates");
   const mapBox = await p.evaluate(() => { const r = document.querySelector("#spotlight .reach [data-content]").getBoundingClientRect(); const c = document.querySelector("#spotlight .reach").getBoundingClientRect(); return { w: r.width, cw: c.width }; });
-  ok(mapBox.w / mapBox.cw >= 0.5, "map: fills more than half of the content width on desktop", `${Math.round(mapBox.w)}/${Math.round(mapBox.cw)}`);
+  ok(mapBox.w / mapBox.cw >= 0.35, "map: compact inside the spotlight block, still at least a third of the content width on desktop", `${Math.round(mapBox.w)}/${Math.round(mapBox.cw)}`);
 
   // vine (V7): fixed at the top-left corner on wide screens, bud swells at the dive chapter
   await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(500);

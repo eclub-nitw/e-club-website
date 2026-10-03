@@ -43,7 +43,7 @@ const report = [];
   const size = Math.min(box.width, 800); // native is ~370px wide; never upscale
   const png = await base.clone().resize({ width: size, withoutEnlargement: true }).webp({ quality: 92, alphaQuality: 100 }).toFile("public/images/brand/eclub-logo.webp");
   const small = await base.clone().resize({ width: Math.min(box.width, 400), withoutEnlargement: true }).png().toFile("public/images/brand/eclub-logo-400.png");
-  await base.clone().resize({ width: 512, height: 512, fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile("public/images/brand/eclub-logo-512.png");
+  await base.clone().resize({ width: 300, height: 300, fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png({ palette: true, quality: 92 }).toFile("public/images/brand/eclub-logo-og.png"); // OG image and the 64px favicon (src/app/icon.png) are derived from this one; keep both small: a 450KB favicon cost the pages about 2s of simulated LCP
   report.push(`eclub-logo.webp ${png.width}x${png.height}`, `eclub-logo-400.png ${small.width}x${small.height}`);
 }
 

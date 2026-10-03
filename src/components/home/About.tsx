@@ -11,7 +11,7 @@ const ROW = "rule-draw grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[8rem_1fr]";
 const LINK = "t-body underline decoration-line decoration-2 underline-offset-4 hover:decoration-accent";
 
 /**
- * Chapter "Who we are": paper. Left, one paragraph (its words rise through masks once) and the link to /about, pinned to the bottom of the column.
+ * Chapter "Who we are": paper. Left, one paragraph (its words rise through masks once) and the link to /about.
  * Right, a framed "At a glance" plate that always has content: the club's logo on a white tile (the institute's emblem beside it only with
  * permission, `site.showInstituteLogo`) over ledger rows of verified facts. Both columns stretch to the same height from 1024px.
  */
@@ -20,14 +20,14 @@ export function About({ number }: { number: string }) {
   return (
     <Section id="about" number={number} title="About" heading={copy.about.title} line={copy.about.line} tone="paper">
       <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-stretch lg:gap-[clamp(40px,6vw,96px)]">
-        <div className="flex flex-col justify-between gap-10">
-          <p className="t-lede-xl max-w-[22ch]"><MaskedText text={copy.about.lede} /></p>
+        <div className="flex flex-col gap-8">
+          <p className="t-lede-xl max-w-[24ch]"><MaskedText text={copy.about.lede} /></p>
           <div><Button href="/about" variant="link">More about the club →</Button></div>
         </div>
 
         <aside aria-labelledby="glance-h" className="w-full border border-line">
           <div className="flex items-center gap-4 border-b border-line p-5">
-            <div className="flex h-40 min-w-28 flex-1 items-center justify-center gap-8 rounded-[2px] bg-white p-4 sm:h-48">
+            <div className="flex h-36 min-w-28 flex-1 items-center justify-center gap-8 rounded-[2px] bg-white p-4 sm:h-40">
               <Image src={eclub.src} alt={eclub.alt} width={eclub.w} height={eclub.h} sizes="8rem" className="h-full w-auto object-contain" />
               {site.showInstituteLogo && <Image src={nitw.src} alt={nitw.alt} width={nitw.w} height={nitw.h} sizes="8rem" className="h-full w-auto object-contain" />}
             </div>

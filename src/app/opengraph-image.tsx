@@ -9,7 +9,7 @@ export const contentType = "image/png";
 
 // Colours mirror the club tokens (next/og cannot read CSS variables).
 export default async function OgImage() {
-  const logo = `data:image/png;base64,${(await readFile(join(process.cwd(), "public/images/brand/eclub-logo-512.png"))).toString("base64")}`;
+  const logo = `data:image/png;base64,${(await readFile(join(process.cwd(), "public/images/brand/eclub-logo-og.png"))).toString("base64")}`;
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", background: "#0b2226", color: "#f5f1e6", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: 72 }}>
