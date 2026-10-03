@@ -27,14 +27,17 @@ export function BrandLockup({ size = 56 }: { size?: number }) {
   );
 }
 
-/** The NIT Warangal emblem on its own white plate with the club's legal name, in a place of its own (footer): reads as the institution the club works under. Hidden with `site.showInstituteLogo`. */
+/** The NIT Warangal emblem in a place of its own (footer): a quiet line of text to the left, right-aligned, and the emblem on a white plate to the right, so it reads as the institution the club belongs to. Hidden with `site.showInstituteLogo`. */
 export function InstituteMark() {
   const nitw = site.logos.nitw;
   if (!site.showInstituteLogo) return null;
   return (
-    <div className="flex items-center gap-4">
-      <span className="flex size-20 shrink-0 items-center justify-center rounded-[2px] bg-white p-2"><Image src={nitw.src} alt={nitw.alt} width={nitw.w} height={nitw.h} sizes="5rem" className="h-full w-auto object-contain" /></span>
-      <p className="t-label max-w-[22ch] text-muted">{site.legalName}</p>
+    <div className="flex items-center justify-end gap-5 text-right">
+      <p className="max-sm:max-w-[16ch]">
+        <span className="t-label block text-muted">Entrepreneurship Club of</span>
+        <span className="t-ui mt-1 block text-club-paper">National Institute of Technology Warangal</span>
+      </p>
+      <span className="flex h-24 w-[5.25rem] shrink-0 items-center justify-center rounded-[2px] bg-white p-2.5"><Image src={nitw.src} alt={nitw.alt} width={nitw.w} height={nitw.h} sizes="5.25rem" className="h-full w-auto object-contain" /></span>
     </div>
   );
 }
