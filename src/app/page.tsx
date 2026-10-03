@@ -12,6 +12,7 @@ import { Initiatives } from "@/components/home/Initiatives";
 import { FromTheFloor, floorPicks } from "@/components/home/FromTheFloor";
 import { VortexExpand } from "@/components/home/VortexExpand";
 import { SpotlightBlock } from "@/components/home/SpotlightBlock";
+import { SpotlightGate } from "@/components/home/SpotlightGate";
 import { ClubNumbers, ClubPartners, JoinUs, Speakers, TeamTeaser, Voices, hasClubPartners, hasClubStats, hasSpeakers, hasTeam, hasVoices } from "@/components/home/Sections";
 
 export const revalidate = 60; // the spotlight and the phase decide the ticker, chip and block at render time; the browser re-resolves them from its clock, this keeps the HTML itself fresh for no-JS visitors and crawlers
@@ -36,7 +37,7 @@ export default function Home() {
       <About number={n(c++)} />
       <Initiatives number={n(c++)} />
       {floorPicks().length > 0 && <FromTheFloor number={n(c++)} />}
-      <VortexExpand number={n(c++)}>{spot && <SpotlightBlock number={n(c++)} />}</VortexExpand>
+      <VortexExpand number={n(c++)}>{spot && <SpotlightGate initial={spot}><SpotlightBlock number={n(c++)} /></SpotlightGate>}</VortexExpand>
       {hasClubStats && <ClubNumbers number={n(c++)} />}
       {hasTeam && <TeamTeaser number={n(c++)} />}
       {hasSpeakers && <Speakers number={n(c++)} />}

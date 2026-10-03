@@ -23,3 +23,21 @@ Each line is blank on the site today because no verified fact exists. Paste answ
 ## To confirm
 - "Masters' Union" spelling and the 23:59:59 IST registration cut-off (open since V6).
 - The "How we read it" wording on `/about` and the Home About paragraph (`docs/COPY-REVIEW.md`).
+
+## V8: sections that are built, data-driven and hidden until filled
+| Section | Where | Data field that unlocks it |
+|---|---|---|
+| "The club in numbers" ledger row (founding year, members, events held, participation) | Home | `src/data/club-stats.ts` (each with a `source`) |
+| "Who runs it" team teaser | Home | `src/data/team.ts`, members with `group: "Core"` |
+| Speakers | Home | `src/data/speakers.ts` (portraits only with `photoConsent`) |
+| Voices (testimonials) | Home | `src/data/voices.ts` (written permission each) |
+| Club partners | Home, `/sponsors` block 1 | `src/data/partners.ts`, scope `club` |
+| "From the floor" three-photo strip | Home | `photoConsent` on each event in `src/data/events.ts` (owner flag `PHOTO_CONSENT`) |
+| Event photographs | `/gallery`, `/initiatives/[slug]` | same field |
+| NIT Warangal emblem | footer lockup, About header, Home plate | `site.showInstituteLogo` (owner flag `INSTITUTE_EMBLEM_PERMISSION`) |
+| Partner logos | Home spotlight block, `/sponsors` event partners | `consent: true` on each partner in `src/data/partners.ts` (owner flag `PARTNER_LOGOS_APPROVED`); Uplearn and Technozion also need a logo file |
+| Date and venue lines, Event JSON-LD for the three past events | `/initiatives`, `/initiatives/[slug]` | `dateStart`, `venue` (and `dateEnd`, `summary`) per event |
+| Founding year, mission, year-round verticals, timeline | `/about` | `site.foundedYear`, `about.mission`, `about.verticals`, `about.timeline` |
+| Postal address line | `/contact`, `/about` | `site.campusLine` |
+| Sponsorship brochure link | contact box B | `site.brochureUrl` |
+| "Under 18" notice | both contact boxes | `site.forms.noticeApproved` (after human legal review) |

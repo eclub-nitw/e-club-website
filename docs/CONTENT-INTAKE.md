@@ -41,3 +41,22 @@ Paste text as-is under each heading, or paste screenshots into chat. Leave a hea
 - Partner spelling: poster and mastersunion.org both read "Masters' Union". Site now uses that. OK? 
 - Registration cut-off time on 3 Oct (poster gives the date only; site treats it as 23:59:59 IST): 
 - Postal code for the NIT Warangal venue (currently 506004): 
+
+## 8. V8: ten answers that fill the site
+Answer any of these in chat or here. Each one unlocks a section that is already built and hidden (see `docs/CONTENT-GAPS.md`). Every number needs a source the club can point to.
+
+1. **Founding year** (`site.foundedYear`): About shows "Founded 20xx". Source: 
+2. **One-line mission** the club approves (`about.mission`): replaces the manifesto line on About. 
+3. **Number of members** (current, and how it is counted): Home "The club in numbers" row (`src/data/club-stats.ts`). Source: 
+4. **Events held so far, and typical participation** (e.g. "attendees at Valuation Wars"): same row. Source: 
+5. **The three past events**: date(s), venue, one-line format, and the names of speakers or judges the club may publish (`src/data/events.ts`: `dateStart`, `dateEnd`, `venue`, `summary`). Event pages then show a facts ledger and Event JSON-LD. 
+   - Valuation Wars: 
+   - Pitch’er Perfect: 
+   - The Pitch League: 
+6. **Team roster**: name, public role, batch, and who agrees to a portrait (`src/data/team.ts`). Home gets a "Who runs it" teaser; `/team` fills. 
+7. **Testimonials** with written permission (`src/data/voices.ts`): Home "Voices". 
+8. **Club-wide sponsors or partners**, with written permission to show their logo (`src/data/partners.ts`, scope `club`): Home partners block and `/sponsors`. 
+9. **Recruitment form link** while recruitment is open (`site.recruitmentUrl`) and the sponsorship brochure (`site.brochureUrl`, shown in contact box B when set): 
+10. **What happens after someone writes to the club** (who replies, how fast): a "What happens next" list under the contact boxes. 
+
+Also still open from V7: consent for the 18 photographs, the institute's written permission for its emblem, written permission for the three partner logos, a PNG or SVG of the E-Club logo at 800px or more (the supplied JPEG is 585x427, the roundel inside it about 300px), the postal address printed on nitw.ac.in.
