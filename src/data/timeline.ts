@@ -5,7 +5,7 @@ export const registerUrl = "https://unstop.com/o/cxKq1kz?lb=usedZ8to"; // Unstop
 export const unstopPageUrl = "https://unstop.com/competitions/venture-vortex-entrepreneurship-club-nit-warangal-1760873";
 
 /** Round 1 registration window (the team is locked when it closes). */
-export const registration = { start: "2026-09-22T00:00:00+05:30", end: "2026-10-03T23:59:59+05:30" } as const;
+export const registration = { start: "2026-09-22T00:00:00+05:30", end: "2026-10-08T23:59:59+05:30" } as const; // extended from 3 Oct to 8 Oct 2026 (owner, 3 Oct 2026); the poster still says 3 Oct. Treated as closing at the end of 8 Oct IST
 export const round1Result = "2026-10-10";
 
 export const rounds = [
