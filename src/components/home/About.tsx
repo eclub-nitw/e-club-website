@@ -12,8 +12,8 @@ const LINK = "t-body underline decoration-line decoration-2 underline-offset-4 h
 
 /**
  * Chapter "Who we are": paper. Left, one paragraph (its words rise through masks once) and the link to /about.
- * Right, a framed "At a glance" plate that always has content: the club's logo on a white tile (the institute's emblem beside it only with
- * permission, `site.showInstituteLogo`) over ledger rows of verified facts. Both columns stretch to the same height from 1024px.
+ * Right, a framed "At a glance" plate that always has content: the club's logo on a white tile (the institute's emblem never beside it: it sits in the
+ * Institute row, `site.showInstituteLogo`) over ledger rows of verified facts. Both columns stretch to the same height from 1024px.
  */
 export function About({ number }: { number: string }) {
   const nitw = site.logos.nitw, eclub = site.logos.eclub;
@@ -30,12 +30,11 @@ export function About({ number }: { number: string }) {
           <div className="flex items-center gap-4 border-b border-line p-5">
             <div className="flex h-36 min-w-28 flex-1 items-center justify-center gap-8 rounded-[2px] bg-white p-4 sm:h-40">
               <Image src={eclub.src} alt={eclub.alt} width={eclub.w} height={eclub.h} sizes="8rem" className="h-full w-auto object-contain" />
-              {site.showInstituteLogo && <Image src={nitw.src} alt={nitw.alt} width={nitw.w} height={nitw.h} sizes="8rem" className="h-full w-auto object-contain" />}
             </div>
             <Label as="h3" id="glance-h" className="self-start">{copy.about.glance}</Label>
           </div>
           <dl className="px-5">
-            <div className={ROW}><dt><Label>Institute</Label></dt><dd className="t-body m-0">NIT Warangal, {site.address.locality}, {site.address.region}</dd></div>
+            <div className={ROW}><dt><Label>Institute</Label></dt><dd className="t-body m-0 flex items-center gap-4">{site.showInstituteLogo && <span className="flex size-14 shrink-0 items-center justify-center rounded-[2px] bg-white p-1.5"><Image src={nitw.src} alt={nitw.alt} width={nitw.w} height={nitw.h} sizes="3.5rem" className="h-full w-auto object-contain" /></span>}<span>NIT Warangal, {site.address.locality}, {site.address.region}</span></dd></div>
             {about.facultyCoordinator && <div className={ROW}><dt><Label>Faculty mentor</Label></dt><dd className="t-body m-0">{about.facultyCoordinator}</dd></div>}
             <div className={ROW}><dt><Label>Reach us</Label></dt><dd className="m-0"><a href={`mailto:${site.email}`} className={LINK}>{site.email}</a></dd></div>
             <div className={`${ROW} border-b border-line`}>

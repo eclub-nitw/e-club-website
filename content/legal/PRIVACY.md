@@ -1,7 +1,7 @@
 > **DRAFT TEMPLATE — not legal advice. Fill every [[PLACEHOLDER]] and get faculty/institute review before publishing.**
 
 # Privacy Policy
-Last updated: [[DATE]]
+Last updated: 3 October 2026
 
 ## 1. Who we are
 This website is operated by the Entrepreneurship Club (E-Club), NIT Warangal ("we", "us"), a student club of the National Institute of Technology Warangal, Hanamkonda, Warangal, Telangana, India. Contact for privacy questions: [[NAME, ROLE]] at e_club@nitw.ac.in.

@@ -1,7 +1,7 @@
 > **DRAFT TEMPLATE — not legal advice. Fill placeholders and get review before publishing.**
 
 # Terms of Use
-Last updated: [[DATE]]
+Last updated: 3 October 2026
 
 By using this website you agree to these terms.
 

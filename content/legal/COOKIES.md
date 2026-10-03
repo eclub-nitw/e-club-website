@@ -1,7 +1,7 @@
 > **DRAFT TEMPLATE — update to match what the site actually sets.**
 
 # Cookie Policy
-Last updated: [[DATE]]
+Last updated: 3 October 2026
 
 This site is built to work without tracking cookies. We use only what is strictly necessary to serve pages securely. [[If using Vercel Analytics or Plausible: "We measure visits with a cookieless analytics service that does not set cookies or track you across sites."]] We do not use advertising or cross-site tracking cookies.
 

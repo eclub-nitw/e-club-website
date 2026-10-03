@@ -17,19 +17,24 @@ export function ClubMark({ size = 28 }: { size?: number }) {
   );
 }
 
-/** Club mark, the NIT Warangal emblem (only while site.showInstituteLogo is on) and the full name. */
+/** The club's mark and full name. The institute's emblem is never paired with it (see InstituteMark): it stands apart, as the institution the club belongs to. */
 export function BrandLockup({ size = 56 }: { size?: number }) {
-  const nitw = site.logos.nitw;
   return (
     <div className="flex items-center gap-4">
       <ClubMark size={size} />
-      {site.showInstituteLogo && (
-        <>
-          <span aria-hidden="true" className="t-label text-muted">×</span>
-          <Image src={nitw.src} alt={nitw.alt} width={nitw.w} height={nitw.h} style={{ height: size, width: "auto" }} />
-        </>
-      )}
       <p className="t-label text-muted">Entrepreneurship Club,<br />NIT Warangal</p>
+    </div>
+  );
+}
+
+/** The NIT Warangal emblem on its own white plate with the club's legal name, in a place of its own (footer): reads as the institution the club works under. Hidden with `site.showInstituteLogo`. */
+export function InstituteMark() {
+  const nitw = site.logos.nitw;
+  if (!site.showInstituteLogo) return null;
+  return (
+    <div className="flex items-center gap-4">
+      <span className="flex size-20 shrink-0 items-center justify-center rounded-[2px] bg-white p-2"><Image src={nitw.src} alt={nitw.alt} width={nitw.w} height={nitw.h} sizes="5rem" className="h-full w-auto object-contain" /></span>
+      <p className="t-label max-w-[22ch] text-muted">{site.legalName}</p>
     </div>
   );
 }
