@@ -57,3 +57,5 @@ Claude wrote no legal text. Facts and owner decisions for the reviewer.
 | V8-8 | Dive artwork | Generated art, labelled "Generated artwork, not a photograph." The two competition posters were removed from the tunnel. | None. |
 
 | V8-9 | **Photo consent set on 3 Oct 2026 at the owner's request** | After the owner asked for the gallery to be filled, `photoConsent` on all three events was set to the brief's fixed string: "Club owner (Abdul Wahid) confirmed consent of the people shown, 3 Oct 2026 launch brief". 18 photographs now render on `/gallery`, the event pages and Home "From the floor". It is the owner's assertion, not a filed document. | File written consent from the people shown; revert the field to `null` to hide the photos. |
+
+| V8-10 | **NIT Warangal emblem shown on 3 Oct 2026 at the owner's request** | `site.showInstituteLogo` set to `true`. The emblem now appears in the footer lockup, the About header lockup and the Home "At a glance" plate. The institute's written permission is not on file. | Obtain the permission; set the flag to `false` to hide it everywhere. |

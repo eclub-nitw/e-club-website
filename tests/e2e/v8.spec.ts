@@ -79,7 +79,7 @@ test("About is the club, not the competition: no rounds, no prize, four words, m
   const text = (await page.locator("main").innerText()).replace(/\s+/g, " ");
   expect(text).not.toMatch(/Venture Vortex|Round [123]|Unstop|₹|Technozion/i);
   for (const w of ["Think.", "Connect.", "Create.", "Lead."]) await expect(page.locator("main").getByText(w, { exact: true }).first()).toBeVisible();
-  await expect(page.locator("main")).toContainText("Faculty mentor");
+  await expect(page.locator("main")).not.toContainText("Faculty mentor"); // removed at the owner request
   await expect(page.locator("main")).toContainText("Find us");
 });
 
@@ -91,7 +91,7 @@ test("Home: the At-a-glance plate is never empty and the right column has a real
   const box = await plate.boundingBox();
   expect(box!.width, "right column collapsed to nothing").toBeGreaterThan(280);
   expect(box!.height).toBeGreaterThan(200);
-  await expect(plate.getByRole("img", { name: "NIT Warangal logo", exact: true })).toHaveCount(0); // emblem hidden until permission
+  await expect(plate.getByRole("img", { name: "NIT Warangal logo", exact: true })).toHaveCount(1); // emblem shown (owner request, V8-10)
 });
 
 test("Home hero: club first, two club buttons, no countdown, the spotlight is one small chip", async ({ page }) => {

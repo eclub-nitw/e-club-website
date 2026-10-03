@@ -12,7 +12,7 @@ export const site = {
   // Owner-supplied 3 Oct 2026 (V7 brief). `club` is the club's line, `line` the four-word motto shown in the hero, the Home band, About and the footer.
   quote: { club: "Entrepreneurship Club - NITW", line: "Think. Connect. Create. Lead.", source: "Club owner, 3 Oct 2026" },
   // The NIT Warangal emblem is shown only after the institute's written permission (docs/LEGAL-REVIEW-NOTES.md). Flip this one flag to publish it.
-  showInstituteLogo: false,
+  showInstituteLogo: true,
   logos: {
     nitw: { src: "/images/brand/nitw-logo.webp", w: 640, h: 720, alt: "NIT Warangal logo" },
     eclub: { src: "/images/brand/eclub-logo.webp", w: 297, h: 298, alt: "E-Club NIT Warangal logo" }, // owner file raw-media/logos/eclub-logo.jpeg (585x427 JPEG, white field removed by scripts/build-logos.mjs). TODO(owner): a PNG/SVG at 800px+ would be sharper
