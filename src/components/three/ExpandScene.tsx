@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { AdditiveBlending, CanvasTexture, Color, LinearFilter, MathUtils, SRGBColorSpace, TextureLoader, type Group, type PerspectiveCamera } from "three";
+import { AdditiveBlending, CanvasTexture, Color, LinearFilter, MathUtils, SRGBColorSpace, TextureLoader, type Group, type Mesh, type PerspectiveCamera } from "three";
 import { dive } from "@/data/dive";
 import { token } from "@/lib/webgl";
 
@@ -62,7 +62,9 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
   const gl = useThree((s) => s.gl);
   const root = useThree((s) => s.scene);
   const cam = useThree((s) => s.camera);
+  const invalidate = useThree((s) => s.invalidate);
   const streaks = useRef<Group>(null);
+  const panels = useRef<(Mesh | null)[]>([]);
   const smooth = useRef(0);
   const lastIdx = useRef(-1);
 
@@ -102,6 +104,7 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
   useFrame(({ camera }, dt) => {
     smooth.current = MathUtils.damp(smooth.current, progress.current, 6, dt);
     const p = smooth.current;
+    if (Math.abs(progress.current - p) > 0.0004) invalidate(); // demand-driven: keep drawing only until the damped value has caught up with the scroll
     const cam = camera as PerspectiveCamera;
     // 0 to 0.3: dolly from the wide shot into the ring until it fills the frame. 0.3 to 1: fall through it and down the tunnel.
     const a = easeInOut(MathUtils.clamp(p / 0.3, 0, 1)), b = MathUtils.clamp((p - 0.3) / 0.7, 0, 1);
@@ -112,6 +115,8 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
     cam.updateProjectionMatrix();
     cam.rotation.z = Math.sin(p * Math.PI * 3) * 0.05 * b;
     if (streaks.current) streaks.current.scale.z = 1 + b * 4 * Math.min(1, b * 4); // streaks lengthen as the fall speeds up
+    // Only panels inside the visible depth window are drawn (the fog hides anything further than 34 units, and the camera never sees what is behind it).
+    planes.forEach((pl, i) => { const m = panels.current[i]; if (m) m.visible = cam.position.z - pl.z > -2 && cam.position.z - pl.z < 28; });
     const shown = b > 0 ? Math.max(0, Math.min(dive.length - 1, Math.round((FIRST + 7 - cam.position.z) / SPACING))) : -1;
     if (shown !== lastIdx.current) { lastIdx.current = shown; onIndex(Math.max(0, shown)); }
   });
@@ -119,7 +124,7 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
   return (
     <group>
       {planes.map((pl, i) => (
-        <mesh key={dive[i].slug} position={[pl.x, pl.y, pl.z]} rotation={[0, 0, pl.roll]}>
+        <mesh key={dive[i].slug} ref={(m) => { panels.current[i] = m; }} position={[pl.x, pl.y, pl.z]} rotation={[0, 0, pl.roll]}>
           <planeGeometry args={[pl.w, pl.h]} />
           <meshBasicMaterial map={textures[i]} toneMapped={false} />
         </mesh>
@@ -141,13 +146,38 @@ function Ready({ onReady }: { onReady: () => void }) {
   return null;
 }
 
+/**
+ * Demand-driven rendering: no frame is drawn unless something changed. A scroll event asks for one frame (at most every 22 ms, 33 ms once the
+ * device has proved slow: more than 20 ms per frame for 30 frames in a row); the Tunnel keeps asking while its damped progress catches up.
+ * At rest nothing runs, so an idle section costs no GPU time at all.
+ */
+function Driver({ active }: { active: boolean }) {
+  const invalidate = useThree((s) => s.invalidate);
+  const slow = useRef(false);
+  const streak = useRef(0);
+  useFrame((_, dt) => {
+    if (dt > 0.1) return; // the first frame after an idle period is not a measure of speed
+    streak.current = dt > 0.02 ? streak.current + 1 : 0;
+    if (streak.current >= 30) slow.current = true;
+  });
+  useEffect(() => {
+    if (!active) return;
+    let last = 0;
+    const kick = () => { const now = performance.now(); if (now - last < (slow.current ? 33 : 22)) return; last = now; invalidate(); };
+    kick();
+    window.addEventListener("scroll", kick, { passive: true });
+    return () => window.removeEventListener("scroll", kick);
+  }, [active, invalidate]);
+  return null;
+}
+
 export default function ExpandScene({ progress, active, onIndex, onReady, onLost }: {
   progress: MutableRefObject<number>; active: boolean; onIndex: (i: number) => void; onReady: () => void; onLost: () => void;
 }) {
   return (
     <Canvas
-      frameloop={active ? "always" : "never"}
-      dpr={[1, 1.5]}
+      frameloop="demand"
+      dpr={[1, 1.25]}
       camera={{ position: [0, 0, 9], fov: 50, near: 0.1, far: 90 }}
       gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
       onCreated={({ gl }) => gl.domElement.addEventListener("webglcontextlost", (e) => { e.preventDefault(); onLost(); })}
@@ -155,6 +185,7 @@ export default function ExpandScene({ progress, active, onIndex, onReady, onLost
     >
       <color attach="background" args={[INK]} />
       <fog attach="fog" args={[INK, 8, 34]} />
+      <Driver active={active} />
       <Vortex progress={progress} />
       <Suspense fallback={null}><Tunnel progress={progress} onIndex={onIndex} /><Ready onReady={onReady} /></Suspense>
     </Canvas>

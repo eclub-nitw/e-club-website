@@ -1,0 +1,31 @@
+{
+ "label": "before-F",
+ "1x": {
+  "frames": 591,
+  "avg": 16.920812182741106,
+  "p95": 17,
+  "max": 166.5,
+  "long": 0,
+  "drawsPerFrame": 12.282571912013536,
+  "texMB": 0,
+  "canvas": "1440x900",
+  "dpr": 1,
+  "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "live": true,
+  "gpuBusyPct": 22.7
+ },
+ "4x": {
+  "frames": 589,
+  "avg": 16.9779286926995,
+  "p95": 17.099999999998545,
+  "max": 33.600000000000364,
+  "long": 0,
+  "drawsPerFrame": 12.140916808149406,
+  "texMB": 0,
+  "canvas": "1440x900",
+  "dpr": 1,
+  "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "live": true,
+  "gpuBusyPct": 20.1
+ }
+}

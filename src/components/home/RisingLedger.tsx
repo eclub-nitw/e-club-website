@@ -163,12 +163,12 @@ function Sized() {
 
 /**
  * Chapter 01's live scene: the Rising Ledger. Transparent canvas over the Blender poster; once the assets have loaded the poster
- * fades out and the bars rise from the floor. DPR is capped at 1.5, the loop pauses off screen, one context only.
+ * fades out and the bars rise from the floor. DPR is capped at 1.25, the loop pauses off screen, one context only.
  */
 export default function RisingLedger({ grow, active, onReady, onLost }: { grow: Grow; active: boolean; onReady: () => void; onLost: () => void }) {
   return (
     <Canvas
-      frameloop={active ? "always" : "never"} dpr={[1, 1.5]} shadows
+      frameloop={active ? "always" : "never"} dpr={[1, 1.25]} shadows
       camera={{ position: [-1.6, 2.6, 15.6], fov: 42, near: 0.1, far: 80 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       onCreated={({ gl }) => { gl.setClearColor(0x000000, 0); gl.domElement.addEventListener("webglcontextlost", (e) => { e.preventDefault(); onLost(); }); }}
