@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Magnetic } from "./Magnetic";
 
 const base = "group relative isolate inline-flex min-h-11 items-center justify-center gap-2 t-ui transition-[color,transform] duration-300 active:scale-[.98] motion-reduce:transition-none";
 const pill = "overflow-hidden rounded-[2px] border border-club-paper/25 bg-club-ink text-club-paper hover:text-club-ink focus-visible:text-club-ink";
@@ -34,8 +33,7 @@ export function Button({ href, variant = "primary", size = "M", className = "", 
       {variant === "primary" && <Arrow />}
     </>
   );
-  const link = href.startsWith("/")
+  return href.startsWith("/")
     ? <Link href={href} className={cls}>{inner}</Link>
     : <a href={href} className={cls} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>{inner}</a>;
-  return variant === "primary" ? <Magnetic>{link}</Magnetic> : link;
 }

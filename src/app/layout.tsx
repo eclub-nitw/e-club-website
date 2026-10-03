@@ -2,11 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { bricolage, instrument, instrumentSerif, jetbrains } from "@/lib/fonts";
 import { site } from "@/data/site";
 import { SmoothScroll } from "@/components/SmoothScroll";
-import { Cursor } from "@/components/ui/Cursor";
 import { Footer } from "@/components/ui/Footer";
 import { FloatingPill } from "@/components/ui/FloatingPill";
 import { Nav } from "@/components/ui/Nav";
-import { VentureTree } from "@/components/ui/VentureTree";
+import { Vine } from "@/components/ui/Vine";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,9 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-IN" data-theme="club" className={`${bricolage.variable} ${instrument.variable} ${instrumentSerif.variable} ${jetbrains.variable}`}>
       <body className="grain antialiased">
         <SmoothScroll />
-        <Cursor />
         <Nav />
-        <VentureTree />
+        <Vine />
         <main id="main">{children}</main>
         <FloatingPill />
         <Footer />

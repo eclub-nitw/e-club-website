@@ -49,7 +49,9 @@ export async function saveSubmission(d: ContactData): Promise<void> {
     method: "POST", signal: AbortSignal.timeout(8000),
     headers: { "content-type": "application/json", authorization: `Bearer ${await accessToken(c)}` },
     body: JSON.stringify({ fields: {
-      kind: { stringValue: d.kind }, name: { stringValue: d.name }, email: { stringValue: d.email }, message: { stringValue: d.message },
+      type: { stringValue: d.type }, name: { stringValue: d.name }, email: { stringValue: d.email }, message: { stringValue: d.message },
+      ...(d.branch && { branch: { stringValue: d.branch } }), ...(d.year && { year: { stringValue: d.year } }),
+      ...(d.organisation && { organisation: { stringValue: d.organisation } }), ...(d.website && { website: { stringValue: d.website } }),
       createdAt: { timestampValue: now.toISOString() }, expiresAt: { timestampValue: new Date(now.getTime() + RETENTION_MS).toISOString() },
     } }),
   });

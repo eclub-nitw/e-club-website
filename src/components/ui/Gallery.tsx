@@ -1,39 +1,60 @@
 "use client";
 import { useRef, useState } from "react";
-import { fileOf, srcSet } from "@/lib/photo-url";
+import type { EventPhoto } from "@/data/event-photos";
+import { FRAME, fileOf, srcSet } from "@/lib/photo-url";
 
-export type GalleryItem = { id: string; event: string; w: number; h: number; alt: string; caption: string; blur: string };
+export type GalleryGroup = { slug: string; title: string; photos: EventPhoto[] };
 
 /**
- * Masonry of club photographs (CSS columns, natural aspect, blur-up behind each) with a lightbox on a native modal <dialog>:
- * focus is trapped and restored, Esc closes, arrow keys and horizontal swipe step through, captions and a counter are always shown.
+ * Gallery grouped by event, with an All / per-event filter (aria-pressed buttons). Photos sit in fixed 3:2 or 4:5 frames, cropped with
+ * object-cover around each photo's focal point. A photo opens in a native modal <dialog>: focus moves in and returns to the thumbnail on close,
+ * Escape closes, arrow keys step through the visible set, and the counter and caption are always shown. Everything is lazy; the viewer image is
+ * rendered only after the first open, so a closed dialog fetches nothing.
  */
-export function Gallery({ items, eagerCount = 0 }: { items: GalleryItem[]; eagerCount?: number }) {
+export function Gallery({ groups }: { groups: GalleryGroup[] }) {
   const dlg = useRef<HTMLDialogElement>(null);
-  const start = useRef<number | null>(null);
+  const [filter, setFilter] = useState("all");
   const [i, setI] = useState(0);
-  const [opened, setOpened] = useState(false); // the viewer image is rendered only after first open, so a closed dialog never fetches anything
-  const open = (n: number) => { setI(n); setOpened(true); dlg.current?.showModal(); };
-  const step = (d: number) => setI((v) => (v + d + items.length) % items.length);
-  const cur = items[i];
+  const [opened, setOpened] = useState(false);
+  const shown = groups.filter((g) => filter === "all" || g.slug === filter);
+  const flat = shown.flatMap((g) => g.photos.map((p) => ({ ...p, slug: g.slug, group: g.title })));
+  const cur = flat[i];
+  const open = (slug: string, n: number) => { setI(Math.max(0, flat.findIndex((p) => p.slug === slug && p.n === n))); setOpened(true); dlg.current?.showModal(); };
+  const step = (d: number) => setI((v) => (v + d + flat.length) % flat.length);
 
   return (
-    <>
-      <ul className="columns-2 gap-3 md:columns-3 md:gap-5">
-        {items.map((it, n) => (
-          <li key={it.id} className="mb-3 break-inside-avoid md:mb-5">
-            <button type="button" onClick={() => open(n)} data-cursor="VIEW" className="crop group relative block w-full overflow-hidden rounded-[2px] bg-surface" style={{ aspectRatio: `${it.w} / ${it.h}`, backgroundImage: `url(${it.blur})`, backgroundSize: "cover" }}>
-              <picture>
-                <source type="image/avif" srcSet={srcSet(it, "avif")} sizes="(min-width: 768px) 33vw, 50vw" />
-                <source type="image/webp" srcSet={srcSet(it, "webp")} sizes="(min-width: 768px) 33vw, 50vw" />
-                <img src={fileOf(it, 640, "webp")} alt={it.alt} width={it.w} height={it.h} loading={n < eagerCount ? "eager" : "lazy"} fetchPriority={n < eagerCount ? "high" : "low"} decoding="async" className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transition-none" />
-              </picture>
-              <span className="sr-only">View larger: {it.caption}</span>
-            </button>
-            <p className="t-label mt-2 text-muted" aria-hidden="true">{it.caption}</p>
-          </li>
+    <div>
+      <div role="group" aria-label="Filter by event" className="mb-10 flex flex-wrap items-center gap-2">
+        <span className="t-label mr-2 text-muted">Event</span>
+        {[{ slug: "all", title: "All" }, ...groups].map((g) => (
+          <button key={g.slug} type="button" aria-pressed={filter === g.slug} onClick={() => setFilter(g.slug)}
+            className={`t-label min-h-11 rounded-[2px] border px-4 transition-colors duration-200 ${filter === g.slug ? "border-accent bg-accent text-accent-fg" : "border-line text-muted hover:text-fg"}`}>
+            {g.title}
+          </button>
         ))}
-      </ul>
+      </div>
+
+      {shown.map((g) => (
+        <section key={g.slug} aria-labelledby={`g-${g.slug}`} className="mb-[var(--section-y)] last:mb-0">
+          <h2 id={`g-${g.slug}`} className="t-label flex justify-between border-t border-line pt-4 text-muted"><span>{g.title}</span><span className="tabular">{g.photos.length} photographs</span></h2>
+          <ul className="mt-6 grid grid-cols-2 items-start gap-3 md:grid-cols-3 md:gap-5">
+            {g.photos.map((p) => (
+              <li key={p.n} className={p.ratio === "4:5" ? "row-span-1" : ""}>
+                <button type="button" onClick={() => open(g.slug, p.n)} className={`crop group relative block w-full overflow-hidden rounded-[2px] bg-surface ${FRAME[p.ratio]}`} style={{ backgroundImage: `url(${p.blur})`, backgroundSize: "cover" }}>
+                  <picture>
+                    <source type="image/avif" srcSet={srcSet(g.slug, p, "avif")} sizes="(min-width: 768px) 33vw, 50vw" />
+                    <source type="image/webp" srcSet={srcSet(g.slug, p, "webp")} sizes="(min-width: 768px) 33vw, 50vw" />
+                    <img src={fileOf(g.slug, p.n, 640, "webp")} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async"
+                      className="absolute inset-0 size-full object-cover transition-transform duration-[250ms] ease-[var(--ease-out-expo)] group-hover:-translate-y-1 motion-reduce:transition-none" style={{ objectPosition: p.focal }} />
+                  </picture>
+                  <span className="sr-only">View larger: {g.title}, photograph {p.n}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
       <dialog
         ref={dlg} aria-label="Photo viewer"
         onClick={(e) => e.target === dlg.current && dlg.current.close()}
@@ -42,19 +63,15 @@ export function Gallery({ items, eagerCount = 0 }: { items: GalleryItem[]; eager
       >
         {opened && cur && (
           <figure>
-            <div
-              className="relative flex max-h-[76svh] justify-center touch-pan-y"
-              onPointerDown={(e) => { start.current = e.clientX; }}
-              onPointerUp={(e) => { if (start.current !== null && Math.abs(e.clientX - start.current) > 50) step(e.clientX < start.current ? 1 : -1); start.current = null; }}
-            >
+            <div className="relative flex max-h-[76svh] justify-center">
               <picture>
-                <source type="image/avif" srcSet={srcSet(cur, "avif")} sizes="94vw" />
-                <source type="image/webp" srcSet={srcSet(cur, "webp")} sizes="94vw" />
-                <img src={fileOf(cur, 1600, "webp")} alt={cur.alt} width={cur.w} height={cur.h} className="max-h-[76svh] w-auto max-w-full object-contain" style={{ backgroundImage: `url(${cur.blur})`, backgroundSize: "cover" }} />
+                <source type="image/avif" srcSet={srcSet(cur.slug, cur, "avif")} sizes="94vw" />
+                <source type="image/webp" srcSet={srcSet(cur.slug, cur, "webp")} sizes="94vw" />
+                <img src={fileOf(cur.slug, cur.n, 1600, "webp")} alt={cur.alt} width={cur.w} height={cur.h} className="max-h-[76svh] w-auto max-w-full object-contain" style={{ backgroundImage: `url(${cur.blur})`, backgroundSize: "cover" }} />
               </picture>
             </div>
             <figcaption className="t-label mt-3 flex flex-wrap items-center justify-between gap-4">
-              <span>{cur.caption} · {i + 1}/{items.length}</span>
+              <span>{cur.group} · {i + 1}/{flat.length}</span>
               <span className="flex gap-2">
                 <button type="button" onClick={() => step(-1)} className="min-h-11 min-w-11 border border-club-paper/30 px-3">Prev</button>
                 <button type="button" onClick={() => step(1)} className="min-h-11 min-w-11 border border-club-paper/30 px-3">Next</button>
@@ -64,6 +81,7 @@ export function Gallery({ items, eagerCount = 0 }: { items: GalleryItem[]; eager
           </figure>
         )}
       </dialog>
-    </>
+      <p className="sr-only" role="status">{flat.length} photographs shown</p>
+    </div>
   );
 }

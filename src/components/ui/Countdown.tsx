@@ -8,9 +8,9 @@ const subscribe = (cb: () => void) => {
 // Snapshot is minute-granular so React sees a stable value between ticks.
 const now = () => Math.floor(Date.now() / 60_000) * 60_000;
 
-/** Days / hours / minutes to `start`. Renders a fixed-size placeholder on the server so layout never shifts. */
-export function Countdown({ start, end, label = "Time until the event starts" }: { start: string; end?: string; label?: string }) {
-  const t = useSyncExternalStore(subscribe, now, () => null);
+/** Days / hours / minutes to `start`. `serverNow` (the server's minute) makes the HTML carry real numbers; without it the server renders dashes. */
+export function Countdown({ start, end, label = "Time until the event starts", serverNow }: { start: string; end?: string; label?: string; serverNow?: number }) {
+  const t = useSyncExternalStore(subscribe, now, () => serverNow ?? null);
   const s = new Date(start).getTime();
   const e = end ? new Date(end).getTime() : s;
 

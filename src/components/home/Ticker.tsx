@@ -46,10 +46,10 @@ export function Ticker({ phase, items: rest }: { phase: Phase; items: string[] }
   ));
 
   return (
-    <div ref={root} aria-label="Announcements" role="region" className="ticker relative overflow-hidden bg-accent text-accent-fg">
+    <div ref={root} data-gap-ok aria-label="Announcements" role="region" className="ticker relative overflow-hidden bg-accent text-accent-fg">
       <div className="mx-auto flex max-w-[1920px] items-center">
         <ul ref={track} className="ticker-track flex min-h-12 w-max items-center">{row(false)}{row(true)}</ul>
-        <button type="button" onClick={() => setPaused((p) => !p)} aria-pressed={paused} className="ticker-toggle t-label absolute right-0 top-0 z-10 flex h-full min-w-11 items-center bg-accent px-4 text-accent-fg shadow-[-12px_0_12px_var(--accent)]">
+        <button type="button" data-overlap-ok onClick={() => setPaused((p) => !p)} aria-pressed={paused} className="ticker-toggle t-label absolute right-0 top-0 z-10 flex h-full min-w-11 items-center bg-accent px-4 text-accent-fg shadow-[-12px_0_12px_var(--accent)]">
           {paused ? "Play" : "Pause"}<span className="sr-only"> announcements</span>
         </button>
       </div>

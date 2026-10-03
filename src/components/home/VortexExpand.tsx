@@ -45,7 +45,7 @@ export function VortexExpand({ number, children }: { number: string; children: R
   }, []);
 
   return (
-    <section id="flagship" ref={root} data-section={`${number} — Flagship`} data-fallback={fallback || undefined} aria-label="Flagship: Venture Vortex 2026" className="dive relative bg-bg text-fg">
+    <section id="flagship" ref={root} data-section={`${number} — Flagship`} data-gap-ok data-fallback={fallback || undefined} aria-label="Flagship: Venture Vortex 2026" className="dive relative bg-bg text-fg">
       <div className="dive-live">
         <ScrollTrack onScrub={(p) => { progress.current = p; }} style={{ "--track-h": "360vh" } as React.CSSProperties}>
           <div className="stage">

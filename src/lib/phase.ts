@@ -68,3 +68,6 @@ export function viewOf(phase: Phase): PhaseView {
 
 /** The phase right now, for server components (render/revalidate time). Browser code uses usePhase. */
 export const currentPhase = () => phaseAt(Date.now());
+
+/** Minute-granular server clock: lets a countdown render its real value in the HTML instead of a placeholder. */
+export const serverNow = () => Math.floor(Date.now() / 60_000) * 60_000;

@@ -13,7 +13,7 @@ export function PageHeader({ number, label, title, lede, tone = "ink", art, chil
   number: string; label: string; title: string; lede?: string; tone?: "ink" | "paper"; art?: ArtKey; children?: React.ReactNode;
 }) {
   return (
-    <header data-section={`${number} — ${label}`} className={`${tone === "paper" ? "tone-paper" : "bg-bg text-fg"} relative isolate overflow-hidden pb-16 pt-36 md:pb-24 md:pt-52`}>
+    <header data-section={`${number} — ${label}`} className={`${tone === "paper" ? "tone-paper" : "bg-bg text-fg"} relative isolate overflow-hidden pb-[var(--section-y)] pt-36 md:pt-52`}>
       {art && tone === "ink" && (
         <div aria-hidden="true" className="parallax-photo absolute inset-0 -z-10">
           <Art name={art} priority sizes="100vw" className="size-full object-cover" />

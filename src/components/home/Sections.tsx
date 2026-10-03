@@ -3,32 +3,33 @@ import { copy } from "@/data/copy";
 import { posterBlur } from "@/data/poster-blur";
 import { shownPosters } from "@/data/posters";
 import { speakers } from "@/data/speakers";
-import { sponsors } from "@/data/sponsors";
+import { partnersOf } from "@/data/partners";
 import { voices } from "@/data/voices";
-import { site } from "@/data/site";
 import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Container";
+import { ContactLedger } from "@/components/ui/ContactLedger";
+import { PartnerGrid } from "@/components/ui/PartnerGrid";
 import { Section } from "@/components/ui/Section";
-import { SponsorLogo } from "@/components/ui/SponsorLogo";
 import { Body, H3, Label, Lede } from "@/components/ui/Type";
 
-/** Poster wall: the club's own flyers (never event photographs). Tiles lift 4px; the poster's words are real text under each tile. */
+/**
+ * Poster wall: the club's own flyers (never event photographs), four in a symmetric grid: one column below 560px, two from there up. Every poster sits
+ * in the same 5:7 frame on an ink mat with object-contain, so none is cropped and none sits off-centre. The poster's words are real text under each.
+ */
 export function PosterWall({ number }: { number: string }) {
   const list = shownPosters();
   return (
-    <Section id="posters" number={number} title="Posters" heading={copy.posters.title} tone="paper">
-      <p className="t-body -mt-8 mb-12 md:-mt-10">{copy.posters.line}</p>
+    <Section id="posters" number={number} title="Posters" heading={copy.posters.title} line={copy.posters.line} tone="paper">
       {list.length === 0 ? (
         <Body>No posters are published yet.</Body>
       ) : (
-        <ul className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((p, i) => (
-            <li key={p.slug} className={i % 2 ? "lg:mt-16" : ""}>
-              <Link href="/venture-vortex" data-cursor="OPEN" className="poster-tile block overflow-hidden rounded-[2px] border border-line bg-surface" style={{ aspectRatio: `${p.w} / ${p.h}` }}>
+        <ul className="mx-auto grid max-w-[56rem] gap-[clamp(16px,2vw,32px)] min-[560px]:grid-cols-2">
+          {list.map((p) => (
+            <li key={p.slug}>
+              <Link href="/venture-vortex" className="poster-tile block aspect-[5/7] overflow-hidden rounded-[2px] border border-line bg-club-ink">
                 <picture>
-                  <source type="image/avif" srcSet={`/images/posters/${p.slug}-640.avif 640w, /images/posters/${p.slug}-1024.avif 1024w`} sizes="(min-width: 1024px) 24rem, (min-width: 640px) 45vw, 90vw" />
-                  <img src={`/images/posters/${p.slug}-640.webp`} srcSet={`/images/posters/${p.slug}-640.webp 640w, /images/posters/${p.slug}-1024.webp 1024w`} sizes="(min-width: 1024px) 24rem, (min-width: 640px) 45vw, 90vw"
-                    alt={p.alt} width={640} height={Math.round((640 * p.h) / p.w)} loading="lazy" decoding="async" className="size-full object-cover"
+                  <source type="image/avif" srcSet={`/images/posters/${p.slug}-640.avif 640w, /images/posters/${p.slug}-1024.avif 1024w`} sizes="(min-width: 560px) 28rem, 90vw" />
+                  <img src={`/images/posters/${p.slug}-640.webp`} srcSet={`/images/posters/${p.slug}-640.webp 640w, /images/posters/${p.slug}-1024.webp 1024w`} sizes="(min-width: 560px) 28rem, 90vw"
+                    alt={p.alt} width={640} height={Math.round((640 * p.h) / p.w)} loading="lazy" decoding="async" className="size-full object-contain"
                     style={{ backgroundImage: `url(${posterBlur[p.slug]})`, backgroundSize: "cover" }} />
                 </picture>
               </Link>
@@ -74,41 +75,43 @@ export function Voices({ number }: { number: string }) {
   );
 }
 
-const consented = sponsors.filter((s) => s.consent && s.logo);
-
-/** "Backed by": collaborators named on the official poster, as typography. Logos only for partners with recorded written consent. */
-export function BackedBy({ number }: { number: string }) {
+/** Partners of this competition only. Club-wide sponsors are a separate list on /sponsors, empty until the club has some. */
+export function PartnersBlock({ number }: { number: string }) {
   return (
-    <Section id="backed" number={number} title="Backed by" heading={copy.backed.title}>
-      <p className="t-body -mt-8 mb-12 md:-mt-10">{copy.backed.line}</p>
-      <ul className="border-b border-line">
-        {sponsors.map((s) => (
-          <li key={s.name} className="rule-draw grid gap-x-8 gap-y-1 py-5 md:grid-cols-[14rem_1fr]">
-            <Label>{s.role}</Label>
-            <span className="t-h3">{s.name}</span>
-          </li>
-        ))}
-      </ul>
-      {consented.length > 0 && <ul className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-3">{consented.map((s) => <li key={s.name}><SponsorLogo sponsor={s} /></li>)}</ul>}
+    <Section id="partners" number={number} title="Partners" heading="Venture Vortex 2026 partners" line="Partners of this competition. Club-wide sponsors are listed on the Sponsors page.">
+      <PartnerGrid list={partnersOf("venture-vortex-2026")} />
       <p className="t-ui mt-8 max-w-[62ch] text-body">
         Names are trademarks of their respective owners; appearing here does not imply endorsement, partnership or sponsorship unless explicitly stated. See the <Link href="/disclaimer" className="underline underline-offset-4 hover:text-fg">disclaimer</Link>.
       </p>
-      <div className="mt-8"><Button href="/sponsors" variant="link">Partner with us →</Button></div>
+      <div className="mt-6"><Button href="/sponsors" variant="link">Sponsors and how to partner →</Button></div>
     </Section>
   );
 }
 
-/** Closing chapter: Join is a section here, not a tab. */
+const ROUTES = [
+  { href: "/contact#join", label: "Join the club", note: "Tell us your branch and year" },
+  { href: "/contact#query", label: "Ask a query", note: "About an event or the club" },
+  { href: "/contact#sponsor", label: "Partner with us", note: "Sponsors and collaborators" },
+] as const;
+
+/** Closing chapter: three doors into the contact page, and the three public contact points. */
 export function JoinUs({ number }: { number: string }) {
   return (
-    <Section id="join" number={number} title="Join" heading={copy.join.title} tone="paper">
-      <Container className="px-0 md:px-0">
-        <p className="t-lede max-w-[30ch]">{copy.join.line}</p>
-        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <Button href="/contact#join">Join the club</Button>
-          <Button href={`mailto:${site.email}`} variant="secondary">{site.email}</Button>
-        </div>
-      </Container>
+    <Section id="join" number={number} title="Join" heading={copy.join.title} line={copy.join.line} tone="paper">
+      <div className="grid gap-x-[clamp(32px,5vw,96px)] gap-y-10 lg:grid-cols-2">
+        <ol className="border-b border-line self-start">
+          {ROUTES.map((r, i) => (
+            <li key={r.href}>
+              <Link href={r.href} className="ledger-row rule-draw group grid min-h-24 grid-cols-[2.5rem_1fr_auto] items-center gap-x-4 py-5">
+                <Label className="tabular">{String(i + 1).padStart(2, "0")}</Label>
+                <span><span className="t-h3 block">{r.label}</span><Label className="mt-1 block">{r.note}</Label></span>
+                <span aria-hidden="true" className="t-h3 transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover:translate-x-1 motion-reduce:transition-none">→</span>
+              </Link>
+            </li>
+          ))}
+        </ol>
+        <ContactLedger />
+      </div>
     </Section>
   );
 }

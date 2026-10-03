@@ -35,12 +35,17 @@ for (const r of only ?? await sitemapRoutes()) {
         for (const el of s.querySelectorAll("img, svg, canvas, video, *")) {
           const cs = getComputedStyle(el);
           const media = /^(IMG|SVG|CANVAS|VIDEO)$/i.test(el.tagName);
-          const hair = el.children.length > 0 || media ? (parseFloat(cs.borderTopWidth) > 0 && cs.borderTopStyle !== "none") || (parseFloat(cs.borderBottomWidth) > 0 && cs.borderBottomStyle !== "none") : false;
-          if (!media && !hair) continue;
-          if (el.closest("[aria-hidden=true]") && !hair) continue; // decorative backdrops are not content
+          const bw = (side) => parseFloat(cs[`border${side}Width`]) > 0 && cs[`border${side}Style`] !== "none";
+          const boxed = bw("Left") || bw("Right"); // a vertical border makes it a box: the whole rect counts as content
+          const hair = bw("Top") || bw("Bottom") || boxed;
+          const rule = el.matches(".rule-draw"); // a ledger row draws its hairline in ::before
+          if (!media && !hair && !rule) continue;
+          if (el.closest("[aria-hidden=true]") && !el.closest("[data-content]") && !hair) continue; // decorative backdrops are not content; [data-content] marks an informative figure that is aria-hidden because its text sits beside it
           if (!el.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue;
           const rc = el.getBoundingClientRect();
-          if (hair && !media) push({ width: rc.width, height: 1, top: parseFloat(cs.borderTopWidth) > 0 ? rc.top : rc.bottom - 1, bottom: parseFloat(cs.borderTopWidth) > 0 ? rc.top + 1 : rc.bottom });
+          if (rule && !hair) push({ width: rc.width, height: 1, top: rc.top, bottom: rc.top + 1 });
+          else if (boxed) push(rc);
+          else if (hair && !media) push({ width: rc.width, height: 1, top: parseFloat(cs.borderTopWidth) > 0 ? rc.top : rc.bottom - 1, bottom: parseFloat(cs.borderTopWidth) > 0 ? rc.top + 1 : rc.bottom });
           else push(rc);
         }
         boxes.sort((a, b) => a[0] - b[0]);

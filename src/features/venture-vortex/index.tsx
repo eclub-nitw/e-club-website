@@ -7,7 +7,7 @@ import { ActionButton, PhaseActions, PhaseCountdown } from "@/components/ui/Phas
 import { MaskedText } from "@/components/ui/MaskedText";
 import { Body, H1, H2, H3, Label, Lede } from "@/components/ui/Type";
 import { posterBlur } from "@/data/poster-blur";
-import { sponsors } from "@/data/sponsors";
+import { partnersOf } from "@/data/partners";
 import { Startups } from "./Startups";
 
 const [r1, r2, r3] = event.rounds;
@@ -169,7 +169,7 @@ export function VentureVortexPage() {
         <Container>
           <Head n="08" title="Partners" id="partners-h">Presented with.</Head>
           <ul className="border-b border-line">
-            {sponsors.map((s) => (
+            {partnersOf("venture-vortex-2026").map((s) => (
               <li key={s.name} className="grid gap-x-8 gap-y-1 border-t border-line py-4 md:grid-cols-[14rem_1fr]"><Label>{s.role}</Label><span className="t-h3">{s.name}</span></li>
             ))}
           </ul>

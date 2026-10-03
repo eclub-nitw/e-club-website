@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { about } from "@/data/about";
 import { team } from "@/data/team";
 import { teamYears } from "@/lib/team";
 import { Container } from "@/components/ui/Container";
+import { LedgerRow } from "@/components/ui/LedgerRow";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { TeamGroups } from "@/components/ui/TeamGroups";
 import { Body, H3, Label } from "@/components/ui/Type";
@@ -20,8 +22,13 @@ export default function TeamPage() {
   return (
     <>
       <PageHeader number="01" label="Team" title="The people behind the club" art="network-city" lede={years[0] ? `Team of ${years[0]}.` : "The roster is being put together."} />
-      <div className="bg-bg pb-28 text-fg">
+      <div className="bg-bg pb-[var(--section-y)] text-fg">
         <Container>
+          <Label className="border-t border-line pt-4">02 — Who runs this</Label>
+          <dl className="mb-[var(--section-y)] mt-4 border-b border-line">
+            {about.facultyCoordinator && <LedgerRow label="Faculty mentor">{about.facultyCoordinator}</LedgerRow>}
+            <LedgerRow label="Website">Built and kept up by the E-Club tech team.</LedgerRow>
+          </dl>
           {members.length ? <TeamGroups members={members} /> : (
             <div className="rule-draw max-w-3xl py-8">
               <Label className="text-accent-text">Roster coming</Label>

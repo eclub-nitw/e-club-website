@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { registerUrl } from "@/data/timeline";
 import { useChapter, useNow } from "@/lib/hooks";
 import { phaseAt } from "@/lib/phase";
+import { ClubMark } from "./ClubMark";
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -27,9 +28,9 @@ function Register({ open, cls, onClick }: { open: boolean; cls: string; onClick?
 
 function Wordmark() {
   return (
-    <Link href="/" className="t-wordmark inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap">
-      <span>E-Club</span>
-      <span className="t-label text-muted">NITW</span>
+    <Link href="/" className="t-wordmark inline-flex min-h-11 shrink-0 items-center gap-2.5 whitespace-nowrap">
+      <ClubMark size={22} />
+      <span>E-Club NITW</span>
       <span className="sr-only">, home</span>
     </Link>
   );
@@ -79,7 +80,6 @@ export function Nav() {
           {here && here.total > 1 && (
             <p aria-hidden="true" className="t-label tabular ml-1 flex min-w-0 items-center gap-3 border-l border-line pl-3 text-muted">
               <span className="text-fg">{pad(here.index + 1)} / {pad(here.total)}</span>
-              <span className="hidden max-w-[22ch] truncate xl:inline">{here.label}</span>
             </p>
           )}
           <ul className="ml-auto hidden items-center lg:flex">{NAV_LINKS.map((l) => <li key={l.href}><Link href={l.href} className={linkCls(l.href)} aria-current={current(l.href) ? "page" : undefined}>{l.label}</Link></li>)}</ul>

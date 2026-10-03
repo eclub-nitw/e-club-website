@@ -26,12 +26,12 @@ export function PhaseActions({ initial, lead, then }: { initial: Phase; lead?: L
 }
 
 /** Label and countdown for whatever the next boundary is. */
-export function PhaseCountdown({ initial, className = "" }: { initial: Phase; className?: string }) {
+export function PhaseCountdown({ initial, now, className = "" }: { initial: Phase; now?: number; className?: string }) {
   const c = viewOf(usePhase(initial)).countdown;
   return (
     <>
       <Label className={className}>{c.label}</Label>
-      <Countdown start={c.start} end={c.end} label={c.label} />
+      <Countdown start={c.start} end={c.end} label={c.label} serverNow={now} />
     </>
   );
 }

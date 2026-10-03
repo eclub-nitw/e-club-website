@@ -12,7 +12,7 @@ import { Initiatives } from "@/components/home/Initiatives";
 import { CampusToIndia } from "@/components/home/CampusToIndia";
 import { VortexExpand } from "@/components/home/VortexExpand";
 import { FlagshipStage } from "@/components/home/FlagshipStage";
-import { BackedBy, JoinUs, PosterWall, Speakers, Voices } from "@/components/home/Sections";
+import { JoinUs, PartnersBlock, PosterWall, Speakers, Voices } from "@/components/home/Sections";
 import { startups } from "@/data/startups";
 import { speakers } from "@/data/speakers";
 import { voices } from "@/data/voices";
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 const day = (iso: string) => fmtDate(iso).replace(/ 2026$/, "");
 
-/** Home follows the IIT E-Cell order: hero, ticker, numbers, about, initiatives, reach map, flagship, posters, speakers, voices, backed by, join. */
+/** Home follows the IIT E-Cell order: hero, ticker, numbers, about, initiatives, reach map, flagship, posters, speakers, voices, partners, join. */
 export default function Home() {
   const [r1, r2, r3] = event.rounds;
   const phase = currentPhase();
@@ -62,7 +62,7 @@ export default function Home() {
       <PosterWall number={n(c++)} />
       {speakers.length > 0 && <Speakers number={n(c++)} />}
       {voices.length > 0 && <Voices number={n(c++)} />}
-      <BackedBy number={n(c++)} />
+      <PartnersBlock number={n(c++)} />
       <JoinUs number={n(c++)} />
     </>
   );

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
  * otherwise plays once when scrolled into view. Text is always in the DOM for SEO/screen readers.
  * Uses IntersectionObserver rather than motion, which would add ~60 KB gz to every route.
  */
-export function MaskedText({ text, immediate = false }: { text: string; immediate?: boolean }) {
+export function MaskedText({ text, immediate = false, stagger }: { text: string; immediate?: boolean; stagger?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [seen, setSeen] = useState(false);
 
@@ -21,7 +21,7 @@ export function MaskedText({ text, immediate = false }: { text: string; immediat
   }, [immediate]);
 
   return (
-    <span ref={ref} className={immediate ? "mask-now" : seen ? "mask-in" : undefined}>
+    <span ref={ref} className={immediate ? "mask-now" : seen ? "mask-in" : undefined} style={stagger ? ({ "--stagger": `${stagger}ms` } as React.CSSProperties) : undefined}>
       {text.split(" ").map((w, i) => (
         <span key={i}>
           <span className="mask-word" style={{ "--i": i } as React.CSSProperties}><span>{w}</span></span>{" "}

@@ -26,11 +26,11 @@
 .mask-word > span { display: inline-block; }
 /* Hidden only when scripting is on, so headings are never lost to a slow or blocked script. */
 @media (scripting: enabled) {
-  .mask-word > span { transform: translateY(110%); transition: transform 700ms var(--ease-out-expo); transition-delay: calc(var(--i) * 40ms); }
+  .mask-word > span { transform: translateY(110%); transition: transform 700ms var(--ease-out-expo); transition-delay: calc(var(--i) * var(--stagger, 40ms)); }
   .mask-in .mask-word > span { transform: none; }
 }
 @keyframes mask-up { from { transform: translateY(110%); } to { transform: none; } }
-.mask-now .mask-word > span { transform: none; animation: mask-up 700ms var(--ease-out-expo) both; animation-delay: calc(var(--i) * 40ms); }
+.mask-now .mask-word > span { transform: none; animation: mask-up 700ms var(--ease-out-expo) both; animation-delay: calc(var(--i) * var(--stagger, 40ms)); }
 
 @media (prefers-reduced-motion: reduce) {
   .mask-word > span { transform: none !important; animation: none !important; }
@@ -195,8 +195,9 @@ html { scroll-padding-top: 6.5rem; }
 .t-ghost { font-family: var(--font-display); font-weight: 800; font-variation-settings: "wdth" 75; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.86;
   font-size: clamp(5rem, 18vw, 18vw); opacity: 0.07; pointer-events: none; user-select: none; white-space: nowrap; }
 .t-ghost::before { content: attr(data-word); }
-/* Stat numeral: the number in a numbers sequence. Max 5rem. */
-.t-stat { font-family: var(--font-display); font-weight: 700; font-variation-settings: "wdth" 100; letter-spacing: -0.01em; line-height: 0.95; font-size: clamp(2.75rem, 5vw, 5rem); }
+/* Stat numeral: sized from its container (`.cq` or `.stat-cell`) so "₹50,000" and "30–31 Oct" fit a cell from 360 to 1920. Max 4.5rem, line-height >= 1. */
+.cq { container-type: inline-size; }
+.t-stat { font-family: var(--font-display); font-weight: 700; font-variation-settings: "wdth" 100; letter-spacing: -0.01em; line-height: 1.05; font-size: clamp(1.75rem, 19cqi, 4.5rem); text-wrap: balance; }
 
 /* Scroll tracks: the stage is pinned while the track scrolls. Only when scripting is on and motion is welcome; otherwise a normal section in its final state. */
 .track { --p: 1; position: relative; }
@@ -205,41 +206,63 @@ html { scroll-padding-top: 6.5rem; }
   .track > .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
 }
 
-/* Word-by-word lighting for the About lede: each word brightens as --p crosses its slot. */
-.word-light .w { opacity: 1; }
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .word-light { --p: 0; }
-  .word-light .w { opacity: clamp(0.18, calc(0.18 + (var(--p) * (var(--n) + 2) - var(--i)) * 0.82), 1); }
+/* Reach scene (time-based, see ReachPlayer): idle = nothing lit, run = the sequence plays once, done = the finished state (no JS, reduced motion).
+   Round 1 glow covers the country (0 to 1.2s), the Round 2 ring runs out (1.2 to 2.5s), the glow contracts into the Warangal pin (2.5 to 4s). */
+.reach-cover, .reach-ring, .reach-pin, .reach-pulse { transform-box: fill-box; transform-origin: center; }
+.reach-cover { opacity: 0; }
+.reach-ring { opacity: 0; transform: scale(0.02); }
+.reach-pin { opacity: 1; }
+.reach-row { color: var(--fg); }
+@keyframes reach-cover { 0% { opacity: 0; transform: scale(1); } 15% { opacity: 0.22; } 55% { opacity: 0.22; transform: scale(1); } 100% { opacity: 0; transform: scale(0.02); } }
+@keyframes reach-ring { 0% { opacity: 0.9; transform: scale(0.02); } 100% { opacity: 0; transform: scale(1); } }
+@keyframes reach-pin { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: none; } }
+@keyframes reach-lit { from { color: var(--muted); } to { color: var(--fg); } }
+@keyframes reach-pulse { from { transform: scale(0.3); opacity: 0.85; } to { transform: scale(2.4); opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .reach[data-play="idle"] .reach-pin { opacity: 0; }
+  .reach[data-play="idle"] .reach-row:not(.row-0) { color: var(--muted); }
+  .reach[data-play="run"] .reach-cover { animation: reach-cover 4000ms var(--ease-out-expo) both; }
+  .reach[data-play="run"] .reach-ring { animation: reach-ring 1300ms var(--ease-out-expo) 1200ms both; }
+  .reach[data-play="run"] .reach-pin { animation: reach-pin 700ms var(--ease-out-expo) 3300ms both; }
+  .reach[data-play="run"] .reach-pulse { animation: reach-pulse 1600ms var(--ease-out-expo) 3600ms 2 both; }
+  .reach[data-play="run"] .reach-row:not(.row-0) { animation: reach-lit 500ms var(--ease-out-expo) both; }
+  .reach[data-play="run"] .row-1 { animation-delay: 0ms; }
+  .reach[data-play="run"] .row-2 { animation-delay: 1200ms; }
+  .reach[data-play="run"] .row-3 { animation-delay: 3300ms; }
 }
 
-/* Reach map: layered plane for depth, tilted with scroll. Transform and opacity only. */
-.map-plane { transform-style: preserve-3d; transform: perspective(1400px) rotateX(calc(26deg - var(--p) * 22deg)) rotateZ(calc(var(--p) * -2deg)); transform-origin: 50% 70%; will-change: transform; }
-.map-layer { transform: translateZ(calc(var(--z) * 1px)); }
-.track[data-step="0"] .map-fill { opacity: 0.55; }
-.map-fill { transition: opacity 700ms var(--ease-out-expo); }
-.map-glow { opacity: 0; transition: opacity 700ms var(--ease-out-expo); }
-.track[data-step="1"] .map-glow, .track[data-step="2"] .map-glow { opacity: 1; }
-.track[data-step="3"] .map-fill { opacity: 0.3; }
-.map-pin { opacity: 0; transform: scale(0.4); transform-box: fill-box; transform-origin: center; transition: opacity 500ms var(--ease-out-expo) 200ms, transform 700ms var(--ease-out-expo) 200ms; }
-.track[data-step="3"] .map-pin { opacity: 1; transform: none; }
-@keyframes pulse { from { transform: scale(0.3); opacity: 0.85; } to { transform: scale(2.4); opacity: 0; } }
-.pulse { transform-box: fill-box; transform-origin: center; animation: pulse 2.4s var(--ease-out-expo) infinite; }
-.ripple { transform-box: fill-box; transform-origin: center; animation: pulse 3.2s linear infinite; }
-@media (prefers-reduced-motion: reduce) { .pulse, .ripple { animation: none; opacity: 0.35; } }
-.phase { opacity: 0; transform: translateY(40%); transition: opacity 500ms var(--ease-out-expo), transform 700ms var(--ease-out-expo); position: absolute; inset: 0 auto auto 0; }
-.track[data-step="0"] .phase-0, .track[data-step="1"] .phase-1, .track[data-step="2"] .phase-2, .track[data-step="3"] .phase-3 { opacity: 1; transform: none; }
-@media (scripting: none), (prefers-reduced-motion: reduce) { .phase { display: none; } }
-.phase-row { transition: color 300ms ease; color: var(--muted); }
-.track[data-step="1"] .row-1, .track[data-step="2"] .row-2, .track[data-step="3"] .row-3 { color: var(--fg); }
-
-/* Venture tree rail */
-.vtree { --pp: 0; }
-.vtree .stem { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--pp)); }
-.vtree .leaf { transform-box: fill-box; transform-origin: 0% 100%; transform: scale(0); opacity: 0; transition: transform 700ms var(--ease-out-expo), opacity 500ms var(--ease-out-expo); }
-.vtree .leaf[data-on="true"] { transform: scale(1); opacity: 1; }
-.vtree .bud, .vtree .branch { transform-box: fill-box; transform-origin: 50% 100%; transform: scale(0); opacity: 0; transition: transform 700ms var(--ease-out-expo), opacity 500ms var(--ease-out-expo); }
-.vtree[data-bud="true"] .bud, .vtree[data-tree="true"] .branch { transform: scale(1); opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .vtree .leaf, .vtree .bud, .vtree .branch { transition: none; } }
+/* Vine (components/ui/Vine.tsx). Transform, opacity and clip-path only. Stem and leaves grow with page scroll via a CSS scroll timeline; leaf j opens
+   at the point where the revealed stem reaches it (stem is fully shown at 85% scroll; pair fractions .13 .29 .45 .61 .78 of its height). */
+.vine { --g: 1; --stage: 5; }
+.vbud { transform-box: fill-box; transform-origin: center; transition: transform 700ms var(--ease-out-expo); }
+.vring { opacity: 0; transition: opacity 500ms var(--ease-out-expo); }
+.vine[data-bud="true"] .vbud { transform: scale(1.5); }
+.vine[data-bud="true"] .vring { opacity: 1; }
+.vgrow, .vunfurl, .vsway { transform-box: fill-box; transform-origin: 0 100%; }
+@keyframes vine-tip { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vine-reveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes vine-leaf { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes vine-unfurl { from { transform: scale(0.2) rotate(-25deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes vine-sway { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+@media (prefers-reduced-motion: no-preference) {
+  .vunfurl { animation: vine-unfurl 700ms var(--ease-out-expo) both; }
+  .vsway { animation: vine-sway 4s ease-in-out infinite alternate; }
+  @supports (animation-timeline: scroll()) {
+    .vstem { animation: vine-reveal linear both; animation-timeline: scroll(root); animation-range: 0% 85%; }
+    .vtip { animation: vine-tip linear both; animation-timeline: scroll(root); animation-range: 78% 86%; }
+    .vgrow { animation: vine-leaf linear both; animation-timeline: scroll(root); }
+    .vgrow[data-j="0"] { animation-range: 10% 16%; }
+    .vgrow[data-j="1"] { animation-range: 24% 30%; }
+    .vgrow[data-j="2"] { animation-range: 38% 44%; }
+    .vgrow[data-j="3"] { animation-range: 52% 58%; }
+    .vgrow[data-j="4"] { animation-range: 66% 72%; }
+  }
+  @supports not (animation-timeline: scroll()) {
+    .vstem { clip-path: inset(0 0 calc(100% - var(--g) * 100%) 0); transition: clip-path 700ms var(--ease-out-expo); }
+    .vtip { opacity: clamp(0, calc((var(--g) - 0.8) * 10), 1); transition: opacity 500ms var(--ease-out-expo); }
+    .vgrow { scale: clamp(0, calc(var(--stage) - var(--j)), 1); transition: scale 700ms var(--ease-out-expo); }
+  }
+}
 
 /* Floating register pill and poster wall */
 .pill-in { animation: toast-in 500ms var(--ease-out-expo) both; }
@@ -255,14 +278,16 @@ html { scroll-padding-top: 6.5rem; }
   .dive:not([data-fallback]) .dive-stack { display: none; }
 }
 
-/* Numbers sequence: rows not yet reached are dim, only while the track is pinned. */
+/* Numbers ledger: three-row subgrid cells (numeral / label / note); two columns, five at >= 1024px. */
+.stat-grid { margin-bottom: -20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(16px, 2.4vw, 40px); row-gap: 6px; }
+.stat-cell { container-type: inline-size; display: grid; grid-row: span 3; grid-template-rows: subgrid; position: relative; padding-top: 16px; margin-bottom: 20px; }
+.stat-cell:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.stat-cell::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; background: color-mix(in oklab, var(--fg) 28%, transparent); transform-origin: left; }
+@media (min-width: 1024px) { .stat-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } .stat-cell:last-child:nth-child(odd) { grid-column: auto; } }
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .stat-row { transition: opacity 500ms var(--ease-out-expo); }
-  .stat-row[data-on="false"] { opacity: 0.22; }
+  .stat-ledger .stat-cell::before { transform: scaleX(0); transition: transform 700ms var(--ease-out-expo); transition-delay: calc(var(--i) * 80ms); }
+  .stat-ledger.is-in .stat-cell::before { transform: scaleX(1); }
 }
-
-/* Home already has its own "Backed by" chapter (id="backed"); do not repeat the same names in the footer there. */
-body:has(#backed) .footer-backed { display: none; }
 
 /* WebKit sizes an img inside <picture> from its width attribute (1600) and ignores width:100% there; cap it so it can never widen the page. */
 picture { display: contents; } /* V7: the img sizes against the real container; an inline <picture> let 1600px art widen the page by 168px at 1440 */

@@ -1,67 +1,30 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
 import { copy } from "@/data/copy";
-import { Container } from "@/components/ui/Container";
-import { ScrollTrack } from "@/components/ui/ScrollTrack";
-import { H2, Label } from "@/components/ui/Type";
+import { CountUp } from "@/components/ui/CountUp";
+import { InView } from "@/components/ui/InView";
+import { Section } from "@/components/ui/Section";
+import { H3, Label } from "@/components/ui/Type";
 
 export type Stat = { value: string; label: string; note: string };
 
-const PARTS = /^(\D*)(\d[\d,]*)(\D*)$/;
-
-/** Counts up once when `run` first turns true; the server HTML and reduced motion show the final value. */
-function Counter({ value, run }: { value: string; run: boolean }) {
-  const m = PARTS.exec(value);
-  const target = m ? Number(m[2].replace(/,/g, "")) : NaN;
-  const [shown, setShown] = useState<number | null>(null);
-  const started = useRef(false);
-  useEffect(() => {
-    if (!run || started.current || Number.isNaN(target) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    started.current = true;
-    const t0 = performance.now(); let raf = 0;
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - t0) / 900);
-      setShown(Math.round(target * (1 - Math.pow(1 - p, 4))));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [run, target]);
-  if (!m || shown === null) return <>{value}</>;
-  return <>{m[1]}{shown.toLocaleString("en-IN")}{m[3]}</>;
-}
-
 /**
- * Chapter "Venture Vortex in numbers". Desktop: the stage is pinned while five verified figures light up in sequence (count-up, orange
- * on the current row, a hairline that grows with scroll). Elsewhere it is a plain five-row ledger. The figures come from the server page
- * (verified Venture Vortex facts only), so no data module ships in this client bundle.
+ * Chapter "Venture Vortex in numbers": five verified figures in one ledger. Each cell is a three-row subgrid (numeral, label, note), so the
+ * numerals can never run into their labels and the rows line up across the row. On entering the viewport the figures count up (900ms) and
+ * each hairline draws once (CSS, see .stat-ledger); without JS or under reduced motion everything is simply there.
  */
 export function Numbers({ number, stats }: { number: string; stats: Stat[] }) {
-  const [step, setStep] = useState(0);
   return (
-    <section id="numbers" data-section={`${number} — Numbers`} aria-labelledby="numbers-h" className="relative bg-bg text-fg">
-      <ScrollTrack steps={stats.length} onStep={setStep} style={{ "--track-h": "420vh" } as React.CSSProperties}>
-        <div className="stage flex items-center py-20 md:py-0">
-          <Container className="w-full">
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-20">
-              <header className="relative">
-                <Label className="border-t border-line pt-4">{number} — Numbers</Label>
-                <H2 id="numbers-h" className="mt-6">{copy.numbers.title}</H2>
-                <p className="t-body mt-4">{copy.numbers.line}</p>
-                <span aria-hidden="true" className="absolute -left-4 top-24 hidden h-40 w-px origin-top bg-accent lg:block" style={{ transform: "scaleY(var(--p))" }} />
-              </header>
-              <dl>
-                {stats.map((s, i) => (
-                  <div key={s.label} data-on={i <= step} className="stat-row grid items-baseline gap-x-8 gap-y-1 border-t border-line py-4 md:grid-cols-[minmax(0,15rem)_1fr] md:py-5">
-                    <dt className={`t-stat tabular ${i === step ? "text-accent-text" : ""}`}><Counter value={s.value} run={i <= step} /></dt>
-                    <dd className="m-0"><p className="t-h3">{s.label}</p><Label className="mt-1">{s.note}</Label></dd>
-                  </div>
-                ))}
-              </dl>
+    <Section id="numbers" number={number} title="Numbers" heading={copy.numbers.title} line={copy.numbers.line}>
+      <InView className="stat-ledger">
+        <dl className="stat-grid">
+          {stats.map((s, i) => (
+            <div key={s.label} className="stat-cell" style={{ "--i": i } as React.CSSProperties}>
+              <dt className="t-stat tabular"><CountUp value={s.value} /></dt>
+              <dd className="m-0"><H3 as="p">{s.label}</H3></dd>
+              <dd className="m-0"><Label>{s.note}</Label></dd>
             </div>
-          </Container>
-        </div>
-      </ScrollTrack>
-    </section>
+          ))}
+        </dl>
+      </InView>
+    </Section>
   );
 }

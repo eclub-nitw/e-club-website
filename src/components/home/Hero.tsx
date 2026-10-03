@@ -1,5 +1,6 @@
 import { copy } from "@/data/copy";
-import { currentPhase, viewOf } from "@/lib/phase";
+import { site } from "@/data/site";
+import { currentPhase, serverNow, viewOf } from "@/lib/phase";
 import { Container } from "@/components/ui/Container";
 import { PhaseActions, PhaseCountdown } from "@/components/ui/PhaseActions";
 import { Section } from "@/components/ui/Section";
@@ -14,8 +15,8 @@ import { LedgerStage } from "./LedgerStage";
 export function Hero({ number }: { number: string }) {
   const phase = currentPhase();
   return (
-    <Section id="hero" number={number} title="E-Club NIT Warangal" bare className="isolate flex min-h-[100svh] flex-col overflow-hidden">
-      <div className="absolute inset-0 -z-30 h-full">
+    <Section id="hero" number={number} title="E-Club NIT Warangal" bare gapOk className="isolate flex min-h-[100svh] flex-col overflow-hidden">
+      <div aria-hidden="true" className="absolute inset-0 -z-30 h-full">
         <picture>
           <source media="(max-width: 1023px)" type="image/avif" srcSet="/images/art/poster-portrait.avif" />
           <source media="(max-width: 1023px)" type="image/webp" srcSet="/images/art/poster-portrait.webp" />
@@ -34,7 +35,7 @@ export function Hero({ number }: { number: string }) {
 
         <div className="mt-16 lg:mt-20 lg:max-w-[52%]">
           <H1><span className="w-heavy">E-Club</span> <span className="w-light">NIT Warangal</span></H1>
-          <Lede className="mt-6 max-w-[26ch] text-body">{copy.hero.tagline}</Lede>
+          <Lede className="mt-6 max-w-[26ch] text-body">{site.quote.line}</Lede>
           <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
             <PhaseActions initial={phase} lead={viewOf(phase).hero} then={{ label: "Explore initiatives", href: "/initiatives" }} />
           </div>
@@ -42,7 +43,7 @@ export function Hero({ number }: { number: string }) {
 
         <div aria-hidden="true" className="min-h-[28svh] lg:hidden" />
         <div className="mt-8 grid max-w-[30rem] items-end gap-4 border-t border-line pt-4 lg:mt-16">
-          <PhaseCountdown initial={phase} />
+          <PhaseCountdown initial={phase} now={serverNow()} />
         </div>
       </Container>
     </Section>

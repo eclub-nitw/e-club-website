@@ -13,7 +13,6 @@ const RISE_MS = 900, STAGGER_MS = 70;
 
 const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
-type Pointer = { current: { x: number; y: number } };
 type Grow = { current: number };
 
 /** Studio reflections from a tiny HDRI; the scene itself stays transparent so the page ink shows through. */
@@ -29,7 +28,7 @@ function Studio() {
 }
 
 /** The bars rise from the floor one after another, each pair (body + cap) scaling about the floor so cap and body stay joined. */
-function Bars({ grow, pointer }: { grow: Grow; pointer: Pointer }) {
+function Bars({ grow }: { grow: Grow }) {
   const { scene } = useLoader(GLTFLoader, BARS);
   const mirror = useMemo(() => {
     const m = scene.clone(true);
@@ -104,8 +103,8 @@ function Coins() {
   ))}</>;
 }
 
-/** Camera matches the Blender poster (35 mm, shifted so the scene sits right of the copy) and drifts a little with the pointer. */
-function Rig({ pointer, width, height }: { pointer: Pointer; width: number; height: number }) {
+/** Camera matches the Blender poster (35 mm, shifted so the scene sits right of the copy) (fixed: no pointer tracking). */
+function Rig({ width, height }: { width: number; height: number }) {
   const { camera } = useThree();
   const base = useMemo(() => ({ x: -1.6, y: 2.6, z: 15.6 }), []);
   useEffect(() => {
@@ -114,12 +113,10 @@ function Rig({ pointer, width, height }: { pointer: Pointer; width: number; heig
     cam.setViewOffset(width, height, -0.2 * width, 0.06 * height, width, height);
     cam.updateProjectionMatrix();
   }, [camera, width, height]);
-  useFrame((_, dt) => {
-    camera.position.x = MathUtils.damp(camera.position.x, base.x + pointer.current.x * 0.9, 2.5, dt);
-    camera.position.y = MathUtils.damp(camera.position.y, base.y - pointer.current.y * 0.45, 2.5, dt);
-    camera.position.z = base.z;
+  useEffect(() => {
+    camera.position.set(base.x, base.y, base.z);
     camera.lookAt(0.1, 1.5, 0);
-  });
+  }, [camera, base]);
   return null;
 }
 
@@ -159,16 +156,16 @@ function Ready({ onReady }: { onReady: () => void }) {
   return null;
 }
 
-function Sized({ pointer }: { pointer: Pointer }) {
+function Sized() {
   const size = useThree((s) => s.size);
-  return <Rig pointer={pointer} width={size.width} height={size.height} />;
+  return <Rig width={size.width} height={size.height} />;
 }
 
 /**
  * Chapter 01's live scene: the Rising Ledger. Transparent canvas over the Blender poster; once the assets have loaded the poster
  * fades out and the bars rise from the floor. DPR is capped at 1.5, the loop pauses off screen, one context only.
  */
-export default function RisingLedger({ pointer, grow, active, onReady, onLost }: { pointer: Pointer; grow: Grow; active: boolean; onReady: () => void; onLost: () => void }) {
+export default function RisingLedger({ grow, active, onReady, onLost }: { grow: Grow; active: boolean; onReady: () => void; onLost: () => void }) {
   return (
     <Canvas
       frameloop={active ? "always" : "never"} dpr={[1, 1.5]} shadows
@@ -179,8 +176,8 @@ export default function RisingLedger({ pointer, grow, active, onReady, onLost }:
     >
       <Suspense fallback={null}>
         <Studio /><Lights /><Floor />
-        <Bars grow={grow} pointer={pointer} /><Coins />
-        <Sized pointer={pointer} />
+        <Bars grow={grow} /><Coins />
+        <Sized />
         <Ready onReady={onReady} />
       </Suspense>
     </Canvas>

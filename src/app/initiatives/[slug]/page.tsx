@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { events, eventPath, shownPhotos } from "@/data/events";
 import { shownPosters } from "@/data/posters";
 import { posterBlur } from "@/data/poster-blur";
-import { events } from "@/data/events";
 import { fmtRange } from "@/lib/format";
 import { isUpcoming } from "@/lib/events";
 import { breadcrumbLd, eventLd } from "@/lib/jsonld";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { EventPhotos } from "@/components/ui/EventPhotos";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { Body, H3, Label } from "@/components/ui/Type";
+import { H3, Label } from "@/components/ui/Type";
 import { VideoEmbed } from "@/components/ui/VideoEmbed";
 import { TYPE_LABEL } from "@/components/ui/EventRow";
 
@@ -23,37 +24,49 @@ export const generateStaticParams = () => events.filter((e) => !e.href).map((e) 
 
 const find = (slug: string) => events.find((e) => e.slug === slug);
 const clip = (s: string, n = 155) => (s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s);
+const describe = (title: string, summary: string | null) => clip(summary ?? `${title}, an event run by the Entrepreneurship Club, NIT Warangal.`);
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const e = find((await params).slug);
   if (!e) return {};
   return {
-    title: e.title,
-    description: clip(e.summary),
+    title: e.plain,
+    description: describe(e.plain, e.summary),
     alternates: { canonical: `/initiatives/${e.slug}` },
-    openGraph: { title: `${e.title} | E-Club NIT Warangal`, description: clip(e.summary), url: `/initiatives/${e.slug}`, type: "article" },
+    openGraph: { title: `${e.plain} | E-Club NIT Warangal`, description: describe(e.plain, e.summary), url: `/initiatives/${e.slug}`, type: "article" },
   };
 }
 
-/** Event detail: header, a four-column facts strip, the summary, then media (cover, video facade, gallery) and related events. */
+/**
+ * Event detail, photo-led: header, a facts ledger that lists only what the club has supplied, then one large photograph with a thumbnail strip
+ * (only while consent is recorded), posters and video where they exist, and the other events. No fact is invented; a missing one is left out.
+ */
 export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
   const e = find((await params).slug);
   if (!e) notFound();
-  const upcoming = isUpcoming(e);
+  const photos = shownPhotos(e);
   const posters = shownPosters(e.slug);
   const related = events.filter((o) => o.slug !== e.slug && o.type === e.type).slice(0, 3);
-  const facts: [string, string][] = [["Date", fmtRange(e.dateStart, e.dateEnd)], ["Venue", e.venue], ["Type", TYPE_LABEL[e.type]], ["Status", upcoming ? "Upcoming" : "Concluded"]];
+  const facts: [string, string][] = [
+    ["Type", TYPE_LABEL[e.type]],
+    ["Status", isUpcoming(e) ? "Upcoming" : "Held"],
+    ...(e.dateStart ? [["Date", fmtRange(e.dateStart, e.dateEnd ?? undefined)] as [string, string]] : []),
+    ...(e.venue ? [["Venue", e.venue] as [string, string]] : []),
+  ];
+  const trail = [{ name: "Home", path: "/" }, { name: "Initiatives", path: "/initiatives" }, { name: e.plain, path: `/initiatives/${e.slug}` }];
 
   return (
     <>
       <JsonLd data={eventLd(e)} />
-      <JsonLd data={breadcrumbLd([{ name: "Home", path: "/" }, { name: "Initiatives", path: "/initiatives" }, { name: e.title, path: `/initiatives/${e.slug}` }])} />
-      <PageHeader number={TYPE_LABEL[e.type]} label={fmtRange(e.dateStart, e.dateEnd)} title={e.title} lede={e.summary} art={e.type === "flagship" ? "vortex" : "pitch-stage"}>
+      <JsonLd data={breadcrumbLd(trail)} />
+      <PageHeader number={TYPE_LABEL[e.type]} label={e.dateStart ? fmtRange(e.dateStart, e.dateEnd ?? undefined) : "Event"} title={e.title} lede={e.summary ?? undefined} art={e.type === "flagship" ? "vortex" : "pitch-stage"}>
         <Breadcrumbs trail={[{ name: "Home", path: "/" }, { name: "Initiatives", path: "/initiatives" }, { name: e.title }]} />
       </PageHeader>
 
-      <div className="bg-bg pb-28 text-fg">
+      <div className="bg-bg pb-[var(--section-y)] text-fg">
         <Container>
+          {photos.length > 0 && <div className="mb-[var(--head-gap)]"><EventPhotos slug={e.slug} title={e.title} photos={photos} /></div>}
+
           <dl className="grid border-y border-line sm:grid-cols-2 lg:grid-cols-4">
             {facts.map(([k, v]) => (
               <div key={k} className="border-b border-line py-5 pr-6 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0 lg:border-b-0">
@@ -62,20 +75,10 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               </div>
             ))}
           </dl>
-          {upcoming && e.registerUrl && <div className="mt-8"><Button href={e.registerUrl}>Register on Unstop</Button></div>}
+          {isUpcoming(e) && e.registerUrl && <div className="mt-8"><Button href={e.registerUrl}>Register on Unstop</Button></div>}
 
-          {e.stats && e.stats.length > 0 && (
-            <dl className="mt-16 grid gap-x-10 gap-y-8 sm:grid-cols-2">
-              {e.stats.map((s) => (
-                <div key={s.label} className="rule-draw pt-5">
-                  <dt className="t-h2 tabular">{s.value}</dt>
-                  <dd className="m-0"><p className="t-body mt-2">{s.label}</p><Label className="mt-2">Source: {s.source}</Label></dd>
-                </div>
-              ))}
-            </dl>
-          )}
           {posters.length > 0 && (
-            <ul className="mt-16 grid max-w-3xl gap-8 sm:grid-cols-2">
+            <ul className="mt-[var(--head-gap)] grid max-w-3xl gap-8 sm:grid-cols-2">
               {posters.map((p) => (
                 <li key={p.slug}>
                   <picture>
@@ -87,14 +90,13 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               ))}
             </ul>
           )}
-          {e.videoId && <div className="mt-16 max-w-4xl"><VideoEmbed videoId={e.videoId} title={`${e.title}, video`} /></div>}
-          {!posters.length && !e.videoId && !upcoming && <Body className="mt-16">The poster and video from this event will be added here.</Body>}
+          {e.videoId && <div className="mt-[var(--head-gap)] max-w-4xl"><VideoEmbed videoId={e.videoId} title={`${e.title}, video`} /></div>}
         </Container>
 
         {related.length > 0 && (
-          <Container className="mt-24">
-            <Label as="h2" className="border-t border-line pt-4">Related events</Label>
-            <ul className="mt-4">{related.map((r) => <li key={r.slug} className="border-t border-line"><Link href={r.href ?? `/initiatives/${r.slug}`} className="ledger-row flex min-h-14 items-center py-3"><H3 as="span">{r.title}</H3></Link></li>)}</ul>
+          <Container className="mt-[var(--section-y)]">
+            <Label as="h2" className="border-t border-line pt-4">Other events</Label>
+            <ul className="mt-4">{related.map((r) => <li key={r.slug} className="border-t border-line"><Link href={eventPath(r)} className="ledger-row flex min-h-14 items-center py-3"><H3 as="span">{r.title}</H3></Link></li>)}</ul>
           </Container>
         )}
       </div>

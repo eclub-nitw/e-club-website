@@ -62,7 +62,6 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
   const gl = useThree((s) => s.gl);
   const root = useThree((s) => s.scene);
   const cam = useThree((s) => s.camera);
-  const pointer = useThree((s) => s.pointer);
   const streaks = useRef<Group>(null);
   const smooth = useRef(0);
   const lastIdx = useRef(-1);
@@ -111,8 +110,6 @@ function Tunnel({ progress, onIndex }: { progress: MutableRefObject<number>; onI
     const warp = Math.sin(Math.min(1, b * 3) * Math.PI) * 0.5;
     cam.fov = 50 + a * 14 + warp * 34;
     cam.updateProjectionMatrix();
-    cam.position.x = MathUtils.damp(cam.position.x, pointer.x * 0.3 * a, 3, dt);
-    cam.position.y = MathUtils.damp(cam.position.y, pointer.y * 0.18 * a, 3, dt);
     cam.rotation.z = Math.sin(p * Math.PI * 3) * 0.05 * b;
     if (streaks.current) streaks.current.scale.z = 1 + b * 4 * Math.min(1, b * 4); // streaks lengthen as the fall speeds up
     const shown = b > 0 ? Math.max(0, Math.min(dive.length - 1, Math.round((FIRST + 7 - cam.position.z) / SPACING))) : -1;

@@ -3,7 +3,6 @@
 export const copy = {
   hero: {
     label: "Entrepreneurship Club",                       // full name: hero sub-label only (and once in About)
-    tagline: "Bring the idea. We bring the questions.",    // CONFIRM
   },
   numbers: { title: "Venture Vortex in numbers", line: "Verified facts about this year's flagship. Not lifetime club figures." },
   about: {
@@ -19,5 +18,4 @@ export const copy = {
   voices: { title: "Voices", line: "" },
   backed: { title: "Backed by", line: "Collaborators on Venture Vortex 2026, named on the official poster." },
   join: { title: "Join us", line: "Come to an event, or write to us." },
-  closing: "Every company starts as an argument in a room.", // CONFIRM
 } as const;
