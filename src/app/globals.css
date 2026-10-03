@@ -265,4 +265,5 @@ html { scroll-padding-top: 6.5rem; }
 body:has(#backed) .footer-backed { display: none; }
 
 /* WebKit sizes an img inside <picture> from its width attribute (1600) and ignores width:100% there; cap it so it can never widen the page. */
+picture { display: contents; } /* V7: the img sizes against the real container; an inline <picture> let 1600px art widen the page by 168px at 1440 */
 picture > img { max-width: 100%; }
