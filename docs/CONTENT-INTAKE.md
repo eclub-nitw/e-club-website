@@ -24,6 +24,8 @@ Paste text as-is under each heading, or paste screenshots into chat. Leave a hea
 ## 4. Sponsors and partners
 | Name | Role | Logo file | **Written** permission to show the logo (who gave it, date) | Link |
 |---|---|---|---|---|
+| Masters' Union | Outreach partner | public/images/partners/masters-union.webp | Confirmed by Shrot Parekh, 12 Oct 2026 | https://mastersunion.org |
+| School2Startup | Outreach partner | public/images/partners/school2startup.webp | Confirmed by Shrot Parekh, 12 Oct 2026 | - |
 
 ## 5. Testimonials
 | Quote (exact words) | Name | Role | Written permission to publish (date) |

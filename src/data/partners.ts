@@ -13,9 +13,29 @@ export type Partner = {
 // Venture Vortex 2026 partners, as named on the official poster. `club` scope is empty: the club has no club-wide sponsor or partner on record yet
 // (TODO(owner): docs/CONTENT-INTAKE.md section 4). Names are trademarks of their owners; docs/LEGAL-REVIEW-NOTES.md covers the disclaimer wording.
 export const partners: Partner[] = [
+  // Club-wide sponsors and partners
+  {
+    slug: "masters-union",
+    name: "Masters' Union",
+    role: "Outreach partner",
+    scope: "club",
+    href: "https://mastersunion.org",
+    logo: { src: "/images/partners/masters-union.webp", w: 800, h: 156 },
+    consent: true,
+  },
+  {
+    slug: "school2startup",
+    name: "School2Startup",
+    role: "Outreach partner",
+    scope: "club",
+    logo: { src: "/images/partners/school2startup.webp", w: 447, h: 447 },
+    consent: true,
+  },
+
+  // Venture Vortex 2026 partners, as named on the official poster.
   { slug: "unstop", name: "Unstop", role: "Powered by", scope: "venture-vortex-2026", href: "https://unstop.com/o/cxKq1kz?lb=usedZ8to", logo: { src: "/images/partners/unstop.webp", w: 640, h: 254 }, consent: false },
-  { slug: "masters-union", name: "Masters' Union", role: "In collaboration with", scope: "venture-vortex-2026", logo: { src: "/images/partners/masters-union.webp", w: 800, h: 156 }, consent: false },
-  { slug: "school2startup", name: "School2Startup", role: "Outreach partner", scope: "venture-vortex-2026", logo: { src: "/images/partners/school2startup.webp", w: 447, h: 447 }, consent: false },
+  { slug: "masters-union", name: "Masters' Union", role: "In collaboration with", scope: "venture-vortex-2026", logo: { src: "/images/partners/masters-union.webp", w: 800, h: 156 }, consent: true },
+  { slug: "school2startup", name: "School2Startup", role: "Outreach partner", scope: "venture-vortex-2026", logo: { src: "/images/partners/school2startup.webp", w: 447, h: 447 }, consent: true },
   { slug: "uplearn", name: "Uplearn by Upstox", role: "Knowledge partner", scope: "venture-vortex-2026", consent: false },
   { slug: "technozion", name: "Technozion", role: "Festival", scope: "venture-vortex-2026", consent: false },
 ];
