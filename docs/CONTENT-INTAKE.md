@@ -17,6 +17,9 @@ Paste text as-is under each heading, or paste screenshots into chat. Leave a hea
 ## 3. Team (one row per person; public roles only)
 | Name | Role | Year/batch | Portrait file (only if the person consented in writing) | Link (LinkedIn, optional) |
 |---|---|---|---|---|
+| Bhavesh Vaishnav | General Secretary | 3rd Year B.Tech (2026-27) | - | - |
+| Akash Hadpad | Additional Secretary | 3rd Year B.Tech (2026-27) | - | - |
+| Faizan Ansari | Additional Secretary | 3rd Year B.Tech (2026-27) | - | - |
 
 ## 4. Sponsors and partners
 | Name | Role | Logo file | **Written** permission to show the logo (who gave it, date) | Link |

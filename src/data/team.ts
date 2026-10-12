@@ -5,5 +5,25 @@ export type Member = {
   photoConsent: boolean;           // must be true to show the photo
 };
 export const team: Member[] = [
-  // Fill from the club. Public roles and names only; no phone numbers.
+  {
+    name: "Bhavesh Vaishnav",
+    role: "General Secretary",
+    group: "Core",
+    year: "2026-27",
+    photoConsent: false,
+  },
+  {
+    name: "Akash Hadpad",
+    role: "Additional Secretary",
+    group: "Core",
+    year: "2026-27",
+    photoConsent: false,
+  },
+  {
+    name: "Faizan Ansari",
+    role: "Additional Secretary",
+    group: "Core",
+    year: "2026-27",
+    photoConsent: false,
+  },
 ];
