@@ -7,8 +7,8 @@ export const site = {
   instagram: "https://www.instagram.com/eclubnitw/",   // CONFIRM
   linkedin: "https://www.linkedin.com/company/entrepreneurship-club-nitw/",   // official (E-Club, 28 Sep 2026)
   youtube: "",                                // CONFIRM: club YouTube channel URL
-  address: { locality: "Warangal", region: "Telangana", country: "IN" }, // CONFIRM full address with the club
-  foundedYear: null as number | null,         // CONFIRM with the club
+  address: { locality: "Warangal", region: "Telangana", country: "IN", postalCode: "506004" },
+  foundedYear: 2024 as number | null,
   // Owner-supplied 3 Oct 2026 (V7 brief). `club` is the club's line, `line` the four-word motto shown in the hero, the Home band, About and the footer.
   quote: { club: "Entrepreneurship Club - NITW", line: "Think. Connect. Create. Lead.", source: "Club owner, 3 Oct 2026" },
   // The NIT Warangal emblem is shown only after the institute's written permission (docs/LEGAL-REVIEW-NOTES.md). Flip this one flag to publish it.
@@ -17,16 +17,18 @@ export const site = {
     nitw: { src: "/images/brand/nitw-logo.webp", w: 640, h: 720, alt: "NIT Warangal logo" },
     eclub: { src: "/images/brand/eclub-logo.webp", w: 297, h: 298, alt: "E-Club NIT Warangal logo" }, // owner file raw-media/logos/eclub-logo.jpeg (585x427 JPEG, white field removed by scripts/build-logos.mjs). TODO(owner): a PNG/SVG at 800px+ would be sharper
   },
-  // Shown on /contact only with an address read from nitw.ac.in. The site is script-rendered and could not be read in the V7 run, so this stays null.
-  // TODO(owner or next run): { text: "NIT Warangal, Telangana", source: "<the nitw.ac.in page that prints it>" }
-  campusLine: null as { text: string; source: string } | null,
+  // Shown on /contact and /about
+  campusLine: {
+    text: "National Institute of Technology Campus, Hanamkonda, Warangal, Telangana 506004",
+    source: "NIT Warangal",
+  } as { text: string; source: string } | null,
   forms: {
     // Owner asked (3 Oct 2026) to drop the "18 or older" checkbox. This line is the proposed replacement notice; it renders only once a human reviewer
     // has accepted the wording and `noticeApproved` is set (docs/LEGAL-REVIEW-NOTES.md). No age is collected or stored either way.
     noticeLine: "Forms here are for people aged 18 and over. Under 18? Email us instead.",
     noticeApproved: false,
   },
-  tagline: null as string | null,             // CONFIRM: one line the club approves; hidden while null
+  tagline: "Think. Connect. Create. Lead." as string | null,
   brochureUrl: "",                            // CONFIRM: sponsorship brochure PDF/link, shown only when set
   recruitmentUrl: "",                         // CONFIRM: Google Form link, only while recruitment is open
 } as const;

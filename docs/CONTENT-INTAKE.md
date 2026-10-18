@@ -17,10 +17,15 @@ Paste text as-is under each heading, or paste screenshots into chat. Leave a hea
 ## 3. Team (one row per person; public roles only)
 | Name | Role | Year/batch | Portrait file (only if the person consented in writing) | Link (LinkedIn, optional) |
 |---|---|---|---|---|
+| Bhavesh Vaishnav | General Secretary | 3rd Year B.Tech (2026-27) | - | - |
+| Akash Hadpad | Additional Secretary | 3rd Year B.Tech (2026-27) | - | - |
+| Faizan Ansari | Additional Secretary | 3rd Year B.Tech (2026-27) | - | - |
 
 ## 4. Sponsors and partners
 | Name | Role | Logo file | **Written** permission to show the logo (who gave it, date) | Link |
 |---|---|---|---|---|
+| Masters' Union | Outreach partner | public/images/partners/masters-union.webp | Confirmed by Shrot Parekh, 12 Oct 2026 | https://mastersunion.org |
+| School2Startup | Outreach partner | public/images/partners/school2startup.webp | Confirmed by Shrot Parekh, 12 Oct 2026 | - |
 
 ## 5. Testimonials
 | Quote (exact words) | Name | Role | Written permission to publish (date) |
@@ -45,14 +50,14 @@ Paste text as-is under each heading, or paste screenshots into chat. Leave a hea
 ## 8. V8: ten answers that fill the site
 Answer any of these in chat or here. Each one unlocks a section that is already built and hidden (see `docs/CONTENT-GAPS.md`). Every number needs a source the club can point to.
 
-1. **Founding year** (`site.foundedYear`): About shows "Founded 20xx". Source: 
+1. **Founding year** (`site.foundedYear`): 2024.
 2. **One-line mission** the club approves (`about.mission`): replaces the manifesto line on About. 
 3. **Number of members** (current, and how it is counted): Home "The club in numbers" row (`src/data/club-stats.ts`). Source: 
 4. **Events held so far, and typical participation** (e.g. "attendees at Valuation Wars"): same row. Source: 
 5. **The three past events**: date(s), venue, one-line format, and the names of speakers or judges the club may publish (`src/data/events.ts`: `dateStart`, `dateEnd`, `venue`, `summary`). Event pages then show a facts ledger and Event JSON-LD. 
-   - Valuation Wars: 
-   - Pitch’er Perfect: 
-   - The Pitch League: 
+   - Valuation Wars: Date: 24th October 2025 | Venue: Seminar Hall (Chandrashekhar Hall) | Format: Strategic startup bidding auction
+   - Pitch’er Perfect: Date: 28th March 2026 | Venue: Classroom | Format: Startup simulation with unexpected market shocks
+   - The Pitch League: Date: 29th August 2026 | Venue: Classroom | Format: Domain-specific problem identification and pitch challenge 
 6. **Team roster**: name, public role, batch, and who agrees to a portrait (`src/data/team.ts`). Home gets a "Who runs it" teaser; `/team` fills. 
 7. **Testimonials** with written permission (`src/data/voices.ts`): Home "Voices". 
 8. **Club-wide sponsors or partners**, with written permission to show their logo (`src/data/partners.ts`, scope `club`): Home partners block and `/sponsors`. 
